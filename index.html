@@ -3,62 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ERP Automation Studio | Professional Generator</title>
+<title>ERP Automation Studio | Robust Import</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <style>
-  :root { --bg: #f8fafc; --primary: #2563eb; --panel: #ffffff; }
-  body { background-color: var(--bg); font-family: 'Inter', sans-serif; padding: 40px 15px; color: #1e293b; }
-  .studio-card { max-width: 950px; margin: auto; background: var(--panel); border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; overflow: hidden; }
-  .studio-header { background: #f1f5f9; padding: 25px 30px; border-bottom: 1px solid #e2e8f0; }
-  .studio-body { padding: 30px; }
-  .terminal-box { background: #0f172a; color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; padding: 20px; border-radius: 8px; width: 100%; height: 450px; overflow-y: auto; border: 1px solid #334155; }
-  .btn-generate { background: var(--primary); color: white; font-weight: 600; padding: 12px 24px; transition: 0.2s; }
-  .btn-generate:hover { background: #1d4ed8; transform: translateY(-1px); }
+  body { background: #f8fafc; font-family: 'Inter', sans-serif; padding: 40px 15px; }
+  .studio-card { max-width: 950px; margin: auto; background: white; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+  .terminal-box { background: #0f172a; color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; padding: 20px; border-radius: 8px; width: 100%; height: 300px; overflow-y: auto; }
 </style>
 </head>
 <body>
 
 <div class="studio-card">
-  <div class="studio-header">
-    <h3 class="m-0 fw-bold"><i class="bi bi-robot me-2"></i>ERP Auto Live Class Scheduler </h3>
-    <small class="text-muted">Professional Userscript Generation Engine (v46)</small>
+  <div class="studio-header p-4 border-bottom">
+    <h3 class="m-0 fw-bold"><i class="bi bi-file-earmark-spreadsheet me-2"></i>ERP Live Class Scheduler</h3>
   </div>
-  <div class="studio-body">
-    <div class="mb-4">
-      <label class="form-label fw-semibold">Paste Excel Schedule Stream</label>
-      <textarea id="excelData" class="form-control shadow-sm" rows="6" placeholder="Paste your Excel rows here (Start Date, End Date, Time...)..."></textarea>
+  
+  <div class="p-4">
+    <!-- Tab Navigation -->
+    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+      <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#fileTab">File Import</button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#pasteTab">Paste Data</button></li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="fileTab">
+        <label class="form-label fw-semibold">Upload Schedule (.xlsx)</label>
+        <input type="file" id="excelFile" class="form-control mb-3" accept=".xlsx, .xls">
+      </div>
+      <div class="tab-pane fade" id="pasteTab">
+        <label class="form-label fw-semibold">Paste Excel Rows</label>
+        <textarea id="manualData" class="form-control mb-3" rows="3" placeholder="Paste rows from Excel here..."></textarea>
+      </div>
     </div>
-    <button class="btn btn-generate w-100 shadow" onclick="generateFullScript()">
-      <i class="bi bi-lightning-charge me-2"></i>Compile & Generate Script
-    </button>
+
+    <button id="compileBtn" class="btn btn-primary w-100 p-3 fw-bold" onclick="generateScript()">Compile Userscript</button>
+
     <div class="mt-4">
-      <textarea id="scriptOutput" class="terminal-box" readonly placeholder="Compilation ready for output..."></textarea>
-      <button class="btn btn-outline-secondary w-100 mt-2" onclick="copy()"><i class="bi bi-clipboard me-2"></i>Copy Compiled Userscript</button>
+      <textarea id="scriptOutput" class="terminal-box" readonly placeholder="Output will appear here..."></textarea>
+      <button class="btn btn-outline-secondary w-100 mt-2" onclick="copy()"><i class="bi bi-clipboard me-2"></i>Copy Script</button>
     </div>
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-function formatDate(dateStr) { const p = dateStr.split('-'); return p.length === 3 ? `${p[2]}-${p[1]}-${p[0]}` : dateStr; }
+let parsedClassData = [];
+
+// Handle File Input
+document.getElementById('excelFile').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, {type: 'array'});
+            const sheet = workbook.Sheets[workbook.SheetNames[0]];
+            const jsonData = XLSX.utils.sheet_to_json(sheet);
+            processData(jsonData);
+        } catch (err) {
+            alert("Reading Error: " + err.message);
+        }
+    };
+    reader.readAsArrayBuffer(file);
+});
+
+function processData(data) {
+    parsedClassData = data.map(row => {
+        // Safe access helper
+        const get = (key) => row[key] || "";
+        const start = parseTime(get('Start Time'));
+        const end = parseTime(get('End Time'));
+        
+        return {
+            "Date": formatDate(get('Start Date')),
+            "StartTime": start.Hour, "StartMin": start.Min, "StartAMPM": start.AMPM,
+            "EndTime": end.Hour, "EndMin": end.Min, "EndAMPM": end.AMPM,
+            "Class": get('Class'),
+            "Section": `${get('Class')}-${get('Section')}`,
+            "Teacher": get('Teacher'),
+            "Subject": get('Subject')
+        };
+    });
+    alert("Data parsed successfully! " + parsedClassData.length + " rows.");
+}
+
+function formatDate(dateStr) {
+    if (!dateStr) return "";
+    if (typeof dateStr === 'number') {
+        const d = new Date((dateStr - (25567 + 2))*86400*1000);
+        return d.toISOString().split('T')[0];
+    }
+    return dateStr;
+}
+
 function parseTime(timeStr) {
-    const m = timeStr.trim().match(/(\d+):(\d+)\s*(AM|PM)/i);
+    if(!timeStr) return { Hour: '12', Min: '00', AMPM: 'AM' };
+    const m = timeStr.toString().trim().match(/(\d+):(\d+)\s*(AM|PM)/i);
     return m ? { Hour: m[1].padStart(2, '0'), Min: m[2], AMPM: m[3].toUpperCase() } : { Hour: '12', Min: '00', AMPM: 'AM' };
 }
 
-function generateFullScript() {
-    const raw = document.getElementById('excelData').value.trim();
-    if(!raw) { alert("Please paste data first!"); return; }
-    const rows = raw.split('\n').filter(r => r.trim() !== "");
-    const dataRows = rows[0].includes('Start Date') ? rows.slice(1) : rows;
-    
-    const classData = dataRows.map(row => {
-        const cols = row.split('\t');
-        const start = parseTime(cols[2]);
-        const end = parseTime(cols[3]);
-        return { "Date": formatDate(cols[0]), "StartTime": start.Hour, "StartMin": start.Min, "StartAMPM": start.AMPM, "EndTime": end.Hour, "EndMin": end.Min, "EndAMPM": end.AMPM, "Class": cols[5], "Section": `${cols[5]}-${cols[6]}`, "Teacher": cols[7], "Subject": cols[8] };
-    });
+function generateScript() {
+    // If Manual Paste was used, parse it now
+    const manualRaw = document.getElementById('manualData').value.trim();
+    if (manualRaw) {
+        const rows = manualRaw.split('\n').slice(1);
+        processData(rows.map(r => {
+            const c = r.split('\t');
+            return {'Start Date': c[0], 'Start Time': c[2], 'End Time': c[3], 'Class': c[5], 'Section': c[6], 'Teacher': c[7], 'Subject': c[8]};
+        }));
+    }
 
+    if(parsedClassData.length === 0) { alert("No data detected. Please upload file or paste data."); return; }
+    
+    // ... [Same generation logic as before]
     const script = `// ==UserScript==
 // @name         ERP Auto-Scheduler Final
 // @match        *://*/*
@@ -67,15 +127,7 @@ function generateFullScript() {
 
 (function() {
     'use strict';
-    const classData = ${JSON.stringify(classData, null, 4)};
-
-    function log(message) {
-        const logArea = document.getElementById('automation-log');
-        if (!logArea) return;
-        const entry = document.createElement('div');
-        entry.textContent = \`[\${new Date().toLocaleTimeString()}] \${message}\`;
-        logArea.appendChild(entry);
-    }
+    const classData = ${JSON.stringify(parsedClassData, null, 4)};
 
     async function triggerEvents(element) {
         ['input', 'change', 'blur'].forEach(ev => element.dispatchEvent(new Event(ev, { bubbles: true })));
@@ -124,8 +176,7 @@ function generateFullScript() {
         const container = document.createElement('div');
         container.id = 'erp-scheduler-control';
         container.style = 'position:fixed; top:10px; right:10px; z-index:999999; background:white; border:2px solid #2563eb; padding:15px; width:320px; border-radius:12px; box-shadow:0 10px 15px rgba(0,0,0,0.1); font-family:sans-serif;';
-        container.innerHTML = '<h6 class="mb-2">Scheduler Automation</h6><select id="start-index" class="form-select mb-2"></select><button id="run-btn" class="btn btn-primary w-100">RUN AUTOMATION</button><div id="automation-log" class="mt-2 bg-dark text-success p-2 small" style="height:100px; overflow-y:auto; font-family:monospace;"></div>';
-        
+        container.innerHTML = '<h6 class="mb-2">Scheduler Automation</h6><select id="start-index" class="form-select mb-2"></select><button id="run-btn" class="btn btn-primary w-100">RUN AUTOMATION</button>';
         const select = container.querySelector('#start-index');
         classData.forEach((item, i) => { const opt = document.createElement('option'); opt.value = i; opt.text = \`[\${i}] \${item.Class} \${item.Section} - \${item.Teacher}\`; select.appendChild(opt); });
         container.querySelector('#run-btn').onclick = async () => {
