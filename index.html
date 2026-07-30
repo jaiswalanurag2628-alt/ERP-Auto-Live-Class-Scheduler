@@ -22,7 +22,6 @@
   </div>
   
   <div class="p-4">
-    <!-- Tab Navigation -->
     <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
       <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#fileTab">File Import</button></li>
       <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#pasteTab">Paste Data</button></li>
@@ -35,7 +34,7 @@
       </div>
       <div class="tab-pane fade" id="pasteTab">
         <label class="form-label fw-semibold">Paste Excel Rows</label>
-        <textarea id="manualData" class="form-control mb-3" rows="3" placeholder="Paste rows from Excel here..."></textarea>
+        <textarea id="manualData" class="form-control mb-3" rows="3" placeholder="Paste data (Start Date, End Date, Start Time, End Time, Class, Section, Teacher, Subject)..."></textarea>
       </div>
     </div>
 
@@ -52,7 +51,6 @@
 <script>
 let parsedClassData = [];
 
-// Handle File Input
 document.getElementById('excelFile').addEventListener('change', function(e) {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -63,22 +61,21 @@ document.getElementById('excelFile').addEventListener('change', function(e) {
             const sheet = workbook.Sheets[workbook.SheetNames[0]];
             const jsonData = XLSX.utils.sheet_to_json(sheet);
             processData(jsonData);
-        } catch (err) {
-            alert("Reading Error: " + err.message);
-        }
+        } catch (err) { alert("Reading Error: " + err.message); }
     };
     reader.readAsArrayBuffer(file);
 });
 
 function processData(data) {
     parsedClassData = data.map(row => {
-        // Safe access helper
-        const get = (key) => row[key] || "";
+        const get = (key) => row[key] || row[Object.keys(row).find(k => k.toLowerCase().includes(key.toLowerCase()))] || "";
         const start = parseTime(get('Start Time'));
         const end = parseTime(get('End Time'));
         
         return {
             "Date": formatDate(get('Start Date')),
+            "EndDate": formatDate(get('End Date')),
+            "Days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
             "StartTime": start.Hour, "StartMin": start.Min, "StartAMPM": start.AMPM,
             "EndTime": end.Hour, "EndMin": end.Min, "EndAMPM": end.AMPM,
             "Class": get('Class'),
@@ -96,6 +93,11 @@ function formatDate(dateStr) {
         const d = new Date((dateStr - (25567 + 2))*86400*1000);
         return d.toISOString().split('T')[0];
     }
+    // Handle DD-MM-YYYY format by converting to YYYY-MM-DD
+    if (dateStr.includes('-')) {
+        const parts = dateStr.split('-');
+        if (parts[0].length === 2) return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
     return dateStr;
 }
 
@@ -106,19 +108,17 @@ function parseTime(timeStr) {
 }
 
 function generateScript() {
-    // If Manual Paste was used, parse it now
     const manualRaw = document.getElementById('manualData').value.trim();
     if (manualRaw) {
         const rows = manualRaw.split('\n').slice(1);
         processData(rows.map(r => {
             const c = r.split('\t');
-            return {'Start Date': c[0], 'Start Time': c[2], 'End Time': c[3], 'Class': c[5], 'Section': c[6], 'Teacher': c[7], 'Subject': c[8]};
+            return {'Start Date': c[0], 'End Date': c[1], 'Start Time': c[2], 'End Time': c[3], 'Class': c[4], 'Section': c[5], 'Teacher': c[6], 'Subject': c[7]};
         }));
     }
 
-    if(parsedClassData.length === 0) { alert("No data detected. Please upload file or paste data."); return; }
+    if(parsedClassData.length === 0) { alert("No data detected."); return; }
     
-    // ... [Same generation logic as before]
     const script = `// ==UserScript==
 // @name         ERP Auto-Scheduler Final
 // @match        *://*/*
@@ -151,9 +151,29 @@ function generateScript() {
         return false;
     }
 
+    async function selectDays(daysToSelect) {
+        let dropdown = document.querySelector('ng-multiselect-dropdown[name="day"]');
+        if (!dropdown) return;
+        dropdown.querySelector('.dropdown-btn').click();
+        await new Promise(r => setTimeout(r, 500));
+        const listItems = dropdown.querySelectorAll('.item2 li');
+        for (let li of listItems) {
+            if (daysToSelect.includes(li.textContent.trim())) {
+                let checkbox = li.querySelector('input');
+                if (checkbox && !checkbox.checked) checkbox.click();
+            }
+        }
+        dropdown.querySelector('.dropdown-btn').click();
+        await triggerEvents(dropdown);
+    }
+
     async function runAutomation(entry, index) {
         const startDate = document.querySelector('input[name="startDate"]');
+        const endDate = document.querySelector('input[name="endDate"]');
         if (startDate) { startDate.value = entry.Date; await triggerEvents(startDate); }
+        if (endDate) { endDate.value = entry.EndDate; await triggerEvents(endDate); }
+        if (entry.Days) await selectDays(entry.Days);
+
         const timeFields = {'slotTime': entry.StartTime, 'slotMin': entry.StartMin, 'slotType': entry.StartAMPM, 'slotEndTime': entry.EndTime, 'slotEndMin': entry.EndMin, 'slotEndType': entry.EndAMPM};
         for (const [name, val] of Object.entries(timeFields)) {
             let el = document.querySelector(\`select[name="\${name}"]\`);
