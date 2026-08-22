@@ -31,14 +31,15 @@
       <div class="tab-pane fade show active" id="fileTab">
         <label class="form-label fw-semibold">Upload Schedule (.xlsx)</label>
         <input type="file" id="excelFile" class="form-control mb-3" accept=".xlsx, .xls">
+        <small class="text-muted">Expected columns: Start Date, End Date, Start Time, End Time, Days, Class, Section, Teacher, Subject</small>
       </div>
       <div class="tab-pane fade" id="pasteTab">
         <label class="form-label fw-semibold">Paste Excel Rows</label>
-        <textarea id="manualData" class="form-control mb-3" rows="3" placeholder="Paste data (Start Date, End Date, Start Time, End Time, Class, Section, Teacher, Subject)..."></textarea>
+        <textarea id="manualData" class="form-control mb-3" rows="3" placeholder="Paste data: Start Date | End Date | Start Time | End Time | Days | Class | Section | Teacher | Subject"></textarea>
       </div>
     </div>
 
-    <button id="compileBtn" class="btn btn-primary w-100 p-3 fw-bold" onclick="generateScript()">Compile Userscript</button>
+    <button id="compileBtn" class="btn btn-primary w-100 p-3 fw-bold mt-3" onclick="generateScript()">Compile Userscript</button>
 
     <div class="mt-4">
       <textarea id="scriptOutput" class="terminal-box" readonly></textarea>
@@ -82,11 +83,18 @@ function processData(data) {
                 finalSection = `${rawClass}-${rawSection}`;
             }
         }
+
+        // Process Custom Days (Fallback to Mon-Sat if empty)
+        let rawDays = get('Days');
+        let daysArray = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        if (rawDays) {
+            daysArray = rawDays.toString().split(',').map(d => d.trim()).filter(d => d);
+        }
         
         return {
             "Date": formatDate(get('Start Date')),
             "EndDate": formatDate(get('End Date')),
-            "Days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "Days": daysArray,
             "StartTime": start.Hour, "StartMin": start.Min, "StartAMPM": start.AMPM,
             "EndTime": end.Hour, "EndMin": end.Min, "EndAMPM": end.AMPM,
             "Class": rawClass,
@@ -124,7 +132,8 @@ function generateScript() {
         const rows = manualRaw.split('\n');
         processData(rows.map(r => {
             const c = r.split('\t');
-            return {'Start Date': c[0], 'End Date': c[1], 'Start Time': c[2], 'End Time': c[3], 'Class': c[4], 'Section': c[5], 'Teacher': c[6], 'Subject': c[7]};
+            // Updated index mapping to accommodate 'Days' at c[4]
+            return {'Start Date': c[0], 'End Date': c[1], 'Start Time': c[2], 'End Time': c[3], 'Days': c[4], 'Class': c[5], 'Section': c[6], 'Teacher': c[7], 'Subject': c[8]};
         }));
     }
 
@@ -209,8 +218,19 @@ function generateScript() {
         dropdown.querySelector('.dropdown-btn').click();
         await new Promise(r => setTimeout(r, 500));
         const listItems = dropdown.querySelectorAll('.item2 li');
+        
+        // Uncheck all first (if needed to reset state)
         for (let li of listItems) {
-            if (daysToSelect.includes(li.textContent.trim())) {
+            let checkbox = li.querySelector('input');
+            if (checkbox && checkbox.checked) checkbox.click();
+        }
+        
+        // Check only targeted days
+        for (let li of listItems) {
+            let dayText = li.textContent.trim().toUpperCase();
+            let isTarget = daysToSelect.some(d => d.toUpperCase() === dayText);
+            
+            if (isTarget) {
                 let checkbox = li.querySelector('input');
                 if (checkbox && !checkbox.checked) checkbox.click();
             }
@@ -225,7 +245,7 @@ function generateScript() {
             const endDate = document.querySelector('input[name="endDate"]');
             if (startDate) { startDate.value = entry.Date; await triggerEvents(startDate); }
             if (endDate) { endDate.value = entry.EndDate; await triggerEvents(endDate); }
-            if (entry.Days) await selectDays(entry.Days);
+            if (entry.Days && entry.Days.length > 0) await selectDays(entry.Days);
 
             const timeFields = {'slotTime': entry.StartTime, 'slotMin': entry.StartMin, 'slotType': entry.StartAMPM, 'slotEndTime': entry.EndTime, 'slotEndMin': entry.EndMin, 'slotEndType': entry.EndAMPM};
             for (const [name, val] of Object.entries(timeFields)) {
@@ -281,7 +301,8 @@ function generateScript() {
         logs.forEach(log => {
             let startT = \`\${log.StartTime}:\${log.StartMin} \${log.StartAMPM}\`;
             let endT = \`\${log.EndTime}:\${log.EndMin} \${log.EndAMPM}\`;
-            tsvOutput += \`\${log.Date}\\t\${log.EndDate}\\t\${startT}\\t\${endT}\\t\${log.Class}\\t\${log.Section}\\t\${log.Teacher}\\t\${log.Subject}\\n\`;
+            let daysFormatted = log.Days.join(', ');
+            tsvOutput += \`\${log.Date}\\t\${log.EndDate}\\t\${startT}\\t\${endT}\\t\${daysFormatted}\\t\${log.Class}\\t\${log.Section}\\t\${log.Teacher}\\t\${log.Subject}\\n\`;
         });
 
         const div = document.createElement('div');
