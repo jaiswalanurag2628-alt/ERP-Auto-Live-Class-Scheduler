@@ -3,432 +3,4918 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ERP Automation Studio | Final Edition</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+<title>ERP Automation Studio</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+>
+
+<link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    rel="stylesheet"
+>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <style>
-  body { background: #f8fafc; font-family: 'Inter', sans-serif; padding: 40px 15px; }
-  .studio-card { max-width: 950px; margin: auto; background: white; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
-  .terminal-box { background: #0f172a; color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; padding: 20px; border-radius: 8px; width: 100%; height: 300px; overflow-y: auto; white-space: pre; }
+
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #eff6ff;
+
+    --success: #16a34a;
+    --success-light: #f0fdf4;
+
+    --danger: #dc2626;
+    --danger-light: #fef2f2;
+
+    --warning: #d97706;
+    --warning-light: #fffbeb;
+
+    --text: #0f172a;
+    --muted: #64748b;
+
+    --border: #e2e8f0;
+    --surface: #ffffff;
+    --background: #f1f5f9;
+
+    --shadow-sm: 0 1px 2px rgba(15,23,42,.05);
+    --shadow-md: 0 8px 25px rgba(15,23,42,.08);
+    --shadow-lg: 0 20px 50px rgba(15,23,42,.12);
+
+    --radius: 18px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Inter", sans-serif;
+    color: var(--text);
+
+    background:
+        radial-gradient(circle at 10% 10%, rgba(37,99,235,.08), transparent 28%),
+        radial-gradient(circle at 90% 20%, rgba(99,102,241,.08), transparent 25%),
+        #f8fafc;
+}
+
+/* ---------------------------------------------------------
+   APP HEADER
+--------------------------------------------------------- */
+
+.app-header {
+    padding: 28px 20px 20px;
+}
+
+.header-inner {
+    max-width: 1180px;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.brand-logo {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+    font-size: 22px;
+
+    border-radius: 14px;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #4f46e5
+    );
+
+    box-shadow:
+        0 8px 20px rgba(37,99,235,.25);
+}
+
+.brand-title {
+    margin: 0;
+    font-size: 19px;
+    font-weight: 800;
+    letter-spacing: -.4px;
+}
+
+.brand-subtitle {
+    margin: 2px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.header-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 13px;
+
+    border: 1px solid #bbf7d0;
+    background: rgba(240,253,244,.8);
+
+    color: #15803d;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+
+    box-shadow: 0 0 0 4px rgba(34,197,94,.12);
+}
+
+/* ---------------------------------------------------------
+   MAIN
+--------------------------------------------------------- */
+
+.main-wrapper {
+    max-width: 1180px;
+    margin: auto;
+    padding: 0 20px 50px;
+}
+
+.main-card {
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(20px);
+
+    border: 1px solid rgba(226,232,240,.9);
+    border-radius: 24px;
+
+    box-shadow: var(--shadow-lg);
+
+    overflow: hidden;
+}
+
+/* ---------------------------------------------------------
+   HERO
+--------------------------------------------------------- */
+
+.hero {
+    padding: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #f8fbff 55%,
+            #eff6ff 100%
+        );
+
+    border-bottom: 1px solid var(--border);
+}
+
+.hero-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -.8px;
+    margin-bottom: 8px;
+}
+
+.hero p {
+    color: var(--muted);
+    margin: 0;
+    max-width: 700px;
+    line-height: 1.6;
+}
+
+.hero-icon {
+    width: 92px;
+    height: 92px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 24px;
+
+    color: #2563eb;
+    font-size: 42px;
+
+    background: #ffffff;
+
+    border: 1px solid #dbeafe;
+
+    box-shadow: 0 15px 35px rgba(37,99,235,.12);
+}
+
+/* ---------------------------------------------------------
+   STEPS
+--------------------------------------------------------- */
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+
+    border-bottom: 1px solid var(--border);
+}
+
+.step {
+    position: relative;
+
+    padding: 18px 20px;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    color: #94a3b8;
+
+    transition: .2s;
+}
+
+.step:not(:last-child)::after {
+    content: "";
+
+    position: absolute;
+
+    right: 0;
+    top: 50%;
+
+    width: 1px;
+    height: 28px;
+
+    transform: translateY(-50%);
+
+    background: var(--border);
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 12px;
+    font-weight: 800;
+
+    background: #f1f5f9;
+}
+
+.step-label {
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.step.active {
+    color: var(--primary);
+}
+
+.step.active .step-number {
+    color: white;
+    background: var(--primary);
+
+    box-shadow:
+        0 0 0 5px rgba(37,99,235,.1);
+}
+
+.step.completed {
+    color: var(--success);
+}
+
+.step.completed .step-number {
+    color: white;
+    background: var(--success);
+}
+
+/* ---------------------------------------------------------
+   CONTENT
+--------------------------------------------------------- */
+
+.content {
+    padding: 30px;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    font-size: 15px;
+    font-weight: 800;
+
+    margin-bottom: 16px;
+}
+
+.section-title i {
+    color: var(--primary);
+}
+
+/* ---------------------------------------------------------
+   INPUT TABS
+--------------------------------------------------------- */
+
+.custom-tabs {
+    display: inline-flex;
+
+    padding: 4px;
+
+    background: #f1f5f9;
+
+    border-radius: 12px;
+
+    margin-bottom: 20px;
+}
+
+.custom-tab {
+    border: none;
+
+    padding: 9px 16px;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    border-radius: 9px;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.custom-tab.active {
+    color: var(--text);
+    background: white;
+
+    box-shadow: var(--shadow-sm);
+}
+
+/* ---------------------------------------------------------
+   UPLOAD
+--------------------------------------------------------- */
+
+.upload-zone {
+    position: relative;
+
+    min-height: 210px;
+
+    border: 2px dashed #cbd5e1;
+
+    border-radius: 18px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background: #f8fafc;
+
+    cursor: pointer;
+
+    transition: .25s;
+}
+
+.upload-zone:hover,
+.upload-zone.dragover {
+    border-color: var(--primary);
+
+    background: var(--primary-light);
+
+    transform: translateY(-1px);
+}
+
+.upload-icon {
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background: #dbeafe;
+
+    color: var(--primary);
+
+    font-size: 25px;
+
+    margin-bottom: 13px;
+}
+
+.upload-title {
+    font-size: 14px;
+    font-weight: 800;
+
+    margin-bottom: 5px;
+}
+
+.upload-subtitle {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.file-input {
+    display: none;
+}
+
+/* ---------------------------------------------------------
+   FILE CARD
+--------------------------------------------------------- */
+
+.file-card {
+    display: none;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 14px 16px;
+
+    margin-top: 14px;
+
+    border: 1px solid #bfdbfe;
+
+    border-radius: 13px;
+
+    background: #eff6ff;
+}
+
+.file-card.show {
+    display: flex;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.file-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #dbeafe;
+
+    color: #2563eb;
+}
+
+.file-name {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.file-size {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* ---------------------------------------------------------
+   TEXTAREA
+--------------------------------------------------------- */
+
+textarea.form-control {
+    resize: vertical;
+
+    border-radius: 14px;
+
+    border-color: var(--border);
+
+    padding: 14px;
+
+    font-family: "JetBrains Mono", monospace;
+
+    font-size: 12px;
+}
+
+textarea.form-control:focus,
+.form-control:focus {
+    border-color: #93c5fd;
+
+    box-shadow:
+        0 0 0 4px rgba(37,99,235,.08);
+}
+
+/* ---------------------------------------------------------
+   BUTTONS
+--------------------------------------------------------- */
+
+.btn-primary-custom {
+    border: none;
+
+    background: linear-gradient(
+        135deg,
+        #2563eb,
+        #4f46e5
+    );
+
+    color: white;
+
+    font-weight: 800;
+
+    border-radius: 12px;
+
+    padding: 13px 20px;
+
+    box-shadow:
+        0 8px 18px rgba(37,99,235,.22);
+
+    transition: .2s;
+}
+
+.btn-primary-custom:hover {
+    color: white;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 12px 24px rgba(37,99,235,.28);
+}
+
+.btn-secondary-custom {
+    border: 1px solid var(--border);
+
+    background: white;
+
+    color: #475569;
+
+    font-weight: 700;
+
+    border-radius: 12px;
+
+    padding: 12px 18px;
+}
+
+.btn-secondary-custom:hover {
+    background: #f8fafc;
+}
+
+/* ---------------------------------------------------------
+   STATS
+--------------------------------------------------------- */
+
+.stats-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4,1fr);
+
+    gap: 12px;
+
+    margin-top: 22px;
+}
+
+.stat-card {
+    padding: 16px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    background: white;
+}
+
+.stat-label {
+    color: var(--muted);
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: .4px;
+}
+
+.stat-value {
+    font-size: 24px;
+
+    font-weight: 800;
+
+    margin-top: 5px;
+}
+
+.stat-blue .stat-value {
+    color: var(--primary);
+}
+
+.stat-green .stat-value {
+    color: var(--success);
+}
+
+.stat-red .stat-value {
+    color: var(--danger);
+}
+
+.stat-orange .stat-value {
+    color: var(--warning);
+}
+
+/* ---------------------------------------------------------
+   PREVIEW
+--------------------------------------------------------- */
+
+.preview-container {
+    margin-top: 25px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    background: white;
+}
+
+.preview-header {
+    padding: 14px 16px;
+
+    background: #f8fafc;
+
+    border-bottom: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+.preview-header strong {
+    font-size: 13px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+
+    max-height: 330px;
+}
+
+.preview-table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+}
+
+.preview-table th {
+    position: sticky;
+
+    top: 0;
+
+    background: #f8fafc;
+
+    color: #475569;
+
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: .4px;
+
+    padding: 11px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.preview-table td {
+    padding: 11px;
+
+    border-bottom: 1px solid #f1f5f9;
+
+    color: #334155;
+}
+
+.preview-table tr:hover td {
+    background: #f8fbff;
+}
+
+/* ---------------------------------------------------------
+   OUTPUT
+--------------------------------------------------------- */
+
+.output-section {
+    margin-top: 30px;
+}
+
+.output-card {
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    border: 1px solid #1e293b;
+
+    background: #020617;
+
+    box-shadow:
+        0 15px 35px rgba(15,23,42,.15);
+}
+
+.output-toolbar {
+    height: 48px;
+
+    padding: 0 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    background: #0f172a;
+
+    border-bottom: 1px solid #1e293b;
+}
+
+.terminal-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.terminal-dot {
+    width: 9px;
+    height: 9px;
+
+    border-radius: 50%;
+
+    background: #475569;
+}
+
+.output-title {
+    color: #94a3b8;
+
+    font-size: 11px;
+
+    font-family: "JetBrains Mono", monospace;
+}
+
+#scriptOutput {
+    width: 100%;
+
+    height: 360px;
+
+    resize: vertical;
+
+    border: none;
+
+    outline: none;
+
+    padding: 18px;
+
+    background: #020617;
+
+    color: #7dd3fc;
+
+    font-family: "JetBrains Mono", monospace;
+
+    font-size: 11px;
+
+    line-height: 1.65;
+}
+
+/* ---------------------------------------------------------
+   ACTION BAR
+--------------------------------------------------------- */
+
+.action-bar {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 14px;
+}
+
+.action-bar button {
+    flex: 1;
+    min-width: 160px;
+}
+
+/* ---------------------------------------------------------
+   ALERT
+--------------------------------------------------------- */
+
+.alert-box {
+    display: none;
+
+    align-items: flex-start;
+
+    gap: 11px;
+
+    padding: 14px;
+
+    border-radius: 13px;
+
+    margin-top: 15px;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+.alert-box.show {
+    display: flex;
+}
+
+.alert-success {
+    color: #166534;
+
+    background: var(--success-light);
+
+    border: 1px solid #bbf7d0;
+}
+
+.alert-danger {
+    color: #991b1b;
+
+    background: var(--danger-light);
+
+    border: 1px solid #fecaca;
+}
+
+.alert-warning {
+    color: #92400e;
+
+    background: var(--warning-light);
+
+    border: 1px solid #fde68a;
+}
+
+/* ---------------------------------------------------------
+   LOADING
+--------------------------------------------------------- */
+
+.compile-overlay {
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 999999;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(15,23,42,.45);
+
+    backdrop-filter: blur(6px);
+}
+
+.compile-overlay.show {
+    display: flex;
+}
+
+.compile-modal {
+    width: min(420px, calc(100% - 30px));
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    background: white;
+
+    box-shadow: var(--shadow-lg);
+
+    text-align: center;
+}
+
+.spinner {
+    width: 44px;
+    height: 44px;
+
+    margin: auto auto 16px;
+
+    border-radius: 50%;
+
+    border: 4px solid #dbeafe;
+
+    border-top-color: var(--primary);
+
+    animation: spin .8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.progress {
+    height: 6px;
+
+    margin-top: 18px;
+
+    border-radius: 10px;
+
+    background: #e2e8f0;
+
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 0%;
+
+    background: linear-gradient(
+        90deg,
+        #2563eb,
+        #6366f1
+    );
+
+    transition: width .2s;
+}
+
+/* ---------------------------------------------------------
+   FOOTER
+--------------------------------------------------------- */
+
+.footer {
+    padding: 20px;
+
+    text-align: center;
+
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+--------------------------------------------------------- */
+
+@media(max-width: 768px) {
+
+    .hero {
+        padding: 22px;
+    }
+
+    .hero-content {
+        align-items: flex-start;
+    }
+
+    .hero-icon {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 23px;
+    }
+
+    .content {
+        padding: 20px;
+    }
+
+    .steps {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .step:nth-child(2)::after {
+        display: none;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .header-inner {
+        align-items: flex-start;
+    }
+
+    .header-status {
+        display: none;
+    }
+}
+
+@media(max-width: 480px) {
+
+    .main-wrapper {
+        padding: 0 10px 30px;
+    }
+
+    .app-header {
+        padding: 18px 10px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .step-label {
+        display: none;
+    }
+
+    .step {
+        justify-content: center;
+    }
+
+    .action-bar button {
+        min-width: 100%;
+    }
+}
+
 </style>
 </head>
+
 <body>
 
-<div class="studio-card">
-  <div class="p-4 border-bottom">
-    <h3 class="m-0 fw-bold">ERP Live Class Scheduler</h3>
-  </div>
-  
-  <div class="p-4">
-    <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
-      <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#fileTab">File Import</button></li>
-      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#pasteTab">Paste Data</button></li>
-    </ul>
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
-    <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade show active" id="fileTab">
-        <label class="form-label fw-semibold">Upload Schedule (.xlsx)</label>
-        <input type="file" id="excelFile" class="form-control mb-3" accept=".xlsx, .xls">
-        <small class="text-muted">Expected columns: Start Date, End Date, Start Time, End Time, Days, Class, Section, Teacher, Subject</small>
-      </div>
-      <div class="tab-pane fade" id="pasteTab">
-        <label class="form-label fw-semibold">Paste Excel Rows</label>
-        <textarea id="manualData" class="form-control mb-3" rows="3" placeholder="Paste data: Start Date | End Date | Start Time | End Time | Days | Class | Section | Teacher | Subject"></textarea>
-      </div>
+<header class="app-header">
+
+    <div class="header-inner">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                <i class="bi bi-cpu"></i>
+            </div>
+
+            <div>
+                <h2 class="brand-title">
+                    ERP Automation Studio
+                </h2>
+
+                <p class="brand-subtitle">
+                    Smart Live Class Scheduler
+                </p>
+            </div>
+
+        </div>
+
+        <div class="header-status">
+
+            <span class="status-dot"></span>
+
+            Automation Engine Ready
+
+        </div>
+
     </div>
 
-    <button id="compileBtn" class="btn btn-primary w-100 p-3 fw-bold mt-3" onclick="generateScript()">Compile Userscript</button>
+</header>
 
-    <div class="mt-4">
-      <textarea id="scriptOutput" class="terminal-box" readonly></textarea>
-      <button class="btn btn-outline-secondary w-100 mt-2" onclick="copy()"><i class="bi bi-clipboard me-2"></i>Copy Script</button>
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main class="main-wrapper">
+
+<div class="main-card">
+
+    <!-- HERO -->
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div>
+
+                <h1>
+                    Build your ERP automation
+                    <span style="color:#2563eb;">in seconds.</span>
+                </h1>
+
+                <p>
+                    Import your live class schedule, validate the data,
+                    compile a production-ready Tampermonkey userscript,
+                    and automate your ERP entries with automatic resume
+                    and failure recovery.
+                </p>
+
+            </div>
+
+            <div class="hero-icon">
+
+                <i class="bi bi-lightning-charge-fill"></i>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- STEPS -->
+
+    <div class="steps">
+
+        <div class="step active" id="step1">
+
+            <div class="step-number">1</div>
+
+            <div class="step-label">
+                Import Data
+            </div>
+
+        </div>
+
+        <div class="step" id="step2">
+
+            <div class="step-number">2</div>
+
+            <div class="step-label">
+                Validate
+            </div>
+
+        </div>
+
+        <div class="step" id="step3">
+
+            <div class="step-number">3</div>
+
+            <div class="step-label">
+                Compile
+            </div>
+
+        </div>
+
+        <div class="step" id="step4">
+
+            <div class="step-number">4</div>
+
+            <div class="step-label">
+                Deploy
+            </div>
+
+        </div>
+
     </div>
-  </div>
+
+
+    <!-- CONTENT -->
+
+    <section class="content">
+
+        <div class="section-title">
+
+            <i class="bi bi-database"></i>
+
+            Schedule Data
+
+        </div>
+
+
+        <!-- INPUT TABS -->
+
+        <div class="custom-tabs">
+
+            <button
+                class="custom-tab active"
+                id="excelTabBtn"
+                type="button"
+            >
+                <i class="bi bi-file-earmark-excel me-1"></i>
+                Excel Import
+            </button>
+
+            <button
+                class="custom-tab"
+                id="pasteTabBtn"
+                type="button"
+            >
+                <i class="bi bi-clipboard me-1"></i>
+                Paste Data
+            </button>
+
+        </div>
+
+
+        <!-- EXCEL PANEL -->
+
+        <div id="excelPanel">
+
+            <div
+                class="upload-zone"
+                id="uploadZone"
+            >
+
+                <input
+                    type="file"
+                    id="excelFile"
+                    class="file-input"
+                    accept=".xlsx,.xls,.csv"
+                >
+
+                <div class="upload-icon">
+
+                    <i class="bi bi-cloud-arrow-up"></i>
+
+                </div>
+
+                <div class="upload-title">
+
+                    Drop your Excel file here
+
+                </div>
+
+                <div class="upload-subtitle">
+
+                    or click to browse • XLSX, XLS, CSV
+
+                </div>
+
+                <div
+                    class="upload-subtitle mt-2"
+                    style="font-size:10px;"
+                >
+                    Expected:
+                    Start Date • End Date • Start Time • End Time •
+                    Days • Class • Section • Teacher • Subject
+                </div>
+
+            </div>
+
+
+            <div
+                class="file-card"
+                id="fileCard"
+            >
+
+                <div class="file-info">
+
+                    <div class="file-icon">
+
+                        <i class="bi bi-file-earmark-excel"></i>
+
+                    </div>
+
+                    <div>
+
+                        <div
+                            class="file-name"
+                            id="fileName"
+                        >
+                        </div>
+
+                        <div
+                            class="file-size"
+                            id="fileSize"
+                        >
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <button
+                    class="btn btn-sm btn-light"
+                    id="removeFileBtn"
+                    type="button"
+                >
+                    <i class="bi bi-x-lg"></i>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- PASTE PANEL -->
+
+        <div
+            id="pastePanel"
+            style="display:none;"
+        >
+
+            <div class="mb-2">
+
+                <label
+                    class="form-label"
+                    style="font-size:12px;font-weight:700;"
+                >
+                    Paste Excel rows
+                </label>
+
+                <div
+                    style="font-size:11px;color:#64748b;"
+                    class="mb-2"
+                >
+                    Paste directly from Excel. Columns must follow:
+                    Start Date | End Date | Start Time | End Time |
+                    Days | Class | Section | Teacher | Subject
+                </div>
+
+            </div>
+
+            <textarea
+                id="manualData"
+                class="form-control"
+                rows="8"
+                placeholder="20-08-2026&#9;20-08-2026&#9;11:45&#9;12:20&#9;Thursday&#9;XI&#9;XI-C&#9;RAVINDRA K BHRIGU&#9;PHYSICS"
+            ></textarea>
+
+        </div>
+
+
+        <!-- ALERT -->
+
+        <div
+            id="alertBox"
+            class="alert-box"
+        >
+            <i
+                id="alertIcon"
+                class="bi"
+            ></i>
+
+            <div id="alertText"></div>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card stat-blue">
+
+                <div class="stat-label">
+                    Total Rows
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="totalRows"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card stat-green">
+
+                <div class="stat-label">
+                    Valid Rows
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="validRows"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card stat-red">
+
+                <div class="stat-label">
+                    Issues
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="errorRows"
+                >
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat-card stat-orange">
+
+                <div class="stat-label">
+                    Classes
+                </div>
+
+                <div
+                    class="stat-value"
+                    id="classCount"
+                >
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PREVIEW -->
+
+        <div
+            class="preview-container"
+            id="previewContainer"
+            style="display:none;"
+        >
+
+            <div class="preview-header">
+
+                <strong>
+
+                    <i class="bi bi-table me-1"></i>
+
+                    Data Preview
+
+                </strong>
+
+                <span
+                    class="badge text-bg-light"
+                    id="previewCount"
+                >
+                    0 rows
+                </span>
+
+            </div>
+
+            <div class="table-wrapper">
+
+                <table class="preview-table">
+
+                    <thead>
+
+                    <tr>
+
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>End Date</th>
+                        <th>Time</th>
+                        <th>Days</th>
+                        <th>Class</th>
+                        <th>Section</th>
+                        <th>Teacher</th>
+                        <th>Subject</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody id="previewBody"></tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- COMPILE ACTIONS -->
+
+        <div class="mt-4">
+
+            <div
+                style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;"
+            >
+
+                <div>
+
+                    <div
+                        style="font-size:13px;font-weight:800;"
+                    >
+                        Ready to compile?
+                    </div>
+
+                    <div
+                        style="font-size:11px;color:#64748b;"
+                    >
+                        Your userscript will include all imported rows.
+                    </div>
+
+                </div>
+
+                <div
+                    style="display:flex;gap:8px;"
+                >
+
+                    <button
+                        id="clearBtn"
+                        class="btn-secondary-custom"
+                        type="button"
+                    >
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>
+                        Reset
+                    </button>
+
+                    <button
+                        id="compileBtn"
+                        class="btn-primary-custom"
+                        type="button"
+                    >
+                        <i class="bi bi-magic me-1"></i>
+                        Compile Userscript
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- OUTPUT -->
+
+        <div
+            class="output-section"
+            id="outputSection"
+            style="display:none;"
+        >
+
+            <div class="section-title">
+
+                <i class="bi bi-code-slash"></i>
+
+                Generated Userscript
+
+            </div>
+
+
+            <div class="output-card">
+
+                <div class="output-toolbar">
+
+                    <div class="terminal-dots">
+
+                        <span class="terminal-dot"></span>
+                        <span class="terminal-dot"></span>
+                        <span class="terminal-dot"></span>
+
+                    </div>
+
+                    <div class="output-title">
+
+                        ERP_Auto_Scheduler.user.js
+
+                    </div>
+
+                    <div
+                        style="width:40px;"
+                    ></div>
+
+                </div>
+
+                <textarea
+                    id="scriptOutput"
+                    readonly
+                    spellcheck="false"
+                ></textarea>
+
+            </div>
+
+
+            <div class="action-bar">
+
+                <button
+                    id="copyBtn"
+                    class="btn-primary-custom"
+                    type="button"
+                >
+
+                    <i class="bi bi-clipboard me-1"></i>
+
+                    Copy Script
+
+                </button>
+
+
+                <button
+                    id="downloadBtn"
+                    class="btn-secondary-custom"
+                    type="button"
+                >
+
+                    <i class="bi bi-download me-1"></i>
+
+                    Download .user.js
+
+                </button>
+
+
+                <button
+                    id="newBtn"
+                    class="btn-secondary-custom"
+                    type="button"
+                >
+
+                    <i class="bi bi-plus-circle me-1"></i>
+
+                    New Automation
+
+                </button>
+
+            </div>
+
+
+            <div
+                class="alert-box alert-success show mt-3"
+            >
+
+                <i class="bi bi-check-circle-fill"></i>
+
+                <div>
+
+                    <strong>Userscript ready.</strong>
+
+                    Install it in Tampermonkey and open your ERP page.
+                    The automation control panel will appear automatically.
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="footer">
+
+    ERP Automation Studio • Smart ERP Workflow Automation
+
+</div>
+
+</main>
+
+
+<!-- =========================================================
+     COMPILE OVERLAY
+========================================================= -->
+
+<div
+    class="compile-overlay"
+    id="compileOverlay"
+>
+
+    <div class="compile-modal">
+
+        <div class="spinner"></div>
+
+        <div
+            style="font-size:16px;font-weight:800;"
+        >
+            Compiling Automation
+        </div>
+
+        <div
+            style="font-size:12px;color:#64748b;margin-top:5px;"
+            id="compileStatus"
+        >
+            Preparing data...
+        </div>
+
+        <div class="progress">
+
+            <div
+                class="progress-bar"
+                id="compileProgress"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <script>
+
+/* =========================================================
+   GLOBAL DATA
+========================================================= */
+
 let parsedClassData = [];
 
-document.getElementById('excelFile').addEventListener('change', function(e) {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = function(e) {
-        try {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, {type: 'array'});
-            const sheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData = XLSX.utils.sheet_to_json(sheet);
-            processData(jsonData);
-        } catch (err) { alert("Reading Error: " + err.message); }
-    };
-    reader.readAsArrayBuffer(file);
+let currentInputMode = "excel";
+
+
+/* =========================================================
+   DOM HELPERS
+========================================================= */
+
+const $ = id => document.getElementById(id);
+
+
+/* =========================================================
+   ALERT
+========================================================= */
+
+function showAlert(message, type = "success") {
+
+    const box = $("alertBox");
+    const text = $("alertText");
+    const icon = $("alertIcon");
+
+    box.className = "alert-box show";
+
+    if (type === "success") {
+
+        box.classList.add("alert-success");
+        icon.className = "bi bi-check-circle-fill";
+
+    } else if (type === "danger") {
+
+        box.classList.add("alert-danger");
+        icon.className = "bi bi-exclamation-triangle-fill";
+
+    } else {
+
+        box.classList.add("alert-warning");
+        icon.className = "bi bi-info-circle-fill";
+
+    }
+
+    text.textContent = message;
+
+}
+
+
+function hideAlert() {
+
+    $("alertBox").className = "alert-box";
+
+}
+
+
+/* =========================================================
+   STEP UI
+========================================================= */
+
+function setStep(step) {
+
+    for (let i = 1; i <= 4; i++) {
+
+        const el = $("step" + i);
+
+        el.classList.remove("active");
+        el.classList.remove("completed");
+
+        if (i < step) {
+            el.classList.add("completed");
+        }
+
+        if (i === step) {
+            el.classList.add("active");
+        }
+    }
+
+}
+
+
+/* =========================================================
+   TAB SWITCHING
+========================================================= */
+
+$("excelTabBtn").addEventListener("click", function() {
+
+    currentInputMode = "excel";
+
+    $("excelPanel").style.display = "block";
+    $("pastePanel").style.display = "none";
+
+    $("excelTabBtn").classList.add("active");
+    $("pasteTabBtn").classList.remove("active");
+
 });
 
-function processData(data) {
-    parsedClassData = data.map(row => {
-        const get = (key) => row[key] || row[Object.keys(row).find(k => k.toLowerCase().includes(key.toLowerCase()))] || "";
-        const start = parseTime(get('Start Time'));
-        const end = parseTime(get('End Time'));
-        
-        let rawClass = get('Class');
-        let rawSection = get('Section').toString().trim();
-        let finalSection = rawSection;
-        
-        // Ensure "All Section" or comma separated items aren't forced into standard "Class-Section" logic
-        if (rawSection.toUpperCase() !== 'ALL SECTION' && rawSection.toUpperCase() !== 'SELECT ALL' && !rawSection.includes(',')) {
-            if (rawClass && !rawSection.toUpperCase().startsWith(rawClass.toString().toUpperCase())) {
-                finalSection = `${rawClass}-${rawSection}`;
-            }
-        }
 
-        // Process Custom Days (Fallback to Mon-Sat if empty)
-        let rawDays = get('Days');
-        let daysArray = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        if (rawDays) {
-            daysArray = rawDays.toString().split(',').map(d => d.trim()).filter(d => d);
-        }
-        
-        return {
-            "Date": formatDate(get('Start Date')),
-            "EndDate": formatDate(get('End Date')),
-            "Days": daysArray,
-            "StartTime": start.Hour, "StartMin": start.Min, "StartAMPM": start.AMPM,
-            "EndTime": end.Hour, "EndMin": end.Min, "EndAMPM": end.AMPM,
-            "Class": rawClass,
-            "Section": finalSection,
-            "Teacher": get('Teacher'),
-            "Subject": get('Subject')
-        };
+$("pasteTabBtn").addEventListener("click", function() {
+
+    currentInputMode = "paste";
+
+    $("excelPanel").style.display = "none";
+    $("pastePanel").style.display = "block";
+
+    $("pasteTabBtn").classList.add("active");
+    $("excelTabBtn").classList.remove("active");
+
+});
+
+
+/* =========================================================
+   UPLOAD
+========================================================= */
+
+const uploadZone = $("uploadZone");
+const excelFile = $("excelFile");
+
+
+uploadZone.addEventListener("click", function() {
+    excelFile.click();
+});
+
+
+["dragenter", "dragover"].forEach(eventName => {
+
+    uploadZone.addEventListener(eventName, function(e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        uploadZone.classList.add("dragover");
+
     });
-    alert("Data parsed successfully! " + parsedClassData.length + " rows.");
+
+});
+
+
+["dragleave", "drop"].forEach(eventName => {
+
+    uploadZone.addEventListener(eventName, function(e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        uploadZone.classList.remove("dragover");
+
+    });
+
+});
+
+
+uploadZone.addEventListener("drop", function(e) {
+
+    const files = e.dataTransfer.files;
+
+    if (files.length) {
+
+        excelFile.files = files;
+
+        handleExcelFile(files[0]);
+
+    }
+
+});
+
+
+excelFile.addEventListener("change", function(e) {
+
+    if (e.target.files.length) {
+
+        handleExcelFile(e.target.files[0]);
+
+    }
+
+});
+
+
+$("removeFileBtn").addEventListener("click", function() {
+
+    excelFile.value = "";
+
+    $("fileCard").classList.remove("show");
+
+    parsedClassData = [];
+
+    updateStats();
+
+    $("previewContainer").style.display = "none";
+
+    hideAlert();
+
+    setStep(1);
+
+});
+
+
+/* =========================================================
+   EXCEL READER
+========================================================= */
+
+function handleExcelFile(file) {
+
+    if (!file) return;
+
+    const validTypes = [
+        ".xlsx",
+        ".xls",
+        ".csv"
+    ];
+
+    const lowerName = file.name.toLowerCase();
+
+    if (!validTypes.some(ext => lowerName.endsWith(ext))) {
+
+        showAlert(
+            "Please upload a valid XLSX, XLS or CSV file.",
+            "danger"
+        );
+
+        return;
+
+    }
+
+
+    $("fileName").textContent = file.name;
+
+    $("fileSize").textContent =
+        formatFileSize(file.size);
+
+    $("fileCard").classList.add("show");
+
+
+    const reader = new FileReader();
+
+
+    reader.onload = function(e) {
+
+        try {
+
+            const data = new Uint8Array(
+                e.target.result
+            );
+
+            const workbook = XLSX.read(
+                data,
+                {
+                    type: "array",
+                    cellDates: true
+                }
+            );
+
+
+            if (!workbook.SheetNames.length) {
+
+                throw new Error(
+                    "No worksheet found."
+                );
+
+            }
+
+
+            const sheet =
+                workbook.Sheets[
+                    workbook.SheetNames[0]
+                ];
+
+
+            const jsonData =
+                XLSX.utils.sheet_to_json(
+                    sheet,
+                    {
+                        defval: ""
+                    }
+                );
+
+
+            if (!jsonData.length) {
+
+                throw new Error(
+                    "The selected worksheet is empty."
+                );
+
+            }
+
+
+            processData(jsonData);
+
+        } catch (error) {
+
+            showAlert(
+                "Reading error: " + error.message,
+                "danger"
+            );
+
+        }
+
+    };
+
+
+    reader.onerror = function() {
+
+        showAlert(
+            "Unable to read the selected file.",
+            "danger"
+        );
+
+    };
+
+
+    reader.readAsArrayBuffer(file);
+
 }
 
-function formatDate(dateStr) {
-    if (!dateStr) return "";
-    if (typeof dateStr === 'number') {
-        const d = new Date((dateStr - (25567 + 2))*86400*1000);
-        return d.toISOString().split('T')[0];
-    }
-    if (dateStr.includes('-')) {
-        const parts = dateStr.split('-');
-        if (parts[0].length === 2) return `${parts[2]}-${parts[1]}-${parts[0]}`;
-    }
-    return dateStr;
+
+/* =========================================================
+   HEADER NORMALIZATION
+========================================================= */
+
+function normalizeHeader(value) {
+
+    return String(value || "")
+        .trim()
+        .toLowerCase()
+        .replace(/[\s_\-]+/g, "");
+
 }
 
-function parseTime(timeStr) {
-    if(!timeStr) return { Hour: '12', Min: '00', AMPM: 'AM' };
-    let cleanStr = timeStr.toString().trim();
-    
-    // First, try to match formats that explicitly include AM or PM (e.g., "08:00 AM")
-    let m = cleanStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
-    if (m) {
-        return { Hour: m[1].padStart(2, '0'), Min: m[2], AMPM: m[3].toUpperCase() };
+
+function findColumn(row, possibleNames) {
+
+    const keys = Object.keys(row);
+
+    for (const name of possibleNames) {
+
+        const normalizedTarget =
+            normalizeHeader(name);
+
+        const exact = keys.find(key =>
+            normalizeHeader(key) ===
+            normalizedTarget
+        );
+
+        if (exact !== undefined) {
+
+            return row[exact];
+
+        }
+
     }
-    
-    // Next, try to match 24-hour formats without AM/PM (e.g., "08:00", "14:35")
-    m = cleanStr.match(/(\d{1,2}):(\d{2})/);
-    if (m) {
-        let h = parseInt(m[1], 10);
-        let min = m[2];
-        let ampm = h >= 12 ? 'PM' : 'AM';
-        
-        // Convert to 12-hour format
-        if (h > 12) h -= 12;
+
+
+    for (const name of possibleNames) {
+
+        const normalizedTarget =
+            normalizeHeader(name);
+
+        const partial = keys.find(key =>
+            normalizeHeader(key)
+                .includes(normalizedTarget)
+        );
+
+        if (partial !== undefined) {
+
+            return row[partial];
+
+        }
+
+    }
+
+    return "";
+
+}
+
+
+/* =========================================================
+   PROCESS DATA
+========================================================= */
+
+function processData(data) {
+
+    if (!Array.isArray(data)) {
+
+        showAlert(
+            "Invalid data format.",
+            "danger"
+        );
+
+        return;
+
+    }
+
+
+    parsedClassData = data
+        .filter(row => {
+
+            return row &&
+                Object.values(row).some(
+                    value =>
+                        String(value || "").trim() !== ""
+                );
+
+        })
+        .map(row => {
+
+            const startDate =
+                findColumn(
+                    row,
+                    [
+                        "Start Date",
+                        "StartDate",
+                        "Date"
+                    ]
+                );
+
+
+            const endDate =
+                findColumn(
+                    row,
+                    [
+                        "End Date",
+                        "EndDate"
+                    ]
+                );
+
+
+            const startTime =
+                findColumn(
+                    row,
+                    [
+                        "Start Time",
+                        "StartTime",
+                        "From Time"
+                    ]
+                );
+
+
+            const endTime =
+                findColumn(
+                    row,
+                    [
+                        "End Time",
+                        "EndTime",
+                        "To Time"
+                    ]
+                );
+
+
+            const rawClass =
+                findColumn(
+                    row,
+                    [
+                        "Class",
+                        "Standard",
+                        "Std"
+                    ]
+                );
+
+
+            const rawSection =
+                findColumn(
+                    row,
+                    [
+                        "Section",
+                        "Sections"
+                    ]
+                );
+
+
+            const teacher =
+                findColumn(
+                    row,
+                    [
+                        "Teacher",
+                        "Teacher Name",
+                        "Faculty"
+                    ]
+                );
+
+
+            const subject =
+                findColumn(
+                    row,
+                    [
+                        "Subject",
+                        "Subject Name"
+                    ]
+                );
+
+
+            const rawDays =
+                findColumn(
+                    row,
+                    [
+                        "Days",
+                        "Day"
+                    ]
+                );
+
+
+            const start =
+                parseTime(startTime);
+
+
+            const end =
+                parseTime(endTime);
+
+
+            let finalSection =
+                String(rawSection || "").trim();
+
+
+            const classValue =
+                String(rawClass || "").trim();
+
+
+            /*
+             * Preserve:
+             * ALL SECTION
+             * SELECT ALL
+             * comma separated sections
+             *
+             * Otherwise convert:
+             * XI-C
+             * instead of:
+             * C
+             */
+
+            if (
+                finalSection &&
+                classValue &&
+                finalSection.toUpperCase() !==
+                    "ALL SECTION" &&
+                finalSection.toUpperCase() !==
+                    "SELECT ALL" &&
+                !finalSection.includes(",")
+            ) {
+
+                if (
+                    !finalSection
+                        .toUpperCase()
+                        .startsWith(
+                            classValue.toUpperCase()
+                        )
+                ) {
+
+                    finalSection =
+                        classValue +
+                        "-" +
+                        finalSection;
+
+                }
+
+            }
+
+
+            let daysArray = [
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+            ];
+
+
+            if (
+                rawDays !== undefined &&
+                rawDays !== null &&
+                String(rawDays).trim() !== ""
+            ) {
+
+                daysArray =
+                    String(rawDays)
+                        .split(/[,;|]+/)
+                        .map(d => normalizeDay(d))
+                        .filter(Boolean);
+
+            }
+
+
+            return {
+
+                Date:
+                    formatDate(startDate),
+
+                EndDate:
+                    formatDate(endDate),
+
+                Days:
+                    daysArray,
+
+                StartTime:
+                    start.Hour,
+
+                StartMin:
+                    start.Min,
+
+                StartAMPM:
+                    start.AMPM,
+
+                EndTime:
+                    end.Hour,
+
+                EndMin:
+                    end.Min,
+
+                EndAMPM:
+                    end.AMPM,
+
+                Class:
+                    classValue,
+
+                Section:
+                    finalSection,
+
+                Teacher:
+                    String(teacher || "").trim(),
+
+                Subject:
+                    String(subject || "").trim()
+
+            };
+
+        });
+
+
+    updateStats();
+
+    renderPreview();
+
+    setStep(2);
+
+
+    if (parsedClassData.length) {
+
+        const issues =
+            getValidationIssues().length;
+
+
+        if (issues === 0) {
+
+            showAlert(
+                parsedClassData.length +
+                " schedule rows loaded successfully.",
+                "success"
+            );
+
+        } else {
+
+            showAlert(
+                parsedClassData.length +
+                " rows loaded. " +
+                issues +
+                " rows require attention.",
+                "warning"
+            );
+
+        }
+
+    } else {
+
+        showAlert(
+            "No usable schedule rows were detected.",
+            "danger"
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DAY NORMALIZATION
+========================================================= */
+
+function normalizeDay(value) {
+
+    const input =
+        String(value || "")
+            .trim()
+            .toLowerCase();
+
+
+    const map = {
+
+        mon: "Monday",
+        monday: "Monday",
+
+        tue: "Tuesday",
+        tues: "Tuesday",
+        tuesday: "Tuesday",
+
+        wed: "Wednesday",
+        wednesday: "Wednesday",
+
+        thu: "Thursday",
+        thur: "Thursday",
+        thurs: "Thursday",
+        thursday: "Thursday",
+
+        fri: "Friday",
+        friday: "Friday",
+
+        sat: "Saturday",
+        saturday: "Saturday",
+
+        sun: "Sunday",
+        sunday: "Sunday"
+
+    };
+
+
+    return map[input] || String(value || "").trim();
+
+}
+
+
+/* =========================================================
+   DATE PARSER
+========================================================= */
+
+function formatDate(value) {
+
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
+
+        return "";
+
+    }
+
+
+    /*
+     * JavaScript Date
+     */
+
+    if (value instanceof Date &&
+        !isNaN(value.getTime())) {
+
+        return [
+            value.getFullYear(),
+            String(value.getMonth() + 1)
+                .padStart(2, "0"),
+            String(value.getDate())
+                .padStart(2, "0")
+        ].join("-");
+
+    }
+
+
+    /*
+     * Excel serial number
+     */
+
+    if (typeof value === "number") {
+
+        const excelEpoch =
+            new Date(Date.UTC(1899, 11, 30));
+
+        const date =
+            new Date(
+                excelEpoch.getTime() +
+                value * 86400000
+            );
+
+        return [
+            date.getUTCFullYear(),
+            String(date.getUTCMonth() + 1)
+                .padStart(2, "0"),
+            String(date.getUTCDate())
+                .padStart(2, "0")
+        ].join("-");
+
+    }
+
+
+    let str =
+        String(value).trim();
+
+
+    /*
+     * ISO date
+     */
+
+    if (/^\d{4}-\d{1,2}-\d{1,2}/.test(str)) {
+
+        const parts =
+            str.split(/[-/]/);
+
+        return (
+            parts[0] +
+            "-" +
+            parts[1].padStart(2, "0") +
+            "-" +
+            parts[2].padStart(2, "0")
+        );
+
+    }
+
+
+    /*
+     * DD-MM-YYYY
+     * DD/MM/YYYY
+     */
+
+    let match =
+        str.match(
+            /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/
+        );
+
+
+    if (match) {
+
+        return (
+            match[3] +
+            "-" +
+            match[2].padStart(2, "0") +
+            "-" +
+            match[1].padStart(2, "0")
+        );
+
+    }
+
+
+    /*
+     * MM-DD-YYYY fallback
+     */
+
+    match =
+        str.match(
+            /^(\d{1,2})[-\/](\d{1,2})[-\/](\d{4})/
+        );
+
+
+    if (match) {
+
+        return (
+            match[3] +
+            "-" +
+            match[1].padStart(2, "0") +
+            "-" +
+            match[2].padStart(2, "0")
+        );
+
+    }
+
+
+    return str;
+
+}
+
+
+/* =========================================================
+   TIME PARSER
+========================================================= */
+
+function parseTime(value) {
+
+    if (
+        value === null ||
+        value === undefined ||
+        value === ""
+    ) {
+
+        return {
+            Hour: "12",
+            Min: "00",
+            AMPM: "AM"
+        };
+
+    }
+
+
+    /*
+     * XLSX may return a Date object for time cells.
+     */
+
+    if (value instanceof Date &&
+        !isNaN(value.getTime())) {
+
+        let h =
+            value.getHours();
+
+        const min =
+            String(value.getMinutes())
+                .padStart(2, "0");
+
+        const ampm =
+            h >= 12 ? "PM" : "AM";
+
         if (h === 0) h = 12;
-        
-        return { Hour: h.toString().padStart(2, '0'), Min: min, AMPM: ampm };
+        if (h > 12) h -= 12;
+
+        return {
+
+            Hour:
+                String(h).padStart(2, "0"),
+
+            Min:
+                min,
+
+            AMPM:
+                ampm
+
+        };
+
     }
-    
-    // Default fallback
-    return { Hour: '12', Min: '00', AMPM: 'AM' };
+
+
+    /*
+     * Numeric Excel time:
+     * 0.5 = 12:00 PM
+     */
+
+    if (
+        typeof value === "number" &&
+        value >= 0 &&
+        value < 1
+    ) {
+
+        const totalMinutes =
+            Math.round(value * 24 * 60);
+
+        let h =
+            Math.floor(totalMinutes / 60) % 24;
+
+        const min =
+            totalMinutes % 60;
+
+        const ampm =
+            h >= 12 ? "PM" : "AM";
+
+        if (h === 0) h = 12;
+        if (h > 12) h -= 12;
+
+        return {
+
+            Hour:
+                String(h).padStart(2, "0"),
+
+            Min:
+                String(min).padStart(2, "0"),
+
+            AMPM:
+                ampm
+
+        };
+
+    }
+
+
+    let str =
+        String(value)
+            .trim()
+            .toUpperCase();
+
+
+    str =
+        str.replace(/\./g, ":");
+
+
+    /*
+     * 08:30 AM
+     */
+
+    let match =
+        str.match(
+            /^(\d{1,2})\s*:\s*(\d{1,2})\s*(AM|PM)$/
+        );
+
+
+    if (match) {
+
+        let h =
+            parseInt(match[1], 10);
+
+        const min =
+            match[2].padStart(2, "0");
+
+        const ampm =
+            match[3];
+
+        if (h === 0) h = 12;
+
+        if (h > 12) {
+
+            h = h % 12 || 12;
+
+        }
+
+        return {
+
+            Hour:
+                String(h).padStart(2, "0"),
+
+            Min:
+                min,
+
+            AMPM:
+                ampm
+
+        };
+
+    }
+
+
+    /*
+     * 24-hour format
+     */
+
+    match =
+        str.match(
+            /^(\d{1,2})\s*:\s*(\d{1,2})$/
+        );
+
+
+    if (match) {
+
+        let h =
+            parseInt(match[1], 10);
+
+        const min =
+            match[2].padStart(2, "0");
+
+        const ampm =
+            h >= 12 ? "PM" : "AM";
+
+        if (h === 0) h = 12;
+
+        if (h > 12) {
+
+            h -= 12;
+
+        }
+
+        return {
+
+            Hour:
+                String(h).padStart(2, "0"),
+
+            Min:
+                min,
+
+            AMPM:
+                ampm
+
+        };
+
+    }
+
+
+    /*
+     * 8 AM / 8 PM
+     */
+
+    match =
+        str.match(
+            /^(\d{1,2})\s*(AM|PM)$/
+        );
+
+
+    if (match) {
+
+        let h =
+            parseInt(match[1], 10);
+
+        if (h === 0) h = 12;
+
+        if (h > 12) h = h % 12 || 12;
+
+        return {
+
+            Hour:
+                String(h).padStart(2, "0"),
+
+            Min: "00",
+
+            AMPM:
+                match[2]
+
+        };
+
+    }
+
+
+    return {
+
+        Hour: "12",
+        Min: "00",
+        AMPM: "AM"
+
+    };
+
 }
 
-function generateScript() {
-    const manualRaw = document.getElementById('manualData').value.trim();
-    if (manualRaw) {
-        const rows = manualRaw.split('\n');
-        processData(rows.map(r => {
-            const c = r.split('\t');
-            // Updated index mapping to accommodate 'Days' at c[4]
-            return {'Start Date': c[0], 'End Date': c[1], 'Start Time': c[2], 'End Time': c[3], 'Days': c[4], 'Class': c[5], 'Section': c[6], 'Teacher': c[7], 'Subject': c[8]};
-        }));
+
+/* =========================================================
+   VALIDATION
+========================================================= */
+
+function getValidationIssues() {
+
+    return parsedClassData.filter(row => {
+
+        return !row.Date ||
+            !row.EndDate ||
+            !row.Class ||
+            !row.Section ||
+            !row.Teacher ||
+            !row.Subject;
+
+    });
+
+}
+
+
+function updateStats() {
+
+    const total =
+        parsedClassData.length;
+
+
+    const issues =
+        getValidationIssues().length;
+
+
+    const valid =
+        Math.max(0, total - issues);
+
+
+    const classes =
+        new Set(
+            parsedClassData
+                .map(row => row.Class)
+                .filter(Boolean)
+        );
+
+
+    $("totalRows").textContent =
+        total;
+
+
+    $("validRows").textContent =
+        valid;
+
+
+    $("errorRows").textContent =
+        issues;
+
+
+    $("classCount").textContent =
+        classes.size;
+
+}
+
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+function renderPreview() {
+
+    const body =
+        $("previewBody");
+
+
+    body.innerHTML = "";
+
+
+    if (!parsedClassData.length) {
+
+        $("previewContainer").style.display =
+            "none";
+
+        return;
+
     }
 
-    if(parsedClassData.length === 0) { alert("No data detected. Please upload an Excel file or paste data."); return; }
-    
+
+    $("previewContainer").style.display =
+        "block";
+
+
+    $("previewCount").textContent =
+        parsedClassData.length +
+        " rows";
+
+
+    /*
+     * Show first 100 rows in UI.
+     * All rows remain in the generated script.
+     */
+
+    const visibleRows =
+        parsedClassData.slice(0, 100);
+
+
+    visibleRows.forEach((row, index) => {
+
+        const tr =
+            document.createElement("tr");
+
+
+        const time =
+            row.StartTime +
+            ":" +
+            row.StartMin +
+            " " +
+            row.StartAMPM +
+            " - " +
+            row.EndTime +
+            ":" +
+            row.EndMin +
+            " " +
+            row.EndAMPM;
+
+
+        const cells = [
+
+            index + 1,
+
+            row.Date,
+
+            row.EndDate,
+
+            time,
+
+            row.Days.join(", "),
+
+            row.Class,
+
+            row.Section,
+
+            row.Teacher,
+
+            row.Subject
+
+        ];
+
+
+        cells.forEach(value => {
+
+            const td =
+                document.createElement("td");
+
+            td.textContent =
+                value || "—";
+
+            tr.appendChild(td);
+
+        });
+
+
+        body.appendChild(tr);
+
+    });
+
+}
+
+
+/* =========================================================
+   MANUAL DATA
+========================================================= */
+
+function processManualData() {
+
+    const raw =
+        $("manualData").value.trim();
+
+
+    if (!raw) {
+
+        showAlert(
+            "Please paste schedule data first.",
+            "warning"
+        );
+
+        return false;
+
+    }
+
+
+    /*
+     * Supports:
+     * TAB
+     * PIPE
+     * multiple spaces are NOT used because
+     * teacher/subject names can contain spaces.
+     */
+
+    const lines =
+        raw.split(/\r?\n/)
+            .filter(line =>
+                line.trim() !== ""
+            );
+
+
+    const rows =
+        lines.map(line => {
+
+            let c;
+
+
+            if (line.includes("\t")) {
+
+                c = line.split("\t");
+
+            } else if (line.includes("|")) {
+
+                c = line.split("|");
+
+            } else {
+
+                /*
+                 * CSV fallback
+                 */
+
+                c = parseCSVLine(line);
+
+            }
+
+
+            return {
+
+                "Start Date":
+                    cleanCell(c[0]),
+
+                "End Date":
+                    cleanCell(c[1]),
+
+                "Start Time":
+                    cleanCell(c[2]),
+
+                "End Time":
+                    cleanCell(c[3]),
+
+                "Days":
+                    cleanCell(c[4]),
+
+                "Class":
+                    cleanCell(c[5]),
+
+                "Section":
+                    cleanCell(c[6]),
+
+                "Teacher":
+                    cleanCell(c[7]),
+
+                "Subject":
+                    cleanCell(c[8])
+
+            };
+
+        });
+
+
+    processData(rows);
+
+    return true;
+
+}
+
+
+function cleanCell(value) {
+
+    return String(value ?? "")
+        .trim()
+        .replace(/^"(.*)"$/, "$1");
+
+}
+
+
+function parseCSVLine(line) {
+
+    const result = [];
+
+    let current = "";
+
+    let insideQuotes = false;
+
+
+    for (let i = 0; i < line.length; i++) {
+
+        const char = line[i];
+
+
+        if (char === '"') {
+
+            insideQuotes =
+                !insideQuotes;
+
+        } else if (
+            char === "," &&
+            !insideQuotes
+        ) {
+
+            result.push(current);
+
+            current = "";
+
+        } else {
+
+            current += char;
+
+        }
+
+    }
+
+
+    result.push(current);
+
+    return result;
+
+}
+
+
+/* =========================================================
+   GENERATED USERSCRIPT
+========================================================= */
+
+function buildUserscript() {
+
+    const classDataJSON =
+        JSON.stringify(
+            parsedClassData,
+            null,
+            4
+        );
+
+
+    /*
+     * IMPORTANT:
+     * This userscript is generated using plain strings
+     * instead of nested template literals to avoid
+     * escaping/reference errors.
+     */
+
     const script = `// ==UserScript==
-// @name         ERP Auto-Scheduler Final
+// @name         ERP Auto-Scheduler Professional
+// @namespace    ERP Automation Studio
+// @version      2.0.0
+// @description  Automated ERP Live Class Scheduler with resume and failure recovery
 // @match        *://*/*
 // @grant        none
 // ==/UserScript==
 
-(function() {
+(function () {
+
     'use strict';
 
     const STORAGE_RUNNING = 'erp_scheduler_running';
     const STORAGE_INDEX = 'erp_scheduler_index';
     const STORAGE_LOGS = 'erp_scheduler_logs';
 
-    const classData = ${JSON.stringify(parsedClassData, null, 4)};
+    const classData = ${classDataJSON};
+
+
+    /* =====================================================
+       BASIC HELPERS
+    ===================================================== */
+
+    function wait(ms) {
+
+        return new Promise(resolve =>
+            setTimeout(resolve, ms)
+        );
+
+    }
+
 
     async function triggerEvents(element) {
-        ['input', 'change', 'blur'].forEach(ev => element.dispatchEvent(new Event(ev, { bubbles: true })));
+
+        if (!element) return;
+
+        ['input', 'change', 'blur'].forEach(eventName => {
+
+            element.dispatchEvent(
+                new Event(
+                    eventName,
+                    {
+                        bubbles: true
+                    }
+                )
+            );
+
+        });
+
     }
 
-    async function selectCustomDropdown(selector, itemText, isIndex = false, index = 0, exactMatch = false) {
+
+    /* =====================================================
+       DROPDOWN
+    ===================================================== */
+
+    async function selectCustomDropdown(
+        selector,
+        itemText,
+        isIndex = false,
+        index = 0,
+        exactMatch = false
+    ) {
+
         if (!itemText) return false;
-        let dropdown = isIndex ? document.querySelectorAll('ng-multiselect-dropdown')[index] : document.querySelector(\`ng-multiselect-dropdown[name="\${selector}"]\`);
-        if (!dropdown) return false;
 
-        dropdown.querySelector('.dropdown-btn').click();
-        await new Promise(r => setTimeout(r, 500));
 
-        const upperText = itemText.toUpperCase();
+        const dropdown =
+            isIndex
+                ? document.querySelectorAll(
+                    'ng-multiselect-dropdown'
+                  )[index]
+                : document.querySelector(
+                    'ng-multiselect-dropdown[name="' +
+                    selector +
+                    '"]'
+                  );
+
+
+        if (!dropdown) {
+
+            console.warn(
+                'Dropdown not found:',
+                selector
+            );
+
+            return false;
+
+        }
+
+
+        const button =
+            dropdown.querySelector(
+                '.dropdown-btn'
+            );
+
+
+        if (!button) return false;
+
+
+        button.click();
+
+        await wait(500);
+
+
+        const upperText =
+            String(itemText)
+                .trim()
+                .toUpperCase();
+
+
         let clickedAnything = false;
 
-        // 1. Handle "Select All" scenario
-        if (upperText === "ALL SECTION" || upperText === "SELECT ALL") {
-            const allElements = dropdown.querySelectorAll('li, div');
-            for (let el of allElements) {
-                if (el.textContent.trim().toUpperCase() === 'SELECT ALL') {
-                    let input = el.querySelector('input');
-                    if (input) { input.click(); } else { el.click(); }
+
+        /* -------------------------------------------------
+           SELECT ALL
+        ------------------------------------------------- */
+
+        if (
+            upperText === 'ALL SECTION' ||
+            upperText === 'SELECT ALL'
+        ) {
+
+            const elements =
+                dropdown.querySelectorAll(
+                    'li, div'
+                );
+
+
+            for (const el of elements) {
+
+                if (
+                    el.textContent
+                        .trim()
+                        .toUpperCase() ===
+                    'SELECT ALL'
+                ) {
+
+                    const input =
+                        el.querySelector(
+                            'input'
+                        );
+
+
+                    if (input) {
+
+                        if (!input.checked) {
+                            input.click();
+                        }
+
+                    } else {
+
+                        el.click();
+
+                    }
+
+
                     clickedAnything = true;
+
                     break;
+
                 }
+
             }
-        } 
-        // 2. Handle single/multiple sections OR fuzzy matching
-        else {
-            const targetItems = itemText.split(',').map(s => s.trim().toUpperCase());
-            const listItems = dropdown.querySelectorAll('.item2 li');
-            
-            for (let li of listItems) {
-                let liText = li.textContent.trim().toUpperCase();
-                let isMatch = false;
-                
-                if (exactMatch) {
-                    isMatch = targetItems.includes(liText);
-                } else {
-                    // Token-based fuzzy matching
-                    isMatch = targetItems.some(target => {
-                        const searchTokens = target.split(/\\s+/); 
-                        return searchTokens.every(token => liText.includes(token));
-                    });
-                }
-                
-                if (isMatch) {
-                    let input = li.querySelector('input');
-                    if (input) { input.click(); clickedAnything = true; }
-                }
-            }
+
         }
 
-        dropdown.querySelector('.dropdown-btn').click();
+
+        /* -------------------------------------------------
+           NORMAL SECTION
+        ------------------------------------------------- */
+
+        else {
+
+            const targetItems =
+                upperText
+                    .split(',')
+                    .map(
+                        item =>
+                            item.trim()
+                    )
+                    .filter(Boolean);
+
+
+            const listItems =
+                dropdown.querySelectorAll(
+                    '.item2 li'
+                );
+
+
+            for (const li of listItems) {
+
+                const liText =
+                    li.textContent
+                        .trim()
+                        .toUpperCase();
+
+
+                let isMatch = false;
+
+
+                if (exactMatch) {
+
+                    isMatch =
+                        targetItems.includes(
+                            liText
+                        );
+
+                } else {
+
+                    isMatch =
+                        targetItems.some(
+                            target => {
+
+                                const tokens =
+                                    target.split(
+                                        /\\\\s+/
+                                    );
+
+
+                                return tokens.every(
+                                    token =>
+                                        liText.includes(
+                                            token
+                                        )
+                                );
+
+                            }
+                        );
+
+                }
+
+
+                if (isMatch) {
+
+                    const input =
+                        li.querySelector(
+                            'input'
+                        );
+
+
+                    if (input) {
+
+                        if (!input.checked) {
+                            input.click();
+                        }
+
+                        clickedAnything = true;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
+        button.click();
+
         await triggerEvents(dropdown);
+
         return clickedAnything;
+
     }
+
+
+    /* =====================================================
+       DAYS
+    ===================================================== */
 
     async function selectDays(daysToSelect) {
-        let dropdown = document.querySelector('ng-multiselect-dropdown[name="day"]');
-        if (!dropdown) return;
-        dropdown.querySelector('.dropdown-btn').click();
-        await new Promise(r => setTimeout(r, 500));
-        const listItems = dropdown.querySelectorAll('.item2 li');
-        
-        // Uncheck all first (if needed to reset state)
-        for (let li of listItems) {
-            let checkbox = li.querySelector('input');
-            if (checkbox && checkbox.checked) checkbox.click();
+
+        const dropdown =
+            document.querySelector(
+                'ng-multiselect-dropdown[name="day"]'
+            );
+
+
+        if (!dropdown) {
+
+            console.warn(
+                'Day dropdown not found'
+            );
+
+            return;
+
         }
-        
-        // Check only targeted days
-        for (let li of listItems) {
-            let dayText = li.textContent.trim().toUpperCase();
-            let isTarget = daysToSelect.some(d => d.toUpperCase() === dayText);
-            
-            if (isTarget) {
-                let checkbox = li.querySelector('input');
-                if (checkbox && !checkbox.checked) checkbox.click();
+
+
+        const button =
+            dropdown.querySelector(
+                '.dropdown-btn'
+            );
+
+
+        if (!button) return;
+
+
+        button.click();
+
+        await wait(500);
+
+
+        const listItems =
+            dropdown.querySelectorAll(
+                '.item2 li'
+            );
+
+
+        /* Reset */
+
+        for (const li of listItems) {
+
+            const checkbox =
+                li.querySelector(
+                    'input'
+                );
+
+
+            if (
+                checkbox &&
+                checkbox.checked
+            ) {
+
+                checkbox.click();
+
             }
+
         }
-        dropdown.querySelector('.dropdown-btn').click();
+
+
+        /* Select requested days */
+
+        for (const li of listItems) {
+
+            const dayText =
+                li.textContent
+                    .trim()
+                    .toUpperCase();
+
+
+            const isTarget =
+                daysToSelect.some(
+                    day =>
+                        String(day)
+                            .trim()
+                            .toUpperCase() ===
+                        dayText
+                );
+
+
+            if (isTarget) {
+
+                const checkbox =
+                    li.querySelector(
+                        'input'
+                    );
+
+
+                if (
+                    checkbox &&
+                    !checkbox.checked
+                ) {
+
+                    checkbox.click();
+
+                }
+
+            }
+
+        }
+
+
+        button.click();
+
         await triggerEvents(dropdown);
+
     }
 
-    async function runAutomation(entry, index) {
+
+    /* =====================================================
+       SAVE CONFIRMATION
+    ===================================================== */
+
+    async function clickConfirmation() {
+
+        await wait(1000);
+
+
+        const buttons =
+            Array.from(
+                document.querySelectorAll(
+                    'button'
+                )
+            );
+
+
+        const yesButton =
+            buttons.find(
+                button =>
+                    button.textContent
+                        .trim()
+                        .toLowerCase() ===
+                    'yes'
+            );
+
+
+        if (yesButton) {
+
+            yesButton.click();
+
+            return true;
+
+        }
+
+
+        return false;
+
+    }
+
+
+    /* =====================================================
+       AUTOMATION
+    ===================================================== */
+
+    async function runAutomation(
+        entry,
+        index
+    ) {
+
         try {
-            const startDate = document.querySelector('input[name="startDate"]');
-            const endDate = document.querySelector('input[name="endDate"]');
-            if (startDate) { startDate.value = entry.Date; await triggerEvents(startDate); }
-            if (endDate) { endDate.value = entry.EndDate; await triggerEvents(endDate); }
-            if (entry.Days && entry.Days.length > 0) await selectDays(entry.Days);
 
-            const timeFields = {'slotTime': entry.StartTime, 'slotMin': entry.StartMin, 'slotType': entry.StartAMPM, 'slotEndTime': entry.EndTime, 'slotEndMin': entry.EndMin, 'slotEndType': entry.EndAMPM};
-            for (const [name, val] of Object.entries(timeFields)) {
-                let el = document.querySelector(\`select[name="\${name}"]\`);
-                if (el) { 
-                    el.value = val; 
-                    await new Promise(r => setTimeout(r, 100)); 
-                    await triggerEvents(el); 
+            console.log(
+                'Starting ERP automation:',
+                index,
+                entry
+            );
+
+
+            /* ---------------------------------------------
+               DATE
+            --------------------------------------------- */
+
+            const startDate =
+                document.querySelector(
+                    'input[name="startDate"]'
+                );
+
+
+            const endDate =
+                document.querySelector(
+                    'input[name="endDate"]'
+                );
+
+
+            if (startDate) {
+
+                startDate.value =
+                    entry.Date;
+
+                await triggerEvents(
+                    startDate
+                );
+
+            }
+
+
+            if (endDate) {
+
+                endDate.value =
+                    entry.EndDate;
+
+                await triggerEvents(
+                    endDate
+                );
+
+            }
+
+
+            /* ---------------------------------------------
+               DAYS
+            --------------------------------------------- */
+
+            if (
+                entry.Days &&
+                entry.Days.length
+            ) {
+
+                await selectDays(
+                    entry.Days
+                );
+
+            }
+
+
+            /* ---------------------------------------------
+               TIME
+            --------------------------------------------- */
+
+            const timeFields = {
+
+                slotTime:
+                    entry.StartTime,
+
+                slotMin:
+                    entry.StartMin,
+
+                slotType:
+                    entry.StartAMPM,
+
+                slotEndTime:
+                    entry.EndTime,
+
+                slotEndMin:
+                    entry.EndMin,
+
+                slotEndType:
+                    entry.EndAMPM
+
+            };
+
+
+            for (
+                const name of
+                Object.keys(timeFields)
+            ) {
+
+                const value =
+                    timeFields[name];
+
+
+                const element =
+                    document.querySelector(
+                        'select[name="' +
+                        name +
+                        '"]'
+                    );
+
+
+                if (element) {
+
+                    element.value =
+                        value;
+
+                    await wait(100);
+
+                    await triggerEvents(
+                        element
+                    );
+
                 }
+
             }
 
-            if (!(await selectCustomDropdown("std1", entry.Class, false, 0, true))) throw new Error("Class not found: " + entry.Class);
-            if (!(await selectCustomDropdown("section", entry.Section, false, 0, true))) throw new Error("Section not found: " + entry.Section);
-            if (!(await selectCustomDropdown(null, entry.Teacher, true, 2, false))) throw new Error("Teacher not found: " + entry.Teacher);
 
-            await new Promise(r => setTimeout(r, 500));
+            /* ---------------------------------------------
+               CLASS
+            --------------------------------------------- */
 
-            const subjectEl = document.querySelector('select[name="subject"]');
-            if (subjectEl) { 
-                subjectEl.value = entry.Subject; 
-                await triggerEvents(subjectEl); 
+            const classSelected =
+                await selectCustomDropdown(
+                    'std1',
+                    entry.Class,
+                    false,
+                    0,
+                    true
+                );
+
+
+            if (!classSelected) {
+
+                throw new Error(
+                    'Class not found: ' +
+                    entry.Class
+                );
+
             }
 
-            const saveBtn = document.querySelector('button.save-btn');
-            if (saveBtn) saveBtn.click();
-            else throw new Error("Save button not found");
-            
-            await new Promise(r => setTimeout(r, 1500));
-            
-            const yesBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.trim() === 'Yes');
-            if (yesBtn) yesBtn.click();
-            else throw new Error("Confirmation 'Yes' button not found");
-            
-            await new Promise(r => setTimeout(r, 2000));
+
+            /* ---------------------------------------------
+               SECTION
+            --------------------------------------------- */
+
+            const sectionSelected =
+                await selectCustomDropdown(
+                    'section',
+                    entry.Section,
+                    false,
+                    0,
+                    true
+                );
+
+
+            if (!sectionSelected) {
+
+                throw new Error(
+                    'Section not found: ' +
+                    entry.Section
+                );
+
+            }
+
+
+            /* ---------------------------------------------
+               TEACHER
+            --------------------------------------------- */
+
+            const teacherSelected =
+                await selectCustomDropdown(
+                    null,
+                    entry.Teacher,
+                    true,
+                    2,
+                    false
+                );
+
+
+            if (!teacherSelected) {
+
+                throw new Error(
+                    'Teacher not found: ' +
+                    entry.Teacher
+                );
+
+            }
+
+
+            await wait(500);
+
+
+            /* ---------------------------------------------
+               SUBJECT
+            --------------------------------------------- */
+
+            const subject =
+                document.querySelector(
+                    'select[name="subject"]'
+                );
+
+
+            if (subject) {
+
+                subject.value =
+                    entry.Subject;
+
+                await triggerEvents(
+                    subject
+                );
+
+            }
+
+
+            await wait(500);
+
+
+            /* ---------------------------------------------
+               SAVE
+            --------------------------------------------- */
+
+            const saveButton =
+                document.querySelector(
+                    'button.save-btn'
+                );
+
+
+            if (!saveButton) {
+
+                throw new Error(
+                    'Save button not found'
+                );
+
+            }
+
+
+            saveButton.click();
+
+
+            await wait(1500);
+
+
+            /* ---------------------------------------------
+               CONFIRM
+            --------------------------------------------- */
+
+            const confirmed =
+                await clickConfirmation();
+
+
+            if (!confirmed) {
+
+                throw new Error(
+                    'Confirmation Yes button not found'
+                );
+
+            }
+
+
+            await wait(2000);
+
+
+            console.log(
+                'Completed:',
+                index
+            );
+
+
+            return true;
 
         } catch (error) {
-            console.error(\`Row \${index} Failed:\`, error.message);
-            let logs = JSON.parse(localStorage.getItem(STORAGE_LOGS) || '[]');
-            entry._errorReason = error.message;
-            logs.push(entry);
-            localStorage.setItem(STORAGE_LOGS, JSON.stringify(logs));
+
+            console.error(
+                'Row ' +
+                index +
+                ' failed:',
+                error
+            );
+
+
+            let logs =
+                JSON.parse(
+                    localStorage.getItem(
+                        STORAGE_LOGS
+                    ) || '[]'
+                );
+
+
+            const failedEntry =
+                Object.assign(
+                    {},
+                    entry
+                );
+
+
+            failedEntry._errorReason =
+                error.message;
+
+
+            failedEntry._index =
+                index;
+
+
+            logs.push(
+                failedEntry
+            );
+
+
+            localStorage.setItem(
+                STORAGE_LOGS,
+                JSON.stringify(logs)
+            );
+
+
+            return false;
+
         }
+
     }
+
+
+    /* =====================================================
+       FAILURE UI
+    ===================================================== */
 
     function showLogsUI() {
-        let logs = JSON.parse(localStorage.getItem(STORAGE_LOGS) || '[]');
-        if (logs.length === 0) {
-            alert('Automation completed successfully with ZERO failures!');
+
+        const logs =
+            JSON.parse(
+                localStorage.getItem(
+                    STORAGE_LOGS
+                ) || '[]'
+            );
+
+
+        if (!logs.length) {
+
+            alert(
+                'Automation completed successfully with ZERO failures!'
+            );
+
             return;
+
         }
+
 
         let tsvOutput = "";
+
+
         logs.forEach(log => {
-            let startT = \`\${log.StartTime}:\${log.StartMin} \${log.StartAMPM}\`;
-            let endT = \`\${log.EndTime}:\${log.EndMin} \${log.EndAMPM}\`;
-            let daysFormatted = log.Days.join(', ');
-            tsvOutput += \`\${log.Date}\\t\${log.EndDate}\\t\${startT}\\t\${endT}\\t\${daysFormatted}\\t\${log.Class}\\t\${log.Section}\\t\${log.Teacher}\\t\${log.Subject}\\n\`;
+
+            const startT =
+                log.StartTime +
+                ':' +
+                log.StartMin +
+                ' ' +
+                log.StartAMPM;
+
+
+            const endT =
+                log.EndTime +
+                ':' +
+                log.EndMin +
+                ' ' +
+                log.EndAMPM;
+
+
+            const daysFormatted =
+                (log.Days || []).join(
+                    ', '
+                );
+
+
+            tsvOutput +=
+                log.Date + '\\t' +
+                log.EndDate + '\\t' +
+                startT + '\\t' +
+                endT + '\\t' +
+                daysFormatted + '\\t' +
+                log.Class + '\\t' +
+                log.Section + '\\t' +
+                log.Teacher + '\\t' +
+                log.Subject +
+                '\\n';
+
         });
 
-        const div = document.createElement('div');
-        div.style = "position:fixed;top:10%;left:50%;transform:translateX(-50%);z-index:999999;background:white;padding:25px;border:3px solid #ef4444;box-shadow:0 20px 25px -5px rgba(0,0,0,0.5);border-radius:12px;width:90%;max-width:800px;font-family:sans-serif;";
-        div.innerHTML = \`
-            <h4 style="color:#ef4444; margin-top:0;">⚠️ Automation Finished with \${logs.length} Errors</h4>
-            <p style="margin-bottom:10px; color:#475569;">Copy the pending entries below. You can paste this directly into the <b>Paste Data</b> tab of your Web Builder to compile a new script for these remaining items.</p>
-            <textarea style="width:100%;height:250px;font-family:monospace;white-space:pre;padding:10px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;" readonly>\${tsvOutput.trim()}</textarea>
-            <div style="margin-top:15px; display:flex; gap:10px;">
-                <button id="copy-logs-btn" style="padding:10px 20px;background:#3b82f6;color:white;border:none;border-radius:6px;cursor:pointer;font-weight:bold;">Copy to Clipboard</button>
-                <button id="close-logs-btn" style="padding:10px 20px;background:#ef4444;color:white;border:none;border-radius:6px;cursor:pointer;font-weight:bold;">Close & Clear Logs</button>
-            </div>
-        \`;
-        document.body.appendChild(div);
 
-        document.getElementById('copy-logs-btn').onclick = (e) => {
-            const txt = div.querySelector('textarea');
-            txt.select();
-            document.execCommand('copy');
-            e.target.innerText = "Copied!";
+        const overlay =
+            document.createElement(
+                'div'
+            );
+
+
+        overlay.style =
+            'position:fixed;' +
+            'inset:0;' +
+            'z-index:999999;' +
+            'background:rgba(15,23,42,.55);' +
+            'backdrop-filter:blur(6px);' +
+            'display:flex;' +
+            'align-items:center;' +
+            'justify-content:center;' +
+            'font-family:Inter,Arial,sans-serif;';
+
+
+        const modal =
+            document.createElement(
+                'div'
+            );
+
+
+        modal.style =
+            'width:min(850px,92vw);' +
+            'background:white;' +
+            'border-radius:18px;' +
+            'padding:25px;' +
+            'box-shadow:0 25px 60px rgba(0,0,0,.25);';
+
+
+        modal.innerHTML =
+
+            '<div style="display:flex;gap:12px;align-items:center;">' +
+
+                '<div style="' +
+                    'width:42px;height:42px;' +
+                    'border-radius:12px;' +
+                    'background:#fef2f2;' +
+                    'color:#dc2626;' +
+                    'display:flex;' +
+                    'align-items:center;' +
+                    'justify-content:center;' +
+                    'font-size:20px;">' +
+
+                    '⚠️' +
+
+                '</div>' +
+
+                '<div>' +
+
+                    '<h3 style="margin:0;font-size:18px;">' +
+                        'Automation Completed with ' +
+                        logs.length +
+                        ' Failure(s)' +
+                    '</h3>' +
+
+                    '<p style="' +
+                        'margin:4px 0 0;' +
+                        'color:#64748b;font-size:12px;">' +
+                        'Copy the failed rows and run them again.' +
+                    '</p>' +
+
+                '</div>' +
+
+            '</div>' +
+
+
+            '<textarea id="erp-failed-data" readonly style="' +
+                'width:100%;' +
+                'height:260px;' +
+                'margin-top:18px;' +
+                'padding:12px;' +
+                'font-family:monospace;' +
+                'font-size:11px;' +
+                'border:1px solid #e2e8f0;' +
+                'border-radius:10px;' +
+                'resize:vertical;' +
+                'background:#f8fafc;' +
+            '"></textarea>' +
+
+
+            '<div style="' +
+                'display:flex;' +
+                'gap:10px;' +
+                'margin-top:15px;' +
+            '">' +
+
+                '<button id="erp-copy-failed" style="' +
+                    'flex:1;' +
+                    'border:0;' +
+                    'padding:12px;' +
+                    'border-radius:10px;' +
+                    'background:#2563eb;' +
+                    'color:white;' +
+                    'font-weight:700;' +
+                    'cursor:pointer;' +
+                '">' +
+
+                    'Copy Failed Rows' +
+
+                '</button>' +
+
+
+                '<button id="erp-close-failed" style="' +
+                    'flex:1;' +
+                    'border:1px solid #e2e8f0;' +
+                    'padding:12px;' +
+                    'border-radius:10px;' +
+                    'background:white;' +
+                    'color:#475569;' +
+                    'font-weight:700;' +
+                    'cursor:pointer;' +
+                '">' +
+
+                    'Close & Clear Logs' +
+
+                '</button>' +
+
+            '</div>';
+
+
+        overlay.appendChild(
+            modal
+        );
+
+
+        document.body.appendChild(
+            overlay
+        );
+
+
+        const textarea =
+            document.getElementById(
+                'erp-failed-data'
+            );
+
+
+        textarea.value =
+            tsvOutput.trim();
+
+
+        document.getElementById(
+            'erp-copy-failed'
+        ).onclick = async function() {
+
+            textarea.select();
+
+
+            try {
+
+                await navigator.clipboard.writeText(
+                    textarea.value
+                );
+
+            } catch (error) {
+
+                document.execCommand(
+                    'copy'
+                );
+
+            }
+
+
+            this.textContent =
+                'Copied!';
+
         };
 
-        document.getElementById('close-logs-btn').onclick = () => {
-            localStorage.removeItem(STORAGE_LOGS);
-            div.remove();
+
+        document.getElementById(
+            'erp-close-failed'
+        ).onclick = function() {
+
+            localStorage.removeItem(
+                STORAGE_LOGS
+            );
+
+            overlay.remove();
+
         };
+
     }
+
+
+    /* =====================================================
+       RESUME
+    ===================================================== */
 
     async function checkAndResume() {
-        if (localStorage.getItem(STORAGE_RUNNING) === 'true') {
-            let currentIndex = parseInt(localStorage.getItem(STORAGE_INDEX) || '0');
-            
-            if (currentIndex === 0) { localStorage.removeItem(STORAGE_LOGS); }
 
-            if (currentIndex < classData.length) {
-                console.log(\`Running automation for index \${currentIndex}\`);
-                await new Promise(r => setTimeout(r, 2000));
-                await runAutomation(classData[currentIndex], currentIndex);
+        if (
+            localStorage.getItem(
+                STORAGE_RUNNING
+            ) !== 'true'
+        ) {
 
-                let nextIndex = currentIndex + 1;
-                if (nextIndex < classData.length) {
-                    localStorage.setItem(STORAGE_INDEX, nextIndex);
-                    location.reload(); 
-                } else {
-                    localStorage.removeItem(STORAGE_RUNNING);
-                    localStorage.removeItem(STORAGE_INDEX);
-                    showLogsUI();
-                }
-            } else {
-                localStorage.removeItem(STORAGE_RUNNING);
-                localStorage.removeItem(STORAGE_INDEX);
-            }
+            return;
+
         }
+
+
+        let currentIndex =
+            parseInt(
+                localStorage.getItem(
+                    STORAGE_INDEX
+                ) || '0',
+                10
+            );
+
+
+        if (currentIndex === 0) {
+
+            localStorage.removeItem(
+                STORAGE_LOGS
+            );
+
+        }
+
+
+        if (
+            currentIndex >=
+            classData.length
+        ) {
+
+            localStorage.removeItem(
+                STORAGE_RUNNING
+            );
+
+            localStorage.removeItem(
+                STORAGE_INDEX
+            );
+
+            showLogsUI();
+
+            return;
+
+        }
+
+
+        console.log(
+            'ERP Scheduler running index:',
+            currentIndex
+        );
+
+
+        await wait(2000);
+
+
+        await runAutomation(
+            classData[currentIndex],
+            currentIndex
+        );
+
+
+        const nextIndex =
+            currentIndex + 1;
+
+
+        if (
+            nextIndex <
+            classData.length
+        ) {
+
+            localStorage.setItem(
+                STORAGE_INDEX,
+                String(nextIndex)
+            );
+
+
+            location.reload();
+
+        } else {
+
+            localStorage.removeItem(
+                STORAGE_RUNNING
+            );
+
+            localStorage.removeItem(
+                STORAGE_INDEX
+            );
+
+
+            await wait(500);
+
+
+            showLogsUI();
+
+        }
+
     }
+
+
+    /* =====================================================
+       CONTROL PANEL
+    ===================================================== */
 
     function createUI() {
-        if (document.getElementById('erp-scheduler-control')) return;
-        const container = document.createElement('div');
-        container.id = 'erp-scheduler-control';
-        container.style = 'position:fixed; bottom:20px; right:20px; z-index:999999; background:white; border:2px solid #2563eb; padding:15px; width:320px; border-radius:12px; box-shadow:0 10px 15px rgba(0,0,0,0.1); font-family:sans-serif;';
 
-        const isRunning = localStorage.getItem(STORAGE_RUNNING) === 'true';
-        container.innerHTML = \`
-            <h6 class="mb-2">Scheduler Automation</h6>
-            <select id="start-index" class="form-select mb-2" \${isRunning ? 'disabled' : ''}></select>
-            <button id="run-btn" class="btn \${isRunning ? 'btn-danger' : 'btn-primary'} w-100">\${isRunning ? 'STOP / RESET' : 'RUN AUTOMATION'}</button>
-        \`;
+        if (
+            document.getElementById(
+                'erp-scheduler-control'
+            )
+        ) {
 
-        const select = container.querySelector('#start-index');
-        classData.forEach((item, i) => { 
-            const opt = document.createElement('option'); 
-            opt.value = i; 
-            opt.text = \`[\${i}] \${item.Class || ''} \${item.Section || ''} - \${item.Teacher || ''}\`; 
-            select.appendChild(opt); 
-        });
+            return;
 
-        if (isRunning) { select.value = localStorage.getItem(STORAGE_INDEX) || '0'; }
+        }
 
-        container.querySelector('#run-btn').onclick = () => {
-            if (localStorage.getItem(STORAGE_RUNNING) === 'true') {
-                localStorage.removeItem(STORAGE_RUNNING);
-                localStorage.removeItem(STORAGE_INDEX);
-                location.reload();
-            } else {
-                localStorage.setItem(STORAGE_RUNNING, 'true');
-                localStorage.setItem(STORAGE_INDEX, select.value);
-                location.reload();
+
+        const container =
+            document.createElement(
+                'div'
+            );
+
+
+        container.id =
+            'erp-scheduler-control';
+
+
+        container.style =
+            'position:fixed;' +
+            'bottom:20px;' +
+            'right:20px;' +
+            'z-index:999999;' +
+            'width:340px;' +
+            'background:white;' +
+            'border:1px solid #dbeafe;' +
+            'border-radius:16px;' +
+            'padding:16px;' +
+            'box-shadow:0 20px 40px rgba(15,23,42,.18);' +
+            'font-family:Inter,Arial,sans-serif;';
+
+
+        const isRunning =
+            localStorage.getItem(
+                STORAGE_RUNNING
+            ) === 'true';
+
+
+        const currentIndex =
+            localStorage.getItem(
+                STORAGE_INDEX
+            ) || '0';
+
+
+        container.innerHTML =
+
+            '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
+
+                '<div style="' +
+                    'width:38px;height:38px;' +
+                    'border-radius:10px;' +
+                    'background:#eff6ff;' +
+                    'color:#2563eb;' +
+                    'display:flex;' +
+                    'align-items:center;' +
+                    'justify-content:center;' +
+                '">' +
+
+                    '<i class="bi bi-lightning-charge-fill"></i>' +
+
+                '</div>' +
+
+                '<div>' +
+
+                    '<div style="font-size:13px;font-weight:800;">' +
+                        'Scheduler Automation' +
+                    '</div>' +
+
+                    '<div style="font-size:10px;color:#64748b;">' +
+                        (isRunning
+                            ? 'Automation is running'
+                            : 'Ready to start') +
+                    '</div>' +
+
+                '</div>' +
+
+            '</div>' +
+
+
+            '<select id="start-index" style="' +
+                'width:100%;' +
+                'padding:10px;' +
+                'border:1px solid #e2e8f0;' +
+                'border-radius:9px;' +
+                'font-size:11px;' +
+                'margin-bottom:10px;' +
+            '" ' +
+            (isRunning ? 'disabled' : '') +
+            '></select>' +
+
+
+            '<button id="run-btn" style="' +
+                'width:100%;' +
+                'padding:11px;' +
+                'border:0;' +
+                'border-radius:9px;' +
+                'font-weight:800;' +
+                'cursor:pointer;' +
+                'color:white;' +
+                'background:' +
+                (isRunning
+                    ? '#dc2626'
+                    : '#2563eb') +
+            '">' +
+
+                (isRunning
+                    ? 'STOP / RESET'
+                    : 'RUN AUTOMATION') +
+
+            '</button>';
+
+
+        const select =
+            container.querySelector(
+                '#start-index'
+            );
+
+
+        classData.forEach(
+            function(item, i) {
+
+                const option =
+                    document.createElement(
+                        'option'
+                    );
+
+
+                option.value =
+                    i;
+
+
+                option.textContent =
+                    '[' +
+                    i +
+                    '] ' +
+                    (item.Class || '') +
+                    ' ' +
+                    (item.Section || '') +
+                    ' — ' +
+                    (item.Teacher || '');
+
+
+                select.appendChild(
+                    option
+                );
+
             }
+        );
+
+
+        if (isRunning) {
+
+            select.value =
+                currentIndex;
+
+        }
+
+
+        container.querySelector(
+            '#run-btn'
+        ).onclick = function() {
+
+            if (
+                localStorage.getItem(
+                    STORAGE_RUNNING
+                ) === 'true'
+            ) {
+
+                localStorage.removeItem(
+                    STORAGE_RUNNING
+                );
+
+                localStorage.removeItem(
+                    STORAGE_INDEX
+                );
+
+                location.reload();
+
+            } else {
+
+                localStorage.setItem(
+                    STORAGE_RUNNING,
+                    'true'
+                );
+
+                localStorage.setItem(
+                    STORAGE_INDEX,
+                    select.value
+                );
+
+                location.reload();
+
+            }
+
         };
-        document.body.appendChild(container);
+
+
+        document.body.appendChild(
+            container
+        );
+
     }
 
-    window.addEventListener('load', () => {
-        setTimeout(createUI, 2000);
-        checkAndResume();
+
+    /* =====================================================
+       START
+    ===================================================== */
+
+    window.addEventListener(
+        'load',
+        function() {
+
+            setTimeout(
+                createUI,
+                2000
+            );
+
+            checkAndResume();
+
+        }
+    );
+
+})();
+`;
+
+    return script;
+
+}
+
+
+/* =========================================================
+   COMPILE
+========================================================= */
+
+$("compileBtn").addEventListener(
+    "click",
+    function() {
+
+        if (
+            currentInputMode === "paste"
+        ) {
+
+            if (!processManualData()) {
+                return;
+            }
+
+        }
+
+
+        if (!parsedClassData.length) {
+
+            showAlert(
+                "No data detected. Please upload Excel or paste schedule rows.",
+                "danger"
+            );
+
+            return;
+
+        }
+
+
+        const issues =
+            getValidationIssues();
+
+
+        if (issues.length) {
+
+            showAlert(
+                issues.length +
+                " row(s) have missing required fields. " +
+                "Please review the preview before compiling.",
+                "warning"
+            );
+
+            /*
+             * We still allow compilation.
+             * This ensures every uploaded row remains available.
+             */
+
+        }
+
+
+        compileScript();
+
+    }
+);
+
+
+/* =========================================================
+   COMPILE PROCESS
+========================================================= */
+
+function compileScript() {
+
+    $("compileOverlay")
+        .classList.add("show");
+
+
+    $("compileProgress").style.width =
+        "10%";
+
+
+    $("compileStatus").textContent =
+        "Validating schedule data...";
+
+
+    setTimeout(() => {
+
+        $("compileProgress").style.width =
+            "35%";
+
+        $("compileStatus").textContent =
+            "Preparing automation engine...";
+
+    }, 150);
+
+
+    setTimeout(() => {
+
+        $("compileProgress").style.width =
+            "65%";
+
+        $("compileStatus").textContent =
+            "Generating userscript...";
+
+    }, 300);
+
+
+    setTimeout(() => {
+
+        const script =
+            buildUserscript();
+
+
+        $("scriptOutput").value =
+            script;
+
+
+        $("compileProgress").style.width =
+            "100%";
+
+        $("compileStatus").textContent =
+            "Compilation complete.";
+
+
+        setTimeout(() => {
+
+            $("compileOverlay")
+                .classList.remove("show");
+
+
+            $("outputSection")
+                .style.display =
+                "block";
+
+
+            setStep(4);
+
+
+            $("outputSection")
+                .scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+
+
+            showAlert(
+                "Userscript compiled successfully with " +
+                parsedClassData.length +
+                " schedule rows.",
+                "success"
+            );
+
+        }, 400);
+
+    }, 500);
+
+}
+
+
+/* =========================================================
+   COPY
+========================================================= */
+
+$("copyBtn").addEventListener(
+    "click",
+    async function() {
+
+        const text =
+            $("scriptOutput").value;
+
+
+        if (!text) {
+
+            showAlert(
+                "Nothing to copy.",
+                "warning"
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            await navigator.clipboard.writeText(
+                text
+            );
+
+        } catch (error) {
+
+            $("scriptOutput").select();
+
+            document.execCommand(
+                "copy"
+            );
+
+        }
+
+
+        const original =
+            this.innerHTML;
+
+
+        this.innerHTML =
+            '<i class="bi bi-check-circle me-1"></i> Copied!';
+
+
+        setTimeout(() => {
+
+            this.innerHTML =
+                original;
+
+        }, 1800);
+
+    }
+);
+
+
+/* =========================================================
+   DOWNLOAD
+========================================================= */
+
+$("downloadBtn").addEventListener(
+    "click",
+    function() {
+
+        const script =
+            $("scriptOutput").value;
+
+
+        if (!script) {
+
+            showAlert(
+                "Compile the userscript first.",
+                "warning"
+            );
+
+            return;
+
+        }
+
+
+        const blob =
+            new Blob(
+                [script],
+                {
+                    type:
+                        "text/javascript;charset=utf-8"
+                }
+            );
+
+
+        const url =
+            URL.createObjectURL(
+                blob
+            );
+
+
+        const link =
+            document.createElement(
+                "a"
+            );
+
+
+        link.href =
+            url;
+
+
+        link.download =
+            "ERP_Auto_Scheduler.user.js";
+
+
+        document.body.appendChild(
+            link
+        );
+
+
+        link.click();
+
+
+        link.remove();
+
+
+        URL.revokeObjectURL(
+            url
+        );
+
+    }
+);
+
+
+/* =========================================================
+   CLEAR
+========================================================= */
+
+function resetStudio() {
+
+    parsedClassData = [];
+
+
+    excelFile.value = "";
+
+    $("manualData").value = "";
+
+    $("scriptOutput").value = "";
+
+
+    $("fileCard")
+        .classList.remove("show");
+
+
+    $("previewContainer")
+        .style.display = "none";
+
+
+    $("outputSection")
+        .style.display = "none";
+
+
+    updateStats();
+
+    hideAlert();
+
+    setStep(1);
+
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
     });
-})();`;
 
-    document.getElementById('scriptOutput').value = script;
 }
 
-function copy() { 
-    document.getElementById('scriptOutput').select(); 
-    document.execCommand('copy'); 
+
+$("clearBtn").addEventListener(
+    "click",
+    resetStudio
+);
+
+
+$("newBtn").addEventListener(
+    "click",
+    resetStudio
+);
+
+
+/* =========================================================
+   FILE SIZE
+========================================================= */
+
+function formatFileSize(bytes) {
+
+    if (!bytes) {
+        return "0 KB";
+    }
+
+
+    const units = [
+        "Bytes",
+        "KB",
+        "MB",
+        "GB"
+    ];
+
+
+    const index =
+        Math.floor(
+            Math.log(bytes) /
+            Math.log(1024)
+        );
+
+
+    return (
+        parseFloat(
+            (
+                bytes /
+                Math.pow(
+                    1024,
+                    index
+                )
+            ).toFixed(2)
+        ) +
+        " " +
+        units[index]
+    );
+
 }
+
+
+/* =========================================================
+   INITIAL STATE
+========================================================= */
+
+updateStats();
+
+setStep(1);
+
 </script>
+
 </body>
 </html>
