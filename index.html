@@ -5,12 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ERP Automation Studio | Final Edition</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <style>
   body { background: #f8fafc; font-family: 'Inter', sans-serif; padding: 40px 15px; }
   .studio-card { max-width: 950px; margin: auto; background: white; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
-  .terminal-box { background: #0f172a; color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; padding: 20px; border-radius: 8px; width: 100%; height: 300px; overflow-y: auto; }
+  .terminal-box { background: #0f172a; color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; padding: 20px; border-radius: 8px; width: 100%; height: 300px; overflow-y: auto; white-space: pre; }
 </style>
 </head>
 <body>
@@ -71,14 +72,25 @@ function processData(data) {
         const start = parseTime(get('Start Time'));
         const end = parseTime(get('End Time'));
         
+        let rawClass = get('Class');
+        let rawSection = get('Section').toString().trim();
+        let finalSection = rawSection;
+        
+        // Ensure "All Section" or comma separated items aren't forced into standard "Class-Section" logic
+        if (rawSection.toUpperCase() !== 'ALL SECTION' && rawSection.toUpperCase() !== 'SELECT ALL' && !rawSection.includes(',')) {
+            if (rawClass && !rawSection.toUpperCase().startsWith(rawClass.toString().toUpperCase())) {
+                finalSection = `${rawClass}-${rawSection}`;
+            }
+        }
+        
         return {
             "Date": formatDate(get('Start Date')),
             "EndDate": formatDate(get('End Date')),
             "Days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
             "StartTime": start.Hour, "StartMin": start.Min, "StartAMPM": start.AMPM,
             "EndTime": end.Hour, "EndMin": end.Min, "EndAMPM": end.AMPM,
-            "Class": get('Class'),
-            "Section": `${get('Class')}-${get('Section')}`,
+            "Class": rawClass,
+            "Section": finalSection,
             "Teacher": get('Teacher'),
             "Subject": get('Subject')
         };
@@ -116,7 +128,7 @@ function generateScript() {
         }));
     }
 
-    if(parsedClassData.length === 0) { alert("No data detected."); return; }
+    if(parsedClassData.length === 0) { alert("No data detected. Please upload an Excel file or paste data."); return; }
     
     const script = `// ==UserScript==
 // @name         ERP Auto-Scheduler Final
@@ -126,6 +138,10 @@ function generateScript() {
 
 (function() {
     'use strict';
+
+    const STORAGE_RUNNING = 'erp_scheduler_running';
+    const STORAGE_INDEX = 'erp_scheduler_index';
+
     const classData = ${JSON.stringify(parsedClassData, null, 4)};
 
     async function triggerEvents(element) {
@@ -136,18 +152,48 @@ function generateScript() {
         if (!itemText) return false;
         let dropdown = isIndex ? document.querySelectorAll('ng-multiselect-dropdown')[index] : document.querySelector(\`ng-multiselect-dropdown[name="\${selector}"]\`);
         if (!dropdown) return false;
+
         dropdown.querySelector('.dropdown-btn').click();
         await new Promise(r => setTimeout(r, 500));
-        const listItems = dropdown.querySelectorAll('.item2 li');
-        for (let li of listItems) {
-            if ((exactMatch ? (li.textContent.trim().toUpperCase() === itemText.toUpperCase()) : (li.textContent.trim().toUpperCase().includes(itemText.toUpperCase())))) {
-                li.querySelector('input').click();
-                dropdown.querySelector('.dropdown-btn').click();
-                await triggerEvents(dropdown);
-                return true;
+
+        const upperText = itemText.toUpperCase();
+
+        // 1. Handle "Select All" scenario
+        if (upperText === "ALL SECTION" || upperText === "SELECT ALL") {
+            const allElements = dropdown.querySelectorAll('li, div');
+            for (let el of allElements) {
+                if (el.textContent.trim().toUpperCase() === 'SELECT ALL') {
+                    let input = el.querySelector('input');
+                    if (input) {
+                        input.click();
+                    } else {
+                        el.click(); // Fallback
+                    }
+                    break;
+                }
+            }
+        } 
+        // 2. Handle single or multiple comma-separated sections
+        else {
+            const targetItems = itemText.split(',').map(s => s.trim().toUpperCase());
+            const listItems = dropdown.querySelectorAll('.item2 li');
+            
+            for (let li of listItems) {
+                let liText = li.textContent.trim().toUpperCase();
+                let isMatch = exactMatch 
+                    ? targetItems.includes(liText) 
+                    : targetItems.some(target => liText.includes(target));
+                
+                if (isMatch) {
+                    let input = li.querySelector('input');
+                    if (input) input.click();
+                }
             }
         }
-        return false;
+
+        dropdown.querySelector('.dropdown-btn').click();
+        await triggerEvents(dropdown);
+        return true;
     }
 
     async function selectDays(daysToSelect) {
@@ -166,7 +212,7 @@ function generateScript() {
         await triggerEvents(dropdown);
     }
 
-    async function runAutomation(entry, index) {
+    async function runAutomation(entry) {
         const startDate = document.querySelector('input[name="startDate"]');
         const endDate = document.querySelector('input[name="endDate"]');
         if (startDate) { startDate.value = entry.Date; await triggerEvents(startDate); }
@@ -182,37 +228,105 @@ function generateScript() {
                 await triggerEvents(el); 
             }
         }
+
         await selectCustomDropdown("std1", entry.Class, false, 0, true);
         await selectCustomDropdown("section", entry.Section, false, 0, true);
         await selectCustomDropdown(null, entry.Teacher, true, 2, false);
+
+        await new Promise(r => setTimeout(r, 500));
+
         const subjectEl = document.querySelector('select[name="subject"]');
-        if (subjectEl) { subjectEl.value = entry.Subject; await triggerEvents(subjectEl); }
+        if (subjectEl) { 
+            subjectEl.value = entry.Subject; 
+            await triggerEvents(subjectEl); 
+        }
+
         const saveBtn = document.querySelector('button.save-btn');
         if (saveBtn) saveBtn.click();
-        await new Promise(r => setTimeout(r, 1000));
+        await new Promise(r => setTimeout(r, 1500));
+        
         const yesBtn = Array.from(document.querySelectorAll('button')).find(b => b.textContent.trim() === 'Yes');
         if (yesBtn) yesBtn.click();
+        await new Promise(r => setTimeout(r, 2000)); // Wait for server commit
+    }
+
+    async function checkAndResume() {
+        if (localStorage.getItem(STORAGE_RUNNING) === 'true') {
+            let currentIndex = parseInt(localStorage.getItem(STORAGE_INDEX) || '0');
+            if (currentIndex < classData.length) {
+                console.log(\`Running automation for index \${currentIndex}\`);
+                await new Promise(r => setTimeout(r, 2000)); // Wait for DOM
+                await runAutomation(classData[currentIndex]);
+
+                let nextIndex = currentIndex + 1;
+                if (nextIndex < classData.length) {
+                    localStorage.setItem(STORAGE_INDEX, nextIndex);
+                    location.reload(); 
+                } else {
+                    localStorage.removeItem(STORAGE_RUNNING);
+                    localStorage.removeItem(STORAGE_INDEX);
+                    alert('Automation completed successfully!');
+                }
+            } else {
+                localStorage.removeItem(STORAGE_RUNNING);
+                localStorage.removeItem(STORAGE_INDEX);
+            }
+        }
     }
 
     function createUI() {
         if (document.getElementById('erp-scheduler-control')) return;
         const container = document.createElement('div');
         container.id = 'erp-scheduler-control';
-        container.style = 'position:fixed; top:10px; right:10px; z-index:999999; background:white; border:2px solid #2563eb; padding:15px; width:320px; border-radius:12px; box-shadow:0 10px 15px rgba(0,0,0,0.1); font-family:sans-serif;';
-        container.innerHTML = '<h6 class="mb-2">Scheduler Automation</h6><select id="start-index" class="form-select mb-2"></select><button id="run-btn" class="btn btn-primary w-100">RUN AUTOMATION</button>';
+        container.style = 'position:fixed; bottom:20px; right:20px; z-index:999999; background:white; border:2px solid #2563eb; padding:15px; width:320px; border-radius:12px; box-shadow:0 10px 15px rgba(0,0,0,0.1); font-family:sans-serif;';
+
+        const isRunning = localStorage.getItem(STORAGE_RUNNING) === 'true';
+        container.innerHTML = \`
+            <h6 class="mb-2">Scheduler Automation</h6>
+            <select id="start-index" class="form-select mb-2" \${isRunning ? 'disabled' : ''}></select>
+            <button id="run-btn" class="btn \${isRunning ? 'btn-danger' : 'btn-primary'} w-100">\${isRunning ? 'STOP / RESET' : 'RUN AUTOMATION'}</button>
+        \`;
+
         const select = container.querySelector('#start-index');
-        classData.forEach((item, i) => { const opt = document.createElement('option'); opt.value = i; opt.text = \`[\${i}] \${item.Class} \${item.Section} - \${item.Teacher}\`; select.appendChild(opt); });
-        container.querySelector('#run-btn').onclick = async () => {
-            let start = parseInt(select.value);
-            for (let i = start; i < classData.length; i++) { await runAutomation(classData[i], i); await new Promise(r => setTimeout(r, 3000)); }
+        classData.forEach((item, i) => { 
+            const opt = document.createElement('option'); 
+            opt.value = i; 
+            opt.text = \`[\${i}] \${item.Class || ''} \${item.Section || ''} - \${item.Teacher || ''}\`; 
+            select.appendChild(opt); 
+        });
+
+        if (isRunning) {
+            select.value = localStorage.getItem(STORAGE_INDEX) || '0';
+        }
+
+        container.querySelector('#run-btn').onclick = () => {
+            if (localStorage.getItem(STORAGE_RUNNING) === 'true') {
+                localStorage.removeItem(STORAGE_RUNNING);
+                localStorage.removeItem(STORAGE_INDEX);
+                location.reload();
+            } else {
+                localStorage.setItem(STORAGE_RUNNING, 'true');
+                localStorage.setItem(STORAGE_INDEX, select.value);
+                location.reload();
+            }
         };
+
         document.body.appendChild(container);
     }
-    window.addEventListener('load', () => setTimeout(createUI, 2000));
+
+    window.addEventListener('load', () => {
+        setTimeout(createUI, 2000);
+        checkAndResume();
+    });
 })();`;
+
     document.getElementById('scriptOutput').value = script;
 }
-function copy() { document.getElementById('scriptOutput').select(); document.execCommand('copy'); }
+
+function copy() { 
+    document.getElementById('scriptOutput').select(); 
+    document.execCommand('copy'); 
+}
 </script>
 </body>
 </html>
