@@ -122,8 +122,29 @@ function formatDate(dateStr) {
 function parseTime(timeStr) {
     if(!timeStr) return { Hour: '12', Min: '00', AMPM: 'AM' };
     let cleanStr = timeStr.toString().trim();
-    const m = cleanStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
-    return m ? { Hour: m[1].padStart(2, '0'), Min: m[2], AMPM: m[3].toUpperCase() } : { Hour: '12', Min: '00', AMPM: 'AM' };
+    
+    // First, try to match formats that explicitly include AM or PM (e.g., "08:00 AM")
+    let m = cleanStr.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+    if (m) {
+        return { Hour: m[1].padStart(2, '0'), Min: m[2], AMPM: m[3].toUpperCase() };
+    }
+    
+    // Next, try to match 24-hour formats without AM/PM (e.g., "08:00", "14:35")
+    m = cleanStr.match(/(\d{1,2}):(\d{2})/);
+    if (m) {
+        let h = parseInt(m[1], 10);
+        let min = m[2];
+        let ampm = h >= 12 ? 'PM' : 'AM';
+        
+        // Convert to 12-hour format
+        if (h > 12) h -= 12;
+        if (h === 0) h = 12;
+        
+        return { Hour: h.toString().padStart(2, '0'), Min: min, AMPM: ampm };
+    }
+    
+    // Default fallback
+    return { Hour: '12', Min: '00', AMPM: 'AM' };
 }
 
 function generateScript() {
