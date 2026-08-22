@@ -4,381 +4,375 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ERP Automation Studio — Professional Edition</title>
+<title>ERP Automation Studio</title>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <style>
-:root {
+:root{
     --primary:#2563eb;
     --primary-dark:#1d4ed8;
+    --bg:#f1f5f9;
+    --card:#ffffff;
+    --text:#0f172a;
+    --muted:#64748b;
+    --border:#e2e8f0;
     --success:#16a34a;
     --danger:#dc2626;
     --warning:#d97706;
-    --dark:#0f172a;
-    --muted:#64748b;
-    --border:#e2e8f0;
-    --bg:#f1f5f9;
-    --card:#ffffff;
 }
 
-* {
+*{
     box-sizing:border-box;
 }
 
-body {
+body{
     margin:0;
     min-height:100vh;
     background:
-        radial-gradient(circle at top left, rgba(37,99,235,.08), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(14,165,233,.07), transparent 30%),
-        #f8fafc;
-    font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-    color:#0f172a;
+        radial-gradient(circle at top left,rgba(37,99,235,.08),transparent 35%),
+        radial-gradient(circle at bottom right,rgba(14,165,233,.08),transparent 35%),
+        var(--bg);
+    font-family:Inter,Segoe UI,Arial,sans-serif;
+    color:var(--text);
 }
 
-.app-shell {
-    max-width:1180px;
-    margin:40px auto;
-    padding:0 18px;
+.app-wrapper{
+    max-width:1200px;
+    margin:0 auto;
+    padding:35px 18px 60px;
 }
 
-.hero {
+/* HEADER */
+
+.hero{
+    background:linear-gradient(135deg,#0f172a,#1e3a8a);
+    color:#fff;
+    border-radius:24px;
+    padding:30px;
+    box-shadow:0 20px 50px rgba(15,23,42,.18);
+    margin-bottom:22px;
     position:relative;
     overflow:hidden;
-    border-radius:24px;
-    padding:32px;
-    color:#fff;
-    background:
-        linear-gradient(135deg,#0f172a 0%,#172554 50%,#1e40af 100%);
-    box-shadow:0 24px 60px rgba(15,23,42,.18);
 }
 
-.hero:after {
+.hero:after{
     content:"";
     position:absolute;
-    width:260px;
-    height:260px;
+    width:300px;
+    height:300px;
     border-radius:50%;
-    right:-90px;
-    top:-100px;
-    background:rgba(255,255,255,.08);
+    background:rgba(255,255,255,.06);
+    right:-100px;
+    top:-120px;
 }
 
-.hero-content {
+.hero-content{
     position:relative;
     z-index:2;
 }
 
-.brand-icon {
-    width:58px;
-    height:58px;
-    border-radius:17px;
+.hero-title{
     display:flex;
     align-items:center;
-    justify-content:center;
-    font-size:27px;
-    background:rgba(255,255,255,.13);
-    border:1px solid rgba(255,255,255,.2);
-    margin-bottom:20px;
-}
-
-.hero h1 {
-    font-size:30px;
+    gap:14px;
     font-weight:800;
-    margin:0 0 8px;
+    font-size:28px;
+    margin-bottom:7px;
 }
 
-.hero p {
-    margin:0;
-    color:#cbd5e1;
-    max-width:720px;
-}
-
-.version-pill {
-    display:inline-flex;
-    margin-top:18px;
-    padding:7px 12px;
-    border-radius:999px;
-    background:rgba(255,255,255,.1);
-    border:1px solid rgba(255,255,255,.15);
-    font-size:12px;
-    font-weight:700;
-    letter-spacing:.3px;
-}
-
-.main-card {
-    margin-top:20px;
-    background:#fff;
-    border:1px solid var(--border);
-    border-radius:22px;
-    box-shadow:0 15px 45px rgba(15,23,42,.08);
-    overflow:hidden;
-}
-
-.card-section {
-    padding:28px;
-}
-
-.section-title {
-    display:flex;
-    align-items:center;
-    gap:12px;
-    margin-bottom:18px;
-}
-
-.section-title-icon {
-    width:40px;
-    height:40px;
-    border-radius:12px;
-    background:#eff6ff;
-    color:var(--primary);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.section-title h5 {
-    margin:0;
-    font-weight:800;
-}
-
-.section-title small {
-    color:var(--muted);
-}
-
-.nav-tabs {
-    border-bottom:1px solid var(--border);
-}
-
-.nav-tabs .nav-link {
-    border:0;
-    color:#64748b;
-    font-weight:700;
-    padding:13px 18px;
-}
-
-.nav-tabs .nav-link.active {
-    color:var(--primary);
-    border-bottom:3px solid var(--primary);
-    background:transparent;
-}
-
-.upload-zone {
-    border:2px dashed #cbd5e1;
-    border-radius:16px;
-    padding:32px;
-    text-align:center;
-    background:#f8fafc;
-    transition:.2s;
-}
-
-.upload-zone:hover {
-    border-color:#60a5fa;
-    background:#eff6ff;
-}
-
-.upload-icon {
-    width:55px;
-    height:55px;
+.hero-icon{
+    width:52px;
+    height:52px;
     border-radius:15px;
-    margin:0 auto 15px;
-    background:#dbeafe;
-    color:#2563eb;
+    background:rgba(255,255,255,.12);
     display:flex;
     align-items:center;
     justify-content:center;
     font-size:25px;
 }
 
+.hero-subtitle{
+    margin:0;
+    color:#cbd5e1;
+    font-size:14px;
+}
+
+.version-badge{
+    display:inline-flex;
+    margin-top:15px;
+    padding:6px 12px;
+    border-radius:999px;
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.15);
+    font-size:12px;
+}
+
+/* CARD */
+
+.main-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:22px;
+    box-shadow:0 15px 40px rgba(15,23,42,.07);
+    overflow:hidden;
+}
+
+.card-section{
+    padding:28px;
+}
+
+.section-title{
+    font-size:16px;
+    font-weight:800;
+    margin-bottom:5px;
+}
+
+.section-subtitle{
+    color:var(--muted);
+    font-size:13px;
+    margin-bottom:20px;
+}
+
+/* TABS */
+
+.nav-tabs{
+    border-bottom:1px solid var(--border);
+    gap:5px;
+}
+
+.nav-tabs .nav-link{
+    border:0;
+    border-radius:10px 10px 0 0;
+    color:var(--muted);
+    font-weight:700;
+    padding:12px 18px;
+}
+
+.nav-tabs .nav-link:hover{
+    color:var(--primary);
+}
+
+.nav-tabs .nav-link.active{
+    color:var(--primary);
+    background:#eff6ff;
+}
+
+/* FORM */
+
 .form-control,
-.form-select {
-    border-radius:11px;
-    border-color:#cbd5e1;
+.form-select{
+    border:1px solid #cbd5e1;
+    border-radius:10px;
     padding:11px 13px;
+    font-size:14px;
 }
 
 .form-control:focus,
-.form-select:focus {
+.form-select:focus{
     border-color:#60a5fa;
     box-shadow:0 0 0 4px rgba(37,99,235,.08);
 }
 
-.btn {
-    border-radius:11px;
-    font-weight:700;
+.form-label{
+    font-size:13px;
+    color:#334155;
 }
 
-.compile-btn {
-    height:56px;
-    font-size:16px;
-    background:linear-gradient(135deg,#2563eb,#1d4ed8);
-    border:0;
-    box-shadow:0 8px 20px rgba(37,99,235,.22);
-}
-
-.compile-btn:hover {
-    background:linear-gradient(135deg,#1d4ed8,#1e40af);
-}
-
-.status-box {
-    display:none;
-    margin-top:18px;
-    border-radius:14px;
-    padding:15px 17px;
+.drop-zone{
+    border:2px dashed #cbd5e1;
+    border-radius:16px;
+    padding:35px 20px;
+    text-align:center;
     background:#f8fafc;
-    border:1px solid var(--border);
+    transition:.2s;
 }
 
-.status-box.show {
+.drop-zone:hover{
+    border-color:#60a5fa;
+    background:#eff6ff;
+}
+
+.drop-icon{
+    width:55px;
+    height:55px;
+    border-radius:16px;
+    background:#dbeafe;
+    color:#2563eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 auto 12px;
+    font-size:24px;
+}
+
+/* BUTTONS */
+
+.btn{
+    border-radius:10px;
+    font-weight:700;
+    padding:11px 17px;
+}
+
+.btn-primary{
+    background:var(--primary);
+    border-color:var(--primary);
+}
+
+.btn-primary:hover{
+    background:var(--primary-dark);
+    border-color:var(--primary-dark);
+}
+
+.compile-btn{
+    min-height:56px;
+    font-size:15px;
+    box-shadow:0 8px 20px rgba(37,99,235,.2);
+}
+
+/* STATUS */
+
+.status-bar{
+    display:none;
+    padding:13px 16px;
+    border-radius:12px;
+    margin-top:15px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.status-success{
     display:block;
+    background:#f0fdf4;
+    color:#166534;
+    border:1px solid #bbf7d0;
 }
 
-.status-row {
+.status-error{
+    display:block;
+    background:#fef2f2;
+    color:#991b1b;
+    border:1px solid #fecaca;
+}
+
+/* OUTPUT */
+
+.output-header{
     display:flex;
     justify-content:space-between;
     align-items:center;
     gap:10px;
-}
-
-.status-message {
-    display:flex;
-    align-items:center;
-    gap:9px;
-    font-weight:700;
-}
-
-.status-dot {
-    width:9px;
-    height:9px;
-    border-radius:50%;
-    background:#94a3b8;
-}
-
-.status-dot.success {
-    background:#22c55e;
-}
-
-.status-dot.error {
-    background:#ef4444;
-}
-
-.status-dot.processing {
-    background:#3b82f6;
-    animation:pulse 1s infinite;
-}
-
-@keyframes pulse {
-    0%,100% { opacity:.4; }
-    50% { opacity:1; }
-}
-
-.transcript-wrapper {
-    margin-top:25px;
-}
-
-.transcript-header {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
     margin-bottom:10px;
 }
 
-.transcript-header h6 {
-    margin:0;
-    font-weight:800;
-}
-
-.transcript {
-    background:#020617;
-    color:#7dd3fc;
-    border-radius:15px;
-    border:1px solid #1e293b;
-    min-height:330px;
-    max-height:430px;
-    padding:20px;
+.terminal{
     width:100%;
+    min-height:380px;
     resize:vertical;
-    font-family:
-        "JetBrains Mono",
-        Consolas,
-        monospace;
+    background:#020617;
+    color:#38bdf8;
+    border:1px solid #1e293b;
+    border-radius:14px;
+    padding:18px;
+    font-family:"JetBrains Mono","Cascadia Code",Consolas,monospace;
     font-size:12px;
-    line-height:1.65;
+    line-height:1.6;
+    outline:none;
 }
 
-.footer-note {
-    padding:20px 28px;
-    border-top:1px solid var(--border);
-    background:#f8fafc;
-    color:#64748b;
-    font-size:12px;
-}
+/* INFO */
 
-.feature-grid {
+.info-grid{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(3,1fr);
     gap:12px;
     margin-top:20px;
 }
 
-.feature {
-    padding:15px;
+.info-card{
     border:1px solid var(--border);
+    background:#f8fafc;
     border-radius:14px;
-    background:#fff;
+    padding:16px;
 }
 
-.feature i {
-    font-size:20px;
-    color:var(--primary);
+.info-icon{
+    width:35px;
+    height:35px;
+    border-radius:9px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#dbeafe;
+    color:#2563eb;
+    margin-bottom:10px;
 }
 
-.feature strong {
+.info-card strong{
     display:block;
-    margin-top:7px;
     font-size:13px;
 }
 
-.feature span {
-    display:block;
-    color:#64748b;
-    font-size:11px;
-    margin-top:3px;
+.info-card span{
+    color:var(--muted);
+    font-size:12px;
 }
 
-@media(max-width:768px) {
-    .app-shell {
-        margin:15px auto;
+/* FOOTER */
+
+.footer-note{
+    text-align:center;
+    color:#94a3b8;
+    font-size:12px;
+    margin-top:20px;
+}
+
+/* MODAL */
+
+.modal-content{
+    border:0;
+    border-radius:18px;
+    box-shadow:0 25px 70px rgba(15,23,42,.25);
+}
+
+.modal-header{
+    border-bottom:1px solid var(--border);
+}
+
+.modal-title{
+    font-weight:800;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+    .app-wrapper{
+        padding:18px 10px 40px;
     }
 
-    .hero,
-    .card-section {
+    .hero{
         padding:22px;
+        border-radius:18px;
     }
 
-    .hero h1 {
-        font-size:24px;
+    .hero-title{
+        font-size:22px;
     }
 
-    .feature-grid {
-        grid-template-columns:repeat(2,1fr);
+    .card-section{
+        padding:20px;
     }
-}
 
-@media(max-width:480px) {
-    .feature-grid {
+    .info-grid{
         grid-template-columns:1fr;
+    }
+
+    .output-header{
+        align-items:flex-start;
+        flex-direction:column;
     }
 }
 </style>
@@ -386,52 +380,52 @@ body {
 
 <body>
 
-<div class="app-shell">
+<div class="app-wrapper">
 
     <!-- HERO -->
     <div class="hero">
         <div class="hero-content">
 
-            <div class="brand-icon">
-                <i class="bi bi-cpu"></i>
+            <div class="hero-title">
+                <div class="hero-icon">
+                    <i class="bi bi-calendar2-check"></i>
+                </div>
+
+                <div>
+                    ERP Live Class Scheduler
+                </div>
             </div>
 
-            <h1>ERP Live Class Scheduler</h1>
-
-            <p>
-                Professional automation studio for compiling,
-                executing, monitoring and recovering ERP timetable entries.
+            <p class="hero-subtitle">
+                Professional automation builder for ERP live-class scheduling
             </p>
 
-            <div class="version-pill">
-                <i class="bi bi-shield-check me-2"></i>
-                Automation Studio • Final Recovery Edition
-            </div>
+            <span class="version-badge">
+                <i class="bi bi-stars me-1"></i>
+                Final Edition • Smart Resume • Failure Recovery • Injection
+            </span>
 
         </div>
     </div>
 
-    <!-- MAIN -->
+
+    <!-- MAIN CARD -->
     <div class="main-card">
 
         <div class="card-section">
 
-            <!-- SECTION HEADER -->
             <div class="section-title">
-                <div class="section-title-icon">
-                    <i class="bi bi-database"></i>
-                </div>
-
-                <div>
-                    <h5>Import Schedule Data</h5>
-                    <small>
-                        Upload Excel or paste your timetable records
-                    </small>
-                </div>
+                <i class="bi bi-database me-2 text-primary"></i>
+                Schedule Data
             </div>
 
+            <div class="section-subtitle">
+                Import your Excel schedule or paste rows directly.
+            </div>
+
+
             <!-- TABS -->
-            <ul class="nav nav-tabs mb-4">
+            <ul class="nav nav-tabs mb-4" role="tablist">
 
                 <li class="nav-item">
                     <button
@@ -439,8 +433,10 @@ body {
                         data-bs-toggle="tab"
                         data-bs-target="#fileTab"
                         type="button">
+
                         <i class="bi bi-file-earmark-excel me-2"></i>
                         Excel Import
+
                     </button>
                 </li>
 
@@ -450,33 +446,34 @@ body {
                         data-bs-toggle="tab"
                         data-bs-target="#pasteTab"
                         type="button">
+
                         <i class="bi bi-clipboard me-2"></i>
                         Paste Data
+
                     </button>
                 </li>
 
             </ul>
 
+
             <div class="tab-content">
 
                 <!-- EXCEL -->
-                <div
-                    class="tab-pane fade show active"
-                    id="fileTab">
+                <div class="tab-pane fade show active" id="fileTab">
 
-                    <div class="upload-zone">
+                    <div class="drop-zone">
 
-                        <div class="upload-icon">
+                        <div class="drop-icon">
                             <i class="bi bi-file-earmark-spreadsheet"></i>
                         </div>
 
-                        <h6 class="fw-bold">
+                        <div class="fw-bold mb-1">
                             Upload Schedule Excel
-                        </h6>
+                        </div>
 
-                        <p class="text-muted small mb-3">
-                            Supports .xlsx and .xls files
-                        </p>
+                        <div class="small text-muted mb-3">
+                            Supported formats: .xlsx, .xls
+                        </div>
 
                         <input
                             type="file"
@@ -484,23 +481,23 @@ body {
                             class="form-control"
                             accept=".xlsx,.xls">
 
-                        <div class="mt-3 small text-muted">
-                            Expected columns:
-                            <b>
-                                Start Date, End Date, Start Time,
-                                End Time, Days, Class, Section,
-                                Teacher, Subject
-                            </b>
-                        </div>
+                    </div>
+
+                    <div class="small text-muted mt-3">
+
+                        <i class="bi bi-info-circle me-1"></i>
+
+                        Expected columns:
+                        Start Date, End Date, Start Time, End Time,
+                        Days, Class, Section, Teacher, Subject
 
                     </div>
 
                 </div>
 
+
                 <!-- PASTE -->
-                <div
-                    class="tab-pane fade"
-                    id="pasteTab">
+                <div class="tab-pane fade" id="pasteTab">
 
                     <label class="form-label fw-bold">
                         Paste Excel Rows
@@ -509,162 +506,216 @@ body {
                     <textarea
                         id="manualData"
                         class="form-control"
-                        rows="8"
-                        placeholder="Paste rows directly from Excel.
+                        rows="7"
+                        placeholder="Start Date&#9;End Date&#9;Start Time&#9;End Time&#9;Days&#9;Class&#9;Section&#9;Teacher&#9;Subject"></textarea>
 
-Start Date    End Date    Start Time    End Time    Days    Class    Section    Teacher    Subject"></textarea>
-
-                    <div class="mt-2 small text-muted">
-                        <i class="bi bi-info-circle me-1"></i>
-                        Copy rows directly from Excel. Tab-separated values are supported.
+                    <div class="small text-muted mt-2">
+                        <i class="bi bi-lightbulb me-1"></i>
+                        Paste directly from Excel using TAB-separated columns.
                     </div>
 
                 </div>
 
             </div>
 
-            <!-- COMPILE -->
-            <button
-                id="compileBtn"
-                class="btn btn-primary compile-btn w-100 mt-4">
 
-                <i class="bi bi-lightning-charge-fill me-2"></i>
-                Compile Userscript
+            <!-- ACTIONS -->
+            <div class="row g-2 mt-4">
 
-            </button>
+                <div class="col-md-8">
+
+                    <button
+                        id="compileBtn"
+                        class="btn btn-primary compile-btn w-100"
+                        onclick="generateScript()">
+
+                        <i class="bi bi-cpu me-2"></i>
+                        Compile Userscript
+
+                    </button>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <button
+                        class="btn btn-outline-danger compile-btn w-100"
+                        onclick="clearAllData()">
+
+                        <i class="bi bi-trash3 me-2"></i>
+                        Clear Data
+
+                    </button>
+
+                </div>
+
+            </div>
+
 
             <!-- STATUS -->
-            <div
-                id="statusBox"
-                class="status-box">
+            <div id="statusBar" class="status-bar"></div>
 
-                <div class="status-row">
 
-                    <div class="status-message">
-                        <span
-                            id="statusDot"
-                            class="status-dot processing">
-                        </span>
+            <!-- DATA INFO -->
+            <div class="info-grid">
 
-                        <span id="statusText">
-                            Ready
-                        </span>
+                <div class="info-card">
+
+                    <div class="info-icon">
+                        <i class="bi bi-calendar-day"></i>
                     </div>
 
-                    <span
-                        id="rowCount"
-                        class="badge text-bg-primary">
-                        0 rows
+                    <strong>Single Day Smart Logic</strong>
+
+                    <span>
+                        Days dropdown is skipped automatically when Start Date = End Date.
+                    </span>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-icon">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </div>
+
+                    <strong>Auto Resume</strong>
+
+                    <span>
+                        Automation resumes from the last processed entry after reload.
+                    </span>
+
+                </div>
+
+
+                <div class="info-card">
+
+                    <div class="info-icon">
+                        <i class="bi bi-exclamation-triangle"></i>
+                    </div>
+
+                    <strong>Failure Recovery</strong>
+
+                    <span>
+                        Failed rows are stored automatically for later retry.
                     </span>
 
                 </div>
 
             </div>
 
-            <!-- TRANSCRIPT -->
-            <div class="transcript-wrapper">
+        </div>
 
-                <div class="transcript-header">
 
-                    <div>
-                        <h6>
-                            <i class="bi bi-terminal me-2"></i>
-                            Compile Transcript
-                        </h6>
+        <!-- OUTPUT -->
+        <div class="card-section border-top">
 
-                        <small class="text-muted">
-                            Generated userscript appears below
-                        </small>
+            <div class="output-header">
+
+                <div>
+
+                    <div class="section-title mb-1">
+                        <i class="bi bi-terminal me-2 text-primary"></i>
+                        Generated Userscript
                     </div>
 
-                    <button
-                        id="clearOutputBtn"
-                        class="btn btn-sm btn-light border">
+                    <div class="small text-muted">
+                        Install this script in Tampermonkey and open your ERP scheduler page.
+                    </div>
 
-                        <i class="bi bi-trash3 me-1"></i>
-                        Clear
+                </div>
+
+                <span
+                    id="compileStatus"
+                    class="badge text-bg-secondary">
+                    Not Compiled
+                </span>
+
+            </div>
+
+
+            <textarea
+                id="scriptOutput"
+                class="terminal"
+                readonly
+                spellcheck="false"
+                placeholder="// Generated userscript will appear here..."></textarea>
+
+
+            <div class="row g-2 mt-3">
+
+                <div class="col-md-6">
+
+                    <button
+                        class="btn btn-outline-primary w-100"
+                        onclick="copyScript()">
+
+                        <i class="bi bi-clipboard me-2"></i>
+                        Copy Userscript
 
                     </button>
 
                 </div>
 
-                <textarea
-                    id="scriptOutput"
-                    class="transcript"
-                    readonly
-                    spellcheck="false"
-                    placeholder="// Compiled userscript will appear here..."></textarea>
 
-                <button
-                    id="copyBtn"
-                    class="btn btn-outline-primary w-100 mt-3">
+                <div class="col-md-6">
 
-                    <i class="bi bi-clipboard me-2"></i>
-                    Copy Generated Userscript
+                    <button
+                        class="btn btn-outline-success w-100"
+                        onclick="downloadScript()">
 
-                </button>
+                        <i class="bi bi-download me-2"></i>
+                        Download .user.js
 
-            </div>
+                    </button>
 
-            <!-- FEATURES -->
-            <div class="feature-grid">
-
-                <div class="feature">
-                    <i class="bi bi-arrow-repeat"></i>
-                    <strong>Auto Resume</strong>
-                    <span>Continues after ERP refresh</span>
-                </div>
-
-                <div class="feature">
-                    <i class="bi bi-exclamation-triangle"></i>
-                    <strong>Failure Tracking</strong>
-                    <span>Stores complete failed rows</span>
-                </div>
-
-                <div class="feature">
-                    <i class="bi bi-syringe"></i>
-                    <strong>Failed Injection</strong>
-                    <span>Retry without copy/paste</span>
-                </div>
-
-                <div class="feature">
-                    <i class="bi bi-bar-chart"></i>
-                    <strong>Live Progress</strong>
-                    <span>Success and failure counters</span>
                 </div>
 
             </div>
 
         </div>
 
-        <div class="footer-note">
-            <i class="bi bi-shield-check me-1"></i>
-            Your Excel data is processed locally in your browser.
-            No schedule data is uploaded to a server by this builder.
-        </div>
+    </div>
 
+
+    <div class="footer-note">
+        ERP Automation Studio • Smart Failure Recovery • Single-Day Date Logic
     </div>
 
 </div>
 
 
+<!-- BOOTSTRAP -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <script>
 
 let parsedClassData = [];
 
 
-/* ============================================================
-   UTILITIES
-============================================================ */
+/* =========================================================
+   UTILITY
+========================================================= */
+
+function showStatus(message, type="success") {
+
+    const el = document.getElementById("statusBar");
+
+    el.className = "status-bar " +
+        (type === "error" ? "status-error" : "status-success");
+
+    el.innerHTML = message;
+}
+
 
 function normalizeKey(value) {
 
     return String(value || "")
         .trim()
         .toLowerCase()
-        .replace(/\s+/g, " ");
+        .replace(/\s+/g,"");
 
 }
 
@@ -679,173 +730,194 @@ function getValue(row, key) {
 
     const target = normalizeKey(key);
 
-    const found = Object.keys(row).find(k => {
-
-        return normalizeKey(k).includes(target);
-
-    });
+    const found = Object.keys(row).find(k =>
+        normalizeKey(k).includes(target)
+    );
 
     return found ? row[found] : "";
 
 }
 
 
-/* ============================================================
+/* =========================================================
+   EXCEL
+========================================================= */
+
+document.getElementById("excelFile")
+.addEventListener("change", function(e){
+
+    const file = e.target.files[0];
+
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event){
+
+        try{
+
+            const data = new Uint8Array(event.target.result);
+
+            const workbook = XLSX.read(data,{
+                type:"array",
+                cellDates:true
+            });
+
+            const sheet =
+                workbook.Sheets[workbook.SheetNames[0]];
+
+            const jsonData =
+                XLSX.utils.sheet_to_json(sheet,{
+                    defval:""
+                });
+
+            processData(jsonData);
+
+        }catch(error){
+
+            showStatus(
+                "Excel reading error: " + error.message,
+                "error"
+            );
+
+        }
+
+    };
+
+    reader.readAsArrayBuffer(file);
+
+});
+
+
+/* =========================================================
    DATE
-============================================================ */
+========================================================= */
 
-function formatDate(value) {
+function formatDate(value){
 
-    if (
-        value === null ||
-        value === undefined ||
-        value === ""
-    ) {
+    if(value === undefined || value === null || value === "")
         return "";
+
+    if(value instanceof Date){
+
+        return value.getFullYear() +
+            "-" +
+            String(value.getMonth()+1).padStart(2,"0") +
+            "-" +
+            String(value.getDate()).padStart(2,"0");
+
     }
 
-    if (typeof value === "number") {
+    if(typeof value === "number"){
 
         const date =
             XLSX.SSF.parse_date_code(value);
 
-        if (date) {
+        if(date){
 
-            return [
-                date.y,
-                String(date.m).padStart(2, "0"),
-                String(date.d).padStart(2, "0")
-            ].join("-");
+            return date.y +
+                "-" +
+                String(date.m).padStart(2,"0") +
+                "-" +
+                String(date.d).padStart(2,"0");
 
         }
 
     }
 
-    const text =
-        String(value).trim();
+    let str = String(value).trim();
 
-    if (/^\d{2}-\d{2}-\d{4}$/.test(text)) {
+    if(/^\d{2}-\d{2}-\d{4}$/.test(str)){
 
-        const p = text.split("-");
-
-        return `${p[2]}-${p[1]}-${p[0]}`;
-
-    }
-
-    if (/^\d{2}\/\d{2}\/\d{4}$/.test(text)) {
-
-        const p = text.split("/");
+        const p = str.split("-");
 
         return `${p[2]}-${p[1]}-${p[0]}`;
 
     }
 
-    if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+    if(/^\d{2}\/\d{2}\/\d{4}$/.test(str)){
 
-        return text;
+        const p = str.split("/");
+
+        return `${p[2]}-${p[1]}-${p[0]}`;
 
     }
 
-    return text;
+    if(/^\d{4}\/\d{2}\/\d{2}$/.test(str)){
+
+        return str.replace(/\//g,"-");
+
+    }
+
+    return str;
 
 }
 
 
-/* ============================================================
+/* =========================================================
    TIME
-============================================================ */
+========================================================= */
 
-function parseTime(value) {
+function parseTime(value){
 
-    if (
-        value === null ||
-        value === undefined ||
-        value === ""
-    ) {
-
+    if(value === undefined || value === null || value === "")
         return {
             Hour:"12",
             Min:"00",
             AMPM:"AM"
         };
 
-    }
+    if(value instanceof Date){
 
-    if (typeof value === "number") {
+        let h = value.getHours();
 
-        let totalMinutes =
-            Math.round(value * 24 * 60);
+        const m = String(value.getMinutes()).padStart(2,"0");
 
-        totalMinutes =
-            totalMinutes % (24 * 60);
+        const ampm = h >= 12 ? "PM" : "AM";
 
-        let h =
-            Math.floor(totalMinutes / 60);
-
-        let m =
-            totalMinutes % 60;
-
-        const ampm =
-            h >= 12 ? "PM" : "AM";
-
-        h =
-            h % 12;
-
-        if (h === 0) h = 12;
+        if(h === 0) h = 12;
+        else if(h > 12) h -= 12;
 
         return {
             Hour:String(h).padStart(2,"0"),
-            Min:String(m).padStart(2,"0"),
+            Min:m,
             AMPM:ampm
         };
 
     }
 
-    const text =
-        String(value)
-            .trim()
-            .toUpperCase();
+    let str = String(value).trim().toUpperCase();
 
     let match =
-        text.match(
-            /^(\d{1,2}):(\d{1,2})\s*(AM|PM)$/
-        );
+        str.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/);
 
-    if (match) {
+    if(match){
 
         return {
             Hour:String(match[1]).padStart(2,"0"),
-            Min:String(match[2]).padStart(2,"0"),
+            Min:match[2],
             AMPM:match[3]
         };
 
     }
 
     match =
-        text.match(/^(\d{1,2}):(\d{1,2})$/);
+        str.match(/^(\d{1,2}):(\d{2})$/);
 
-    if (match) {
+    if(match){
 
-        let hour =
-            parseInt(match[1],10);
+        let h = parseInt(match[1],10);
 
-        const minute =
-            String(match[2]).padStart(2,"0");
+        const min = match[2];
 
-        const ampm =
-            hour >= 12 ? "PM" : "AM";
+        const ampm = h >= 12 ? "PM" : "AM";
 
-        if (hour > 12) {
-            hour -= 12;
-        }
-
-        if (hour === 0) {
-            hour = 12;
-        }
+        if(h === 0) h = 12;
+        else if(h > 12) h -= 12;
 
         return {
-            Hour:String(hour).padStart(2,"0"),
-            Min:minute,
+            Hour:String(h).padStart(2,"0"),
+            Min:min,
             AMPM:ampm
         };
 
@@ -860,815 +932,633 @@ function parseTime(value) {
 }
 
 
-/* ============================================================
+/* =========================================================
    PROCESS DATA
-============================================================ */
+========================================================= */
 
-function processData(data) {
+function processData(data){
 
-    parsedClassData = data
-        .map(row => {
+    parsedClassData = data.map(row => {
 
-            const rawClass =
-                getValue(row,"Class");
+        const rawClass =
+            String(getValue(row,"Class") || "").trim();
 
-            const rawSection =
-                String(
-                    getValue(row,"Section") || ""
-                ).trim();
+        const rawSection =
+            String(getValue(row,"Section") || "").trim();
 
-            let finalSection =
-                rawSection;
+        let finalSection = rawSection;
 
-            if (
-                rawSection &&
-                rawSection.toUpperCase() !== "ALL SECTION" &&
-                rawSection.toUpperCase() !== "SELECT ALL" &&
-                !rawSection.includes(",")
-            ) {
+        if(
+            rawSection &&
+            rawSection.toUpperCase() !== "ALL SECTION" &&
+            rawSection.toUpperCase() !== "SELECT ALL" &&
+            !rawSection.includes(",")
+        ){
 
-                if (
-                    rawClass &&
-                    !rawSection
-                        .toUpperCase()
-                        .startsWith(
-                            String(rawClass).toUpperCase()
-                        )
-                ) {
+            if(
+                rawClass &&
+                !rawSection
+                    .toUpperCase()
+                    .startsWith(rawClass.toUpperCase())
+            ){
 
-                    finalSection =
-                        `${rawClass}-${rawSection}`;
-
-                }
+                finalSection =
+                    `${rawClass}-${rawSection}`;
 
             }
 
-            let daysValue =
-                getValue(row,"Days");
+        }
 
-            let daysArray = [
-                "Monday",
-                "Tuesday",
-                "Wednesday",
-                "Thursday",
-                "Friday",
-                "Saturday"
-            ];
 
-            if (daysValue) {
+        const rawDays =
+            String(getValue(row,"Days") || "").trim();
 
-                daysArray =
-                    String(daysValue)
-                        .split(",")
-                        .map(x => x.trim())
-                        .filter(Boolean);
+        let daysArray = [];
 
-            }
+        if(rawDays){
 
-            const start =
-                parseTime(
-                    getValue(row,"Start Time")
-                );
+            daysArray =
+                rawDays
+                    .split(",")
+                    .map(d => d.trim())
+                    .filter(Boolean);
 
-            const end =
-                parseTime(
-                    getValue(row,"End Time")
-                );
+        }
 
-            return {
 
-                Date:
-                    formatDate(
-                        getValue(row,"Start Date")
-                    ),
+        const startDate =
+            formatDate(getValue(row,"Start Date"));
 
-                EndDate:
-                    formatDate(
-                        getValue(row,"End Date")
-                    ),
+        const endDate =
+            formatDate(getValue(row,"End Date"));
 
-                Days:
-                    daysArray,
+        const start =
+            parseTime(getValue(row,"Start Time"));
 
-                StartTime:
-                    start.Hour,
+        const end =
+            parseTime(getValue(row,"End Time"));
 
-                StartMin:
-                    start.Min,
 
-                StartAMPM:
-                    start.AMPM,
+        return {
 
-                EndTime:
-                    end.Hour,
+            Date:startDate,
 
-                EndMin:
-                    end.Min,
+            EndDate:endDate,
 
-                EndAMPM:
-                    end.AMPM,
+            Days:daysArray,
 
-                Class:
-                    String(rawClass || "").trim(),
+            StartTime:start.Hour,
+            StartMin:start.Min,
+            StartAMPM:start.AMPM,
 
-                Section:
-                    finalSection,
+            EndTime:end.Hour,
+            EndMin:end.Min,
+            EndAMPM:end.AMPM,
 
-                Teacher:
-                    String(
-                        getValue(row,"Teacher") || ""
-                    ).trim(),
+            Class:rawClass,
 
-                Subject:
-                    String(
-                        getValue(row,"Subject") || ""
-                    ).trim()
+            Section:finalSection,
 
-            };
+            Teacher:String(
+                getValue(row,"Teacher") || ""
+            ).trim(),
 
-        })
-        .filter(row => {
+            Subject:String(
+                getValue(row,"Subject") || ""
+            ).trim()
 
-            return Object.values(row).some(v => {
+        };
 
-                if (Array.isArray(v)) {
-                    return v.length > 0;
-                }
+    }).filter(row =>
+        row.Date ||
+        row.Class ||
+        row.Teacher ||
+        row.Subject
+    );
 
-                return String(v || "").trim() !== "";
 
-            });
-
-        });
-
-    updateStatus(
-        true,
-        `Successfully parsed ${parsedClassData.length} schedule rows.`,
-        parsedClassData.length
+    showStatus(
+        `<i class="bi bi-check-circle me-2"></i>
+         ${parsedClassData.length} schedule entries loaded successfully.`
     );
 
 }
 
 
-/* ============================================================
-   EXCEL
-============================================================ */
+/* =========================================================
+   MANUAL DATA
+========================================================= */
 
-document
-    .getElementById("excelFile")
-    .addEventListener("change",function(event){
+function processManualData(){
 
-        const file =
-            event.target.files[0];
+    const raw =
+        document.getElementById("manualData")
+        .value
+        .trim();
 
-        if (!file) return;
+    if(!raw) return false;
 
-        updateStatus(
-            false,
-            "Reading Excel file...",
-            0
-        );
+    const lines =
+        raw.split(/\r?\n/)
+        .filter(line => line.trim());
 
-        const reader =
-            new FileReader();
 
-        reader.onload =
-            function(e){
+    const rows = lines.map(line => {
 
-                try {
+        let c = line.split("\t");
 
-                    const data =
-                        new Uint8Array(
-                            e.target.result
-                        );
+        if(c.length < 9){
 
-                    const workbook =
-                        XLSX.read(
-                            data,
-                            {
-                                type:"array",
-                                cellDates:false
-                            }
-                        );
+            c = line.split("|");
 
-                    const sheet =
-                        workbook.Sheets[
-                            workbook.SheetNames[0]
-                        ];
+        }
 
-                    const jsonData =
-                        XLSX.utils.sheet_to_json(
-                            sheet,
-                            {
-                                defval:""
-                            }
-                        );
+        return {
 
-                    if (!jsonData.length) {
+            "Start Date":c[0] || "",
+            "End Date":c[1] || "",
+            "Start Time":c[2] || "",
+            "End Time":c[3] || "",
+            "Days":c[4] || "",
+            "Class":c[5] || "",
+            "Section":c[6] || "",
+            "Teacher":c[7] || "",
+            "Subject":c[8] || ""
 
-                        throw new Error(
-                            "The selected Excel sheet is empty."
-                        );
-
-                    }
-
-                    processData(jsonData);
-
-                } catch(error) {
-
-                    updateStatus(
-                        false,
-                        "Excel reading failed: " +
-                        error.message,
-                        0,
-                        true
-                    );
-
-                }
-
-            };
-
-        reader.readAsArrayBuffer(file);
+        };
 
     });
 
-
-/* ============================================================
-   MANUAL DATA
-============================================================ */
-
-function processManualData() {
-
-    const text =
-        document
-            .getElementById("manualData")
-            .value
-            .trim();
-
-    if (!text) return false;
-
-    const rows =
-        text
-            .split(/\r?\n/)
-            .filter(row => row.trim());
-
-    const mapped =
-        rows.map(row => {
-
-            const c =
-                row.includes("\t")
-                    ? row.split("\t")
-                    : row.split("|");
-
-            return {
-
-                "Start Date":c[0] || "",
-                "End Date":c[1] || "",
-                "Start Time":c[2] || "",
-                "End Time":c[3] || "",
-                "Days":c[4] || "",
-                "Class":c[5] || "",
-                "Section":c[6] || "",
-                "Teacher":c[7] || "",
-                "Subject":c[8] || ""
-
-            };
-
-        });
-
-    processData(mapped);
+    processData(rows);
 
     return true;
 
 }
 
 
-/* ============================================================
-   STATUS
-============================================================ */
+/* =========================================================
+   FAILED ROW INJECTION
+========================================================= */
 
-function updateStatus(
-    success,
-    message,
-    count,
-    error=false
-){
+function injectFailedRows(){
 
-    const box =
-        document.getElementById("statusBox");
-
-    const dot =
-        document.getElementById("statusDot");
-
-    const text =
-        document.getElementById("statusText");
-
-    const rows =
-        document.getElementById("rowCount");
-
-    box.classList.add("show");
-
-    dot.className =
-        "status-dot " +
-        (
-            error
-                ? "error"
-                : success
-                    ? "success"
-                    : "processing"
+    const failedRows =
+        JSON.parse(
+            localStorage.getItem(
+                "ERP_AUTOMATION_FAILED_ROWS"
+            ) || "[]"
         );
 
-    text.textContent =
-        message;
 
-    rows.textContent =
-        `${count || 0} rows`;
+    if(!failedRows.length){
 
-}
-
-
-/* ============================================================
-   USERSCRIPT GENERATOR
-============================================================ */
-
-function generateScript() {
-
-    const manual =
-        document
-            .getElementById("manualData")
-            .value
-            .trim();
-
-    if (manual) {
-
-        processManualData();
-
-    }
-
-    if (!parsedClassData.length) {
-
-        updateStatus(
-            false,
-            "No schedule data detected. Upload Excel or paste data.",
-            0,
-            true
+        showStatus(
+            `<i class="bi bi-check-circle me-2"></i>
+             No failed entries are currently stored.`
         );
 
         return;
 
     }
 
-    updateStatus(
-        false,
-        "Compiling automation userscript...",
-        parsedClassData.length
+
+    const rows =
+        failedRows.map(row => {
+
+            return [
+                row.Date || "",
+                row.EndDate || "",
+                `${row.StartTime || "12"}:${row.StartMin || "00"} ${row.StartAMPM || "AM"}`,
+                `${row.EndTime || "12"}:${row.EndMin || "00"} ${row.EndAMPM || "AM"}`,
+                (row.Days || []).join(", "),
+                row.Class || "",
+                row.Section || "",
+                row.Teacher || "",
+                row.Subject || ""
+            ].join("\t");
+
+        });
+
+
+    document.getElementById("manualData").value =
+        rows.join("\n");
+
+
+    const pasteTab =
+        document.querySelector(
+            '[data-bs-target="#pasteTab"]'
+        );
+
+    if(pasteTab){
+
+        bootstrap.Tab
+            .getOrCreateInstance(pasteTab)
+            .show();
+
+    }
+
+
+    showStatus(
+        `<i class="bi bi-arrow-down-circle me-2"></i>
+         ${failedRows.length} failed entries injected automatically into Paste Data.`
     );
 
-    const dataJSON =
+}
+
+
+/* =========================================================
+   GENERATE USER SCRIPT
+========================================================= */
+
+function generateScript(){
+
+    const manualRaw =
+        document.getElementById("manualData")
+        .value
+        .trim();
+
+
+    if(manualRaw){
+
+        processManualData();
+
+    }
+
+
+    if(!parsedClassData.length){
+
+        showStatus(
+            `<i class="bi bi-exclamation-triangle me-2"></i>
+             No data detected. Please upload Excel or paste data.`,
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const classDataJSON =
         JSON.stringify(
             parsedClassData,
             null,
             4
         );
 
+
     const script = `// ==UserScript==
-// @name         ERP Live Class Scheduler - Professional Recovery Edition
+// @name         ERP Auto Scheduler - Smart Recovery Edition
 // @namespace    ERP-Automation-Studio
-// @version      5.0
-// @description  ERP timetable automation with persistent failure recovery and direct failed-row injection
+// @version      6.0
+// @description  ERP Live Class Scheduler with smart date/day logic, auto resume, failure recovery and failed-row injection
 // @match        *://*/*
 // @grant        none
 // ==/UserScript==
 
-(function () {
+(function(){
 
-    'use strict';
-
-    /* ========================================================
-       STORAGE
-    ======================================================== */
-
-    const STORAGE = {
-
-        RUNNING:
-            'erp_scheduler_running_v5',
-
-        INDEX:
-            'erp_scheduler_index_v5',
-
-        QUEUE:
-            'erp_scheduler_queue_v5',
-
-        FAILED:
-            'erp_scheduler_failed_v5',
-
-        SUCCESS:
-            'erp_scheduler_success_v5',
-
-        CURRENT:
-            'erp_scheduler_current_v5',
-
-        LOG:
-            'erp_scheduler_activity_v5'
-
-    };
+'use strict';
 
 
-    /* ========================================================
-       ORIGINAL COMPILED DATA
-    ======================================================== */
+/* =========================================================
+   STORAGE
+========================================================= */
 
-    const ORIGINAL_DATA =
-        ${dataJSON};
+const STORAGE_RUNNING =
+    'ERP_AUTOMATION_RUNNING';
 
+const STORAGE_INDEX =
+    'ERP_AUTOMATION_INDEX';
 
-    /* ========================================================
-       GENERAL HELPERS
-    ======================================================== */
-
-    const sleep =
-        ms =>
-            new Promise(resolve =>
-                setTimeout(resolve, ms)
-            );
+const STORAGE_LOGS =
+    'ERP_AUTOMATION_FAILED_ROWS';
 
 
-    function readJSON(key, fallback) {
+/* =========================================================
+   DATA
+========================================================= */
 
-        try {
-
-            const value =
-                localStorage.getItem(key);
-
-            return value
-                ? JSON.parse(value)
-                : fallback;
-
-        } catch(e) {
-
-            return fallback;
-
-        }
-
-    }
+const classData =
+${classDataJSON};
 
 
-    function writeJSON(key, value) {
+/* =========================================================
+   HELPERS
+========================================================= */
 
-        localStorage.setItem(
-            key,
-            JSON.stringify(value)
+function sleep(ms){
+
+    return new Promise(resolve =>
+        setTimeout(resolve,ms)
+    );
+
+}
+
+
+function triggerEvents(element){
+
+    if(!element) return;
+
+    ['input','change','blur'].forEach(eventName => {
+
+        element.dispatchEvent(
+            new Event(eventName,{
+                bubbles:true
+            })
         );
 
-    }
+    });
+
+}
 
 
-    function remove(key) {
+/* =========================================================
+   DATE CONDITION
+========================================================= */
 
-        localStorage.removeItem(key);
+function isSingleDay(entry){
 
-    }
+    if(!entry.Date || !entry.EndDate)
+        return false;
 
+    return entry.Date === entry.EndDate;
 
-    function addActivity(message, type='INFO') {
-
-        const logs =
-            readJSON(
-                STORAGE.LOG,
-                []
-            );
-
-        logs.push({
-
-            time:
-                new Date().toLocaleString(),
-
-            type,
-            message
-
-        });
-
-        if (logs.length > 200) {
-            logs.splice(
-                0,
-                logs.length - 200
-            );
-        }
-
-        writeJSON(
-            STORAGE.LOG,
-            logs
-        );
-
-        console.log(
-            '[ERP Scheduler]',
-            message
-        );
-
-    }
+}
 
 
-    function triggerEvents(element) {
+/* =========================================================
+   DROPDOWN
+========================================================= */
 
-        if (!element) return;
+async function selectCustomDropdown(
+    selector,
+    itemText,
+    isIndex=false,
+    index=0,
+    exactMatch=false
+){
 
-        ['input','change','blur'].forEach(
-            eventName => {
-
-                element.dispatchEvent(
-                    new Event(
-                        eventName,
-                        {
-                            bubbles:true
-                        }
-                    )
-                );
-
-            }
-        );
-
-    }
+    if(!itemText)
+        return false;
 
 
-    /* ========================================================
-       DROPDOWN
-    ======================================================== */
+    const dropdown =
+        isIndex
+            ? document.querySelectorAll(
+                'ng-multiselect-dropdown'
+              )[index]
+            : document.querySelector(
+                'ng-multiselect-dropdown[name="' +
+                selector +
+                '"]'
+              );
 
-    async function selectCustomDropdown(
-        selector,
-        itemText,
-        isIndex=false,
-        index=0,
-        exactMatch=false
+
+    if(!dropdown)
+        return false;
+
+
+    const button =
+        dropdown.querySelector('.dropdown-btn');
+
+
+    if(!button)
+        return false;
+
+
+    button.click();
+
+    await sleep(500);
+
+
+    const upperText =
+        String(itemText)
+        .trim()
+        .toUpperCase();
+
+
+    let clickedAnything=false;
+
+
+    /* SELECT ALL */
+
+    if(
+        upperText === 'ALL SECTION' ||
+        upperText === 'SELECT ALL'
     ){
 
-        if (!itemText) {
+        const elements =
+            dropdown.querySelectorAll('li,div');
 
-            throw new Error(
-                'Dropdown value is empty.'
-            );
 
-        }
+        for(const element of elements){
 
-        let dropdown;
+            if(
+                element.textContent
+                .trim()
+                .toUpperCase() === 'SELECT ALL'
+            ){
 
-        if (isIndex) {
+                const input =
+                    element.querySelector('input');
 
-            dropdown =
-                document.querySelectorAll(
-                    'ng-multiselect-dropdown'
-                )[index];
 
-        } else {
+                if(input)
+                    input.click();
+                else
+                    element.click();
 
-            dropdown =
-                document.querySelector(
-                    'ng-multiselect-dropdown[name="' +
-                    selector +
-                    '"]'
-                );
 
-        }
+                clickedAnything=true;
 
-        if (!dropdown) {
+                break;
 
-            throw new Error(
-                'Dropdown not found: ' +
-                selector
-            );
+            }
 
         }
 
-        const button =
-            dropdown.querySelector(
-                '.dropdown-btn'
-            );
+    }
 
-        if (!button) {
 
-            throw new Error(
-                'Dropdown button not found: ' +
-                selector
-            );
+    /* NORMAL ITEMS */
 
-        }
+    else{
 
-        button.click();
+        const targets =
+            upperText
+            .split(",")
+            .map(x => x.trim())
+            .filter(Boolean);
 
-        await sleep(500);
 
-        const upper =
-            String(itemText)
+        const listItems =
+            dropdown.querySelectorAll('.item2 li');
+
+
+        for(const li of listItems){
+
+            const text =
+                li.textContent
                 .trim()
                 .toUpperCase();
 
-        let clicked =
-            false;
+
+            let matched=false;
 
 
-        /* ----------------------------------------------------
-           SELECT ALL
-        ---------------------------------------------------- */
+            if(exactMatch){
 
-        if (
-            upper === 'ALL SECTION' ||
-            upper === 'SELECT ALL'
-        ){
+                matched =
+                    targets.includes(text);
 
-            const elements =
-                dropdown.querySelectorAll(
-                    'li, div'
-                );
+            }
+            else{
 
-            for (
-                const element
-                of elements
-            ){
+                matched =
+                    targets.some(target => {
 
-                if (
-                    element
-                        .textContent
-                        .trim()
-                        .toUpperCase()
-                    ===
-                    'SELECT ALL'
-                ){
+                        const tokens =
+                            target.split(/\\s+/);
 
-                    const input =
-                        element.querySelector(
-                            'input'
+                        return tokens.every(
+                            token =>
+                                text.includes(token)
                         );
 
-                    if (input) {
-                        input.click();
-                    } else {
-                        element.click();
-                    }
+                    });
 
-                    clicked = true;
+            }
 
-                    break;
+
+            if(matched){
+
+                const input =
+                    li.querySelector('input');
+
+
+                if(input){
+
+                    input.click();
+
+                    clickedAnything=true;
 
                 }
 
             }
 
         }
-
-        /* ----------------------------------------------------
-           NORMAL / MULTIPLE
-        ---------------------------------------------------- */
-
-        else {
-
-            const targets =
-                upper
-                    .split(',')
-                    .map(
-                        x => x.trim()
-                    )
-                    .filter(Boolean);
-
-            const listItems =
-                dropdown.querySelectorAll(
-                    '.item2 li'
-                );
-
-            for (
-                const li
-                of listItems
-            ){
-
-                const text =
-                    li.textContent
-                        .trim()
-                        .toUpperCase();
-
-                let match = false;
-
-                if (exactMatch) {
-
-                    match =
-                        targets.includes(text);
-
-                } else {
-
-                    match =
-                        targets.some(target => {
-
-                            const tokens =
-                                target.split(/\\s+/);
-
-                            return tokens.every(
-                                token =>
-                                    text.includes(token)
-                            );
-
-                        });
-
-                }
-
-                if (match) {
-
-                    const input =
-                        li.querySelector(
-                            'input'
-                        );
-
-                    if (input) {
-
-                        if (!input.checked) {
-                            input.click();
-                        }
-
-                        clicked = true;
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        button.click();
-
-        triggerEvents(dropdown);
-
-        await sleep(250);
-
-        if (!clicked) {
-
-            throw new Error(
-                'Value not found in dropdown "' +
-                selector +
-                '": ' +
-                itemText
-            );
-
-        }
-
-        return true;
 
     }
 
 
-    /* ========================================================
-       DAYS
-    ======================================================== */
+    button.click();
 
-    async function selectDays(daysToSelect) {
+    triggerEvents(dropdown);
 
-        const dropdown =
-            document.querySelector(
-                'ng-multiselect-dropdown[name="day"]'
-            );
+    return clickedAnything;
 
-        if (!dropdown) {
+}
 
-            throw new Error(
-                'Day dropdown not found.'
-            );
 
-        }
+/* =========================================================
+   DAYS
+========================================================= */
 
-        const button =
-            dropdown.querySelector(
-                '.dropdown-btn'
-            );
+async function selectDays(daysToSelect){
 
-        if (!button) {
+    /*
+       IMPORTANT:
+       Days are required ONLY when Start Date
+       and End Date are different.
+    */
 
-            throw new Error(
-                'Day dropdown button not found.'
-            );
+    if(!Array.isArray(daysToSelect))
+        return true;
 
-        }
 
-        button.click();
+    if(daysToSelect.length === 0)
+        return true;
 
-        await sleep(400);
 
-        const items =
-            dropdown.querySelectorAll(
-                '.item2 li'
-            );
+    const dropdown =
+        document.querySelector(
+            'ng-multiselect-dropdown[name="day"]'
+        );
 
-        /* Clear previous selection */
 
-        for (
-            const li
-            of items
+    if(!dropdown)
+        return false;
+
+
+    const button =
+        dropdown.querySelector('.dropdown-btn');
+
+
+    if(!button)
+        return false;
+
+
+    button.click();
+
+    await sleep(500);
+
+
+    const listItems =
+        dropdown.querySelectorAll('.item2 li');
+
+
+    /*
+       Reset current selections.
+    */
+
+    for(const li of listItems){
+
+        const checkbox =
+            li.querySelector('input');
+
+
+        if(
+            checkbox &&
+            checkbox.checked
         ){
 
-            const checkbox =
-                li.querySelector(
-                    'input'
-                );
+            checkbox.click();
 
-            if (
+        }
+
+    }
+
+
+    /*
+       Select requested days.
+    */
+
+    for(const li of listItems){
+
+        const dayText =
+            li.textContent
+            .trim()
+            .toUpperCase();
+
+
+        const matched =
+            daysToSelect.some(
+                day =>
+                    String(day)
+                    .trim()
+                    .toUpperCase() === dayText
+            );
+
+
+        if(matched){
+
+            const checkbox =
+                li.querySelector('input');
+
+
+            if(
                 checkbox &&
-                checkbox.checked
+                !checkbox.checked
             ){
 
                 checkbox.click();
@@ -1677,369 +1567,257 @@ function generateScript() {
 
         }
 
-        /* Select required days */
-
-        const targetDays =
-            daysToSelect.map(
-                day =>
-                    String(day)
-                        .trim()
-                        .toUpperCase()
-            );
-
-        let found = 0;
-
-        for (
-            const li
-            of items
-        ){
-
-            const text =
-                li.textContent
-                    .trim()
-                    .toUpperCase();
-
-            if (
-                targetDays.includes(text)
-            ){
-
-                const checkbox =
-                    li.querySelector(
-                        'input'
-                    );
-
-                if (
-                    checkbox &&
-                    !checkbox.checked
-                ){
-
-                    checkbox.click();
-
-                }
-
-                found++;
-
-            }
-
-        }
-
-        button.click();
-
-        triggerEvents(dropdown);
-
-        await sleep(250);
-
-        if (!found) {
-
-            throw new Error(
-                'Required days were not found.'
-            );
-
-        }
-
     }
 
 
-    /* ========================================================
-       SET SELECT VALUE
-    ======================================================== */
+    button.click();
 
-    async function setSelect(
-        name,
-        value
-    ){
+    triggerEvents(dropdown);
 
-        const element =
-            document.querySelector(
-                'select[name="' +
-                name +
-                '"]'
-            );
+    return true;
 
-        if (!element) {
-
-            throw new Error(
-                'Select field not found: ' +
-                name
-            );
-
-        }
-
-        const wanted =
-            String(value)
-                .trim()
-                .toUpperCase();
-
-        let option =
-            Array.from(
-                element.options
-            ).find(
-                opt =>
-                    String(opt.value)
-                        .trim()
-                        .toUpperCase()
-                    ===
-                    wanted
-            );
-
-        if (!option) {
-
-            option =
-                Array.from(
-                    element.options
-                ).find(
-                    opt =>
-                        String(opt.textContent)
-                            .trim()
-                            .toUpperCase()
-                        ===
-                        wanted
-                );
-
-            if (option) {
-                element.value =
-                    option.value;
-            } else {
-
-                throw new Error(
-                    'Option "' +
-                    value +
-                    '" not found in ' +
-                    name
-                );
-
-            }
-
-        } else {
-
-            element.value =
-                option.value;
-
-        }
-
-        triggerEvents(element);
-
-        await sleep(150);
-
-    }
+}
 
 
-    /* ========================================================
-       SAVE BUTTON
-    ======================================================== */
+/* =========================================================
+   SAVE FAILED ROW
+========================================================= */
 
-    function findSaveButton() {
+function saveFailedRow(entry,errorMessage){
 
-        const selectors = [
-
-            'button.save-btn',
-
-            'button[type="submit"]',
-
-            'button.btn-primary'
-
-        ];
-
-        for (
-            const selector
-            of selectors
-        ){
-
-            const button =
-                document.querySelector(
-                    selector
-                );
-
-            if (
-                button &&
-                !button.disabled
-            ){
-
-                const text =
-                    button.textContent
-                        .trim()
-                        .toLowerCase();
-
-                if (
-                    selector ===
-                    'button.save-btn'
-                    ||
-                    text.includes('save')
-                    ||
-                    text.includes('submit')
-                ){
-
-                    return button;
-
-                }
-
-            }
-
-        }
-
-        return null;
-
-    }
-
-
-    /* ========================================================
-       CONFIRMATION
-    ======================================================== */
-
-    async function clickConfirmationYes() {
-
-        await sleep(1000);
-
-        const buttons =
-            Array.from(
-                document.querySelectorAll(
-                    'button'
-                )
-            );
-
-        const yes =
-            buttons.find(
-                button =>
-                    button.textContent
-                        .trim()
-                        .toLowerCase()
-                    ===
-                    'yes'
-            );
-
-        if (yes) {
-
-            yes.click();
-
-            await sleep(1800);
-
-            return true;
-
-        }
-
-        /*
-         * Some ERP versions save directly.
-         * Therefore absence of Yes is not automatically
-         * treated as failure if the save operation exists.
-         */
-
-        return false;
-
-    }
-
-
-    /* ========================================================
-       RUN SINGLE ROW
-    ======================================================== */
-
-    async function runAutomation(
-        entry,
-        index
-    ){
-
-        const started =
-            Date.now();
-
-        writeJSON(
-            STORAGE.CURRENT,
-            {
-                index,
-                entry,
-                started
-            }
+    let logs =
+        JSON.parse(
+            localStorage.getItem(STORAGE_LOGS)
+            || '[]'
         );
 
-        try {
 
-            addActivity(
-                'Starting row ' +
-                index,
-                'START'
+    /*
+       Prevent duplicate failure records.
+    */
+
+    const duplicate =
+        logs.some(row =>
+            row.Date === entry.Date &&
+            row.EndDate === entry.EndDate &&
+            row.StartTime === entry.StartTime &&
+            row.StartMin === entry.StartMin &&
+            row.Class === entry.Class &&
+            row.Section === entry.Section &&
+            row.Teacher === entry.Teacher &&
+            row.Subject === entry.Subject
+        );
+
+
+    if(!duplicate){
+
+        const failedEntry =
+            JSON.parse(
+                JSON.stringify(entry)
             );
 
 
-            /* DATE */
+        failedEntry._errorReason =
+            errorMessage || 'Unknown error';
 
-            const startDate =
-                document.querySelector(
-                    'input[name="startDate"]'
-                );
 
-            if (!startDate) {
+        failedEntry._failedAt =
+            new Date().toISOString();
+
+
+        logs.push(failedEntry);
+
+        localStorage.setItem(
+            STORAGE_LOGS,
+            JSON.stringify(logs)
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   REMOVE SUCCESSFUL RETRY ROW
+========================================================= */
+
+function removeFailedRow(entry){
+
+    let logs =
+        JSON.parse(
+            localStorage.getItem(STORAGE_LOGS)
+            || '[]'
+        );
+
+
+    logs =
+        logs.filter(row => !(
+            row.Date === entry.Date &&
+            row.EndDate === entry.EndDate &&
+            row.StartTime === entry.StartTime &&
+            row.StartMin === entry.StartMin &&
+            row.Class === entry.Class &&
+            row.Section === entry.Section &&
+            row.Teacher === entry.Teacher &&
+            row.Subject === entry.Subject
+        ));
+
+
+    localStorage.setItem(
+        STORAGE_LOGS,
+        JSON.stringify(logs)
+    );
+
+}
+
+
+/* =========================================================
+   AUTOMATION
+========================================================= */
+
+async function runAutomation(entry,index){
+
+    try{
+
+        console.log(
+            'ERP Automation:',
+            index,
+            entry
+        );
+
+
+        /* DATE */
+
+        const startDate =
+            document.querySelector(
+                'input[name="startDate"]'
+            );
+
+
+        const endDate =
+            document.querySelector(
+                'input[name="endDate"]'
+            );
+
+
+        if(!startDate)
+            throw new Error(
+                'Start Date field not found'
+            );
+
+
+        if(!endDate)
+            throw new Error(
+                'End Date field not found'
+            );
+
+
+        startDate.value =
+            entry.Date;
+
+
+        triggerEvents(startDate);
+
+
+        endDate.value =
+            entry.EndDate;
+
+
+        triggerEvents(endDate);
+
+
+        await sleep(300);
+
+
+        /* =================================================
+           IMPORTANT DATE/DAYS CONDITION
+        ================================================= */
+
+
+        if(isSingleDay(entry)){
+
+            console.log(
+                'Single-day entry detected. Days dropdown skipped.'
+            );
+
+        }
+        else{
+
+            console.log(
+                'Multi-day entry detected. Selecting Days.'
+            );
+
+
+            if(!entry.Days || entry.Days.length === 0){
 
                 throw new Error(
-                    'Start Date field not found.'
+                    'Days are required for a multi-day schedule but no Days were supplied.'
                 );
 
             }
 
-            startDate.value =
-                entry.Date;
 
-            triggerEvents(startDate);
+            const daysResult =
+                await selectDays(entry.Days);
 
 
-            const endDate =
-                document.querySelector(
-                    'input[name="endDate"]'
-                );
-
-            if (!endDate) {
+            if(!daysResult){
 
                 throw new Error(
-                    'End Date field not found.'
+                    'Days dropdown not found or days could not be selected.'
                 );
 
             }
 
-            endDate.value =
-                entry.EndDate;
-
-            triggerEvents(endDate);
+        }
 
 
-            /* DAYS */
+        /* TIME */
 
-            await selectDays(
-                entry.Days
-            );
+        const timeFields = {
 
+            slotTime:entry.StartTime,
+            slotMin:entry.StartMin,
+            slotType:entry.StartAMPM,
 
-            /* TIME */
+            slotEndTime:entry.EndTime,
+            slotEndMin:entry.EndMin,
+            slotEndType:entry.EndAMPM
 
-            await setSelect(
-                'slotTime',
-                entry.StartTime
-            );
-
-            await setSelect(
-                'slotMin',
-                entry.StartMin
-            );
-
-            await setSelect(
-                'slotType',
-                entry.StartAMPM
-            );
-
-            await setSelect(
-                'slotEndTime',
-                entry.EndTime
-            );
-
-            await setSelect(
-                'slotEndMin',
-                entry.EndMin
-            );
-
-            await setSelect(
-                'slotEndType',
-                entry.EndAMPM
-            );
+        };
 
 
-            /* CLASS */
+        for(
+            const [name,value]
+            of Object.entries(timeFields)
+        ){
 
+            const select =
+                document.querySelector(
+                    'select[name="' +
+                    name +
+                    '"]'
+                );
+
+
+            if(select){
+
+                select.value =
+                    value;
+
+
+                triggerEvents(select);
+
+                await sleep(100);
+
+            }
+
+        }
+
+
+        /* CLASS */
+
+        const classResult =
             await selectCustomDropdown(
                 'std1',
                 entry.Class,
@@ -2049,11 +1827,19 @@ function generateScript() {
             );
 
 
-            await sleep(400);
+        if(!classResult){
+
+            throw new Error(
+                'Class not found: ' +
+                entry.Class
+            );
+
+        }
 
 
-            /* SECTION */
+        /* SECTION */
 
+        const sectionResult =
             await selectCustomDropdown(
                 'section',
                 entry.Section,
@@ -2063,11 +1849,19 @@ function generateScript() {
             );
 
 
-            await sleep(400);
+        if(!sectionResult){
+
+            throw new Error(
+                'Section not found: ' +
+                entry.Section
+            );
+
+        }
 
 
-            /* TEACHER */
+        /* TEACHER */
 
+        const teacherResult =
             await selectCustomDropdown(
                 null,
                 entry.Teacher,
@@ -2077,1958 +1871,1175 @@ function generateScript() {
             );
 
 
-            await sleep(500);
+        if(!teacherResult){
 
-
-            /* SUBJECT */
-
-            await setSelect(
-                'subject',
-                entry.Subject
+            throw new Error(
+                'Teacher not found: ' +
+                entry.Teacher
             );
-
-
-            await sleep(500);
-
-
-            /* SAVE */
-
-            const saveButton =
-                findSaveButton();
-
-            if (!saveButton) {
-
-                throw new Error(
-                    'Save button not found.'
-                );
-
-            }
-
-            saveButton.click();
-
-            await sleep(1200);
-
-            await clickConfirmationYes();
-
-            await sleep(1200);
-
-
-            /* SUCCESS */
-
-            const success =
-                readJSON(
-                    STORAGE.SUCCESS,
-                    []
-                );
-
-            success.push({
-
-                index,
-                entry,
-                completedAt:
-                    new Date().toISOString()
-
-            });
-
-            writeJSON(
-                STORAGE.SUCCESS,
-                success
-            );
-
-
-            remove(
-                STORAGE.CURRENT
-            );
-
-
-            addActivity(
-                'Row ' +
-                index +
-                ' completed successfully.',
-                'SUCCESS'
-            );
-
-
-            return {
-                success:true
-            };
-
-        } catch(error) {
-
-            const failed =
-                readJSON(
-                    STORAGE.FAILED,
-                    []
-                );
-
-
-            /*
-             * IMPORTANT:
-             * Store COMPLETE original row.
-             */
-
-            const failedEntry = {
-
-                ...entry,
-
-                _originalIndex:
-                    index,
-
-                _errorReason:
-                    error &&
-                    error.message
-                        ? error.message
-                        : String(error),
-
-                _failedAt:
-                    new Date().toISOString()
-
-            };
-
-
-            /*
-             * Avoid duplicate failure records
-             * for same original row.
-             */
-
-            const existing =
-                failed.findIndex(
-                    item =>
-                        Number(
-                            item._originalIndex
-                        )
-                        ===
-                        Number(index)
-                );
-
-
-            if (existing >= 0) {
-
-                failed[existing] =
-                    failedEntry;
-
-            } else {
-
-                failed.push(
-                    failedEntry
-                );
-
-            }
-
-
-            writeJSON(
-                STORAGE.FAILED,
-                failed
-            );
-
-
-            remove(
-                STORAGE.CURRENT
-            );
-
-
-            addActivity(
-                'Row ' +
-                index +
-                ' FAILED: ' +
-                failedEntry._errorReason,
-                'ERROR'
-            );
-
-
-            return {
-
-                success:false,
-
-                error:
-                    failedEntry._errorReason
-
-            };
 
         }
 
-    }
+
+        await sleep(500);
 
 
-    /* ========================================================
-       QUEUE MANAGEMENT
-    ======================================================== */
+        /* SUBJECT */
 
-    function getQueue() {
-
-        const stored =
-            readJSON(
-                STORAGE.QUEUE,
-                null
+        const subject =
+            document.querySelector(
+                'select[name="subject"]'
             );
 
-        if (
-            Array.isArray(stored) &&
-            stored.length
-        ){
 
-            return stored;
+        if(!subject){
+
+            throw new Error(
+                'Subject dropdown not found'
+            );
 
         }
 
-        return ORIGINAL_DATA.map(
-            (entry,index) => ({
-                ...entry,
-                _queueIndex:index,
-                _originalIndex:index
-            })
+
+        subject.value =
+            entry.Subject;
+
+
+        triggerEvents(subject);
+
+
+        await sleep(300);
+
+
+        /* SAVE */
+
+        const saveBtn =
+            document.querySelector(
+                'button.save-btn'
+            );
+
+
+        if(!saveBtn){
+
+            throw new Error(
+                'Save button not found'
+            );
+
+        }
+
+
+        saveBtn.click();
+
+
+        await sleep(1500);
+
+
+        /* CONFIRM */
+
+        const yesBtn =
+            Array.from(
+                document.querySelectorAll('button')
+            ).find(
+                button =>
+                    button.textContent
+                    .trim()
+                    .toLowerCase() === 'yes'
+            );
+
+
+        if(yesBtn){
+
+            yesBtn.click();
+
+        }
+        else{
+
+            throw new Error(
+                'Confirmation Yes button not found'
+            );
+
+        }
+
+
+        await sleep(2000);
+
+
+        /*
+           If this was a retry,
+           remove it from failed queue.
+        */
+
+        removeFailedRow(entry);
+
+
+        console.log(
+            'SUCCESS:',
+            entry
         );
+
+
+        return true;
+
+    }
+    catch(error){
+
+        console.error(
+            'FAILED ROW:',
+            index,
+            error
+        );
+
+
+        saveFailedRow(
+            entry,
+            error.message
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   FAILURE UI
+========================================================= */
+
+function showFailureUI(){
+
+    const logs =
+        JSON.parse(
+            localStorage.getItem(STORAGE_LOGS)
+            || '[]'
+        );
+
+
+    if(logs.length === 0){
+
+        showCompletionUI();
+
+        return;
 
     }
 
 
-    function setQueue(queue) {
-
-        writeJSON(
-            STORAGE.QUEUE,
-            queue
+    const old =
+        document.getElementById(
+            'erp-failure-panel'
         );
 
-    }
+
+    if(old)
+        old.remove();
 
 
-    function getCurrentIndex() {
-
-        return parseInt(
-            localStorage.getItem(
-                STORAGE.INDEX
-            ) || '0',
-            10
-        );
-
-    }
+    const panel =
+        document.createElement('div');
 
 
-    function setCurrentIndex(index) {
+    panel.id =
+        'erp-failure-panel';
+
+
+    panel.style = \`
+        position:fixed;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        z-index:2147483647;
+        width:min(900px,94vw);
+        background:#ffffff;
+        border-radius:18px;
+        box-shadow:0 30px 80px rgba(0,0,0,.35);
+        border:2px solid #ef4444;
+        padding:24px;
+        font-family:Arial,sans-serif;
+    \`;
+
+
+    let htmlRows = '';
+
+
+    logs.forEach((log,i) => {
+
+        htmlRows += \`
+            <tr>
+                <td>\${i+1}</td>
+                <td>\${log.Date || ''}</td>
+                <td>\${log.Class || ''}</td>
+                <td>\${log.Section || ''}</td>
+                <td>\${log.Teacher || ''}</td>
+                <td style="color:#dc2626;">
+                    \${log._errorReason || ''}
+                </td>
+            </tr>
+        \`;
+
+    });
+
+
+    panel.innerHTML = \`
+
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:15px;
+        ">
+
+            <div>
+
+                <div style="
+                    font-size:20px;
+                    font-weight:800;
+                    color:#991b1b;
+                ">
+                    ⚠️ Failed Entries
+                </div>
+
+                <div style="
+                    font-size:13px;
+                    color:#64748b;
+                    margin-top:4px;
+                ">
+                    \${logs.length} entry/entries require attention.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div style="
+            max-height:300px;
+            overflow:auto;
+            border:1px solid #e2e8f0;
+            border-radius:10px;
+        ">
+
+            <table style="
+                width:100%;
+                border-collapse:collapse;
+                font-size:12px;
+            ">
+
+                <thead style="
+                    background:#f8fafc;
+                    position:sticky;
+                    top:0;
+                ">
+
+                    <tr>
+
+                        <th style="padding:9px;">#</th>
+                        <th style="padding:9px;">Date</th>
+                        <th style="padding:9px;">Class</th>
+                        <th style="padding:9px;">Section</th>
+                        <th style="padding:9px;">Teacher</th>
+                        <th style="padding:9px;">Error</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    \${htmlRows}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div style="
+            display:flex;
+            gap:10px;
+            margin-top:18px;
+            flex-wrap:wrap;
+        ">
+
+            <button
+                id="erp-retry-failed"
+                style="
+                    padding:11px 18px;
+                    border:0;
+                    border-radius:9px;
+                    background:#2563eb;
+                    color:white;
+                    font-weight:700;
+                    cursor:pointer;
+                "
+            >
+                🔄 Retry Failed Entries
+            </button>
+
+
+            <button
+                id="erp-copy-failed"
+                style="
+                    padding:11px 18px;
+                    border:0;
+                    border-radius:9px;
+                    background:#0f172a;
+                    color:white;
+                    font-weight:700;
+                    cursor:pointer;
+                "
+            >
+                📋 Copy Failed Rows
+            </button>
+
+
+            <button
+                id="erp-clear-failed"
+                style="
+                    padding:11px 18px;
+                    border:0;
+                    border-radius:9px;
+                    background:#dc2626;
+                    color:white;
+                    font-weight:700;
+                    cursor:pointer;
+                "
+            >
+                🗑 Clear Failure Log
+            </button>
+
+
+            <button
+                id="erp-close-failed"
+                style="
+                    padding:11px 18px;
+                    border:1px solid #cbd5e1;
+                    border-radius:9px;
+                    background:white;
+                    color:#334155;
+                    font-weight:700;
+                    cursor:pointer;
+                "
+            >
+                Close
+            </button>
+
+        </div>
+
+    \`;
+
+
+    document.body.appendChild(panel);
+
+
+    /*
+       RETRY FAILED ENTRIES DIRECTLY
+    */
+
+    document.getElementById(
+        'erp-retry-failed'
+    ).onclick = () => {
 
         localStorage.setItem(
-            STORAGE.INDEX,
-            String(index)
-        );
-
-    }
-
-
-    /* ========================================================
-       INJECT FAILED ROWS
-    ======================================================== */
-
-    function injectFailedRows() {
-
-        const failed =
-            readJSON(
-                STORAGE.FAILED,
-                []
-            );
-
-        if (!failed.length) {
-
-            alert(
-                'There are no failed rows to inject.'
-            );
-
-            return;
-
-        }
-
-
-        const cleanRows =
-            failed.map(
-                (entry,index) => ({
-
-                    ...entry,
-
-                    _queueIndex:
-                        Date.now() +
-                        index,
-
-                    _injected:
-                        true,
-
-                    _injectedAt:
-                        new Date().toISOString()
-
-                })
-            );
-
-
-        /*
-         * Add failed rows to the END of
-         * the existing queue.
-         */
-
-        const queue =
-            getQueue();
-
-        queue.push(
-            ...cleanRows
-        );
-
-        setQueue(queue);
-
-
-        /*
-         * Remove them from failed list
-         * because they are now back in the queue.
-         */
-
-        remove(
-            STORAGE.FAILED
-        );
-
-
-        /*
-         * Point automation to first
-         * injected failed row.
-         */
-
-        setCurrentIndex(
-            queue.length -
-            cleanRows.length
-        );
-
-
-        addActivity(
-            cleanRows.length +
-            ' failed rows injected back into queue.',
-            'INJECT'
-        );
-
-
-        updatePanel();
-
-
-        alert(
-            cleanRows.length +
-            ' failed row(s) have been injected into the automation queue.\\n\\n' +
-            'Click "RUN / RESUME" to process them.'
-        );
-
-    }
-
-
-    /* ========================================================
-       RETRY FAILED
-    ======================================================== */
-
-    function retryFailedImmediately() {
-
-        const failed =
-            readJSON(
-                STORAGE.FAILED,
-                []
-            );
-
-        if (!failed.length) {
-
-            alert(
-                'No failed rows available for retry.'
-            );
-
-            return;
-
-        }
-
-        injectFailedRows();
-
-    }
-
-
-    /* ========================================================
-       DOWNLOAD FAILED
-    ======================================================== */
-
-    function downloadFailedRows() {
-
-        const failed =
-            readJSON(
-                STORAGE.FAILED,
-                []
-            );
-
-        if (!failed.length) {
-
-            alert(
-                'No failed rows available.'
-            );
-
-            return;
-
-        }
-
-
-        let output =
-            'Start Date\\tEnd Date\\tStart Time\\tEnd Time\\tDays\\tClass\\tSection\\tTeacher\\tSubject\\tError Reason\\n';
-
-
-        failed.forEach(
-            entry => {
-
-                const startTime =
-                    entry.StartTime +
-                    ':' +
-                    entry.StartMin +
-                    ' ' +
-                    entry.StartAMPM;
-
-                const endTime =
-                    entry.EndTime +
-                    ':' +
-                    entry.EndMin +
-                    ' ' +
-                    entry.EndAMPM;
-
-                output +=
-
-                    entry.Date +
-                    '\\t' +
-
-                    entry.EndDate +
-                    '\\t' +
-
-                    startTime +
-                    '\\t' +
-
-                    endTime +
-                    '\\t' +
-
-                    entry.Days.join(', ') +
-                    '\\t' +
-
-                    entry.Class +
-                    '\\t' +
-
-                    entry.Section +
-                    '\\t' +
-
-                    entry.Teacher +
-                    '\\t' +
-
-                    entry.Subject +
-                    '\\t' +
-
-                    (entry._errorReason || '') +
-                    '\\n';
-
-            }
-        );
-
-
-        const blob =
-            new Blob(
-                [output],
-                {
-                    type:
-                        'text/tab-separated-values;charset=utf-8'
-                }
-            );
-
-        const url =
-            URL.createObjectURL(
-                blob
-            );
-
-        const a =
-            document.createElement('a');
-
-        a.href = url;
-
-        a.download =
-            'ERP_Failed_Rows_' +
-            Date.now() +
-            '.tsv';
-
-        document.body.appendChild(a);
-
-        a.click();
-
-        a.remove();
-
-        URL.revokeObjectURL(url);
-
-    }
-
-
-    /* ========================================================
-       FAILED LOG VIEWER
-    ======================================================== */
-
-    function showFailedRows() {
-
-        const failed =
-            readJSON(
-                STORAGE.FAILED,
-                []
-            );
-
-        if (!failed.length) {
-
-            alert(
-                'No failed or missing entries.'
-            );
-
-            return;
-
-        }
-
-
-        let html = '';
-
-        failed.forEach(
-            (entry,index) => {
-
-                html +=
-
-                    '<tr>' +
-
-                    '<td>' +
-                    (index + 1) +
-                    '</td>' +
-
-                    '<td>' +
-                    escapeHTML(
-                        entry.Date
-                    ) +
-                    '</td>' +
-
-                    '<td>' +
-                    escapeHTML(
-                        entry.Class
-                    ) +
-                    '</td>' +
-
-                    '<td>' +
-                    escapeHTML(
-                        entry.Section
-                    ) +
-                    '</td>' +
-
-                    '<td>' +
-                    escapeHTML(
-                        entry.Teacher
-                    ) +
-                    '</td>' +
-
-                    '<td>' +
-                    escapeHTML(
-                        entry.Subject
-                    ) +
-                    '</td>' +
-
-                    '<td style="color:#dc2626;font-weight:600;">' +
-                    escapeHTML(
-                        entry._errorReason ||
-                        'Unknown error'
-                    ) +
-                    '</td>' +
-
-                    '</tr>';
-
-            }
-        );
-
-
-        const modal =
-            document.createElement('div');
-
-        modal.id =
-            'erp-failed-modal';
-
-        modal.style.cssText =
-
-            'position:fixed;' +
-            'inset:0;' +
-            'z-index:2147483647;' +
-            'background:rgba(2,6,23,.72);' +
-            'display:flex;' +
-            'align-items:center;' +
-            'justify-content:center;' +
-            'padding:20px;' +
-            'font-family:Arial,sans-serif;';
-
-
-        modal.innerHTML =
-
-            '<div style="' +
-            'background:#fff;' +
-            'width:min(1100px,96vw);' +
-            'max-height:90vh;' +
-            'overflow:hidden;' +
-            'border-radius:18px;' +
-            'box-shadow:0 30px 80px rgba(0,0,0,.35);' +
-            '">' +
-
-            '<div style="' +
-            'padding:20px;' +
-            'border-bottom:1px solid #e2e8f0;' +
-            'display:flex;' +
-            'justify-content:space-between;' +
-            'align-items:center;' +
-            '">' +
-
-            '<div>' +
-
-            '<h3 style="' +
-            'margin:0;' +
-            'font-size:20px;' +
-            'color:#0f172a;' +
-            '">' +
-
-            'Failed / Missing Entries' +
-
-            '</h3>' +
-
-            '<div style="' +
-            'color:#64748b;' +
-            'font-size:12px;' +
-            'margin-top:4px;' +
-            '">' +
-
-            failed.length +
-            ' entries require attention' +
-
-            '</div>' +
-
-            '</div>' +
-
-            '<button id="erp-close-failed" style="' +
-            'border:0;' +
-            'background:#f1f5f9;' +
-            'width:38px;' +
-            'height:38px;' +
-            'border-radius:10px;' +
-            'font-size:20px;' +
-            'cursor:pointer;' +
-            '">×</button>' +
-
-            '</div>' +
-
-            '<div style="' +
-            'overflow:auto;' +
-            'max-height:60vh;' +
-            'padding:18px;' +
-            '">' +
-
-            '<table style="' +
-            'width:100%;' +
-            'border-collapse:collapse;' +
-            'font-size:12px;' +
-            '">' +
-
-            '<thead>' +
-
-            '<tr style="background:#f8fafc;">' +
-
-            '<th style="padding:10px;text-align:left;">#</th>' +
-            '<th style="padding:10px;text-align:left;">Date</th>' +
-            '<th style="padding:10px;text-align:left;">Class</th>' +
-            '<th style="padding:10px;text-align:left;">Section</th>' +
-            '<th style="padding:10px;text-align:left;">Teacher</th>' +
-            '<th style="padding:10px;text-align:left;">Subject</th>' +
-            '<th style="padding:10px;text-align:left;">Failure Reason</th>' +
-
-            '</tr>' +
-
-            '</thead>' +
-
-            '<tbody>' +
-
-            html +
-
-            '</tbody>' +
-
-            '</table>' +
-
-            '</div>' +
-
-            '<div style="' +
-            'padding:15px 18px;' +
-            'border-top:1px solid #e2e8f0;' +
-            'display:flex;' +
-            'gap:8px;' +
-            'flex-wrap:wrap;' +
-            '">' +
-
-            '<button id="erp-inject-modal" style="' +
-            'border:0;' +
-            'background:#2563eb;' +
-            'color:#fff;' +
-            'padding:10px 16px;' +
-            'border-radius:9px;' +
-            'font-weight:700;' +
-            'cursor:pointer;' +
-            '">' +
-
-            '💉 Inject Failed Rows' +
-
-            '</button>' +
-
-            '<button id="erp-download-modal" style="' +
-            'border:1px solid #cbd5e1;' +
-            'background:#fff;' +
-            'color:#0f172a;' +
-            'padding:10px 16px;' +
-            'border-radius:9px;' +
-            'font-weight:700;' +
-            'cursor:pointer;' +
-            '">' +
-
-            '⬇ Download Failed Rows' +
-
-            '</button>' +
-
-            '</div>' +
-
-            '</div>';
-
-
-        document.body.appendChild(
-            modal
-        );
-
-
-        document
-            .getElementById(
-                'erp-close-failed'
-            )
-            .onclick =
-                () => modal.remove();
-
-
-        document
-            .getElementById(
-                'erp-inject-modal'
-            )
-            .onclick =
-                () => {
-
-                    modal.remove();
-
-                    injectFailedRows();
-
-                };
-
-
-        document
-            .getElementById(
-                'erp-download-modal'
-            )
-            .onclick =
-                downloadFailedRows;
-
-    }
-
-
-    function escapeHTML(value) {
-
-        return String(value || '')
-            .replace(
-                /&/g,
-                '&amp;'
-            )
-            .replace(
-                /</g,
-                '&lt;'
-            )
-            .replace(
-                />/g,
-                '&gt;'
-            )
-            .replace(
-                /"/g,
-                '&quot;'
-            )
-            .replace(
-                /'/g,
-                '&#039;'
-            );
-
-    }
-
-
-    /* ========================================================
-       CLEAR FAILED
-    ======================================================== */
-
-    function clearFailed() {
-
-        const failed =
-            readJSON(
-                STORAGE.FAILED,
-                []
-            );
-
-        if (!failed.length) {
-
-            alert(
-                'No failed rows to clear.'
-            );
-
-            return;
-
-        }
-
-
-        if (
-            !confirm(
-                'Clear all ' +
-                failed.length +
-                ' failed rows?\\n\\n' +
-                'This cannot be undone.'
-            )
-        ){
-
-            return;
-
-        }
-
-        remove(
-            STORAGE.FAILED
-        );
-
-        addActivity(
-            'Failed row log cleared.',
-            'CLEAR'
-        );
-
-        updatePanel();
-
-    }
-
-
-    /* ========================================================
-       RESET EVERYTHING
-    ======================================================== */
-
-    function resetAutomation() {
-
-        if (
-            !confirm(
-                'Reset automation?\\n\\n' +
-                'This will stop the current run and clear the queue/index.\\n' +
-                'Failed-row logs will be preserved.'
-            )
-        ){
-
-            return;
-
-        }
-
-        remove(
-            STORAGE.RUNNING
-        );
-
-        remove(
-            STORAGE.INDEX
-        );
-
-        remove(
-            STORAGE.QUEUE
-        );
-
-        remove(
-            STORAGE.CURRENT
-        );
-
-        addActivity(
-            'Automation stopped and queue reset.',
-            'RESET'
-        );
-
-        updatePanel();
-
-    }
-
-
-    /* ========================================================
-       START
-    ======================================================== */
-
-    function startAutomation() {
-
-        const queue =
-            getQueue();
-
-        if (!queue.length) {
-
-            alert(
-                'No automation rows available.'
-            );
-
-            return;
-
-        }
-
-        setQueue(queue);
-
-        localStorage.setItem(
-            STORAGE.RUNNING,
+            STORAGE_RUNNING,
             'true'
         );
 
-        addActivity(
-            'Automation started.',
-            'RUN'
+
+        localStorage.setItem(
+            STORAGE_INDEX,
+            '0'
         );
-
-        updatePanel();
-
-        setTimeout(
-            processQueue,
-            500
-        );
-
-    }
-
-
-    /* ========================================================
-       PROCESS QUEUE
-    ======================================================== */
-
-    async function processQueue() {
-
-        if (
-            localStorage.getItem(
-                STORAGE.RUNNING
-            ) !== 'true'
-        ){
-
-            return;
-
-        }
-
-        const queue =
-            getQueue();
-
-        let index =
-            getCurrentIndex();
-
-
-        if (
-            index >= queue.length
-        ){
-
-            localStorage.removeItem(
-                STORAGE.RUNNING
-            );
-
-            remove(
-                STORAGE.INDEX
-            );
-
-            remove(
-                STORAGE.QUEUE
-            );
-
-            remove(
-                STORAGE.CURRENT
-            );
-
-            addActivity(
-                'Automation queue completed.',
-                'COMPLETE'
-            );
-
-            updatePanel();
-
-            showCompletion();
-
-            return;
-
-        }
-
-
-        updatePanel();
-
-
-        const result =
-            await runAutomation(
-                queue[index],
-                index
-            );
 
 
         /*
-         * VERY IMPORTANT:
-         * Always advance queue after processing.
-         * Failed rows remain in FAILED storage.
-         */
+           Replace current classData with failed rows
+           in temporary localStorage.
+        */
 
-        const next =
-            index + 1;
-
-        setCurrentIndex(
-            next
+        localStorage.setItem(
+            'ERP_AUTOMATION_RETRY_MODE',
+            'true'
         );
 
 
-        updatePanel();
+        location.reload();
+
+    };
 
 
-        if (
-            localStorage.getItem(
-                STORAGE.RUNNING
-            ) !== 'true'
-        ){
+    /*
+       COPY FAILED
+    */
 
-            return;
+    document.getElementById(
+        'erp-copy-failed'
+    ).onclick = async () => {
+
+        let text='';
+
+
+        logs.forEach(log => {
+
+            const start =
+                \`\${log.StartTime}:\${log.StartMin} \${log.StartAMPM}\`;
+
+            const end =
+                \`\${log.EndTime}:\${log.EndMin} \${log.EndAMPM}\`;
+
+
+            text +=
+                \`\${log.Date}\\t\` +
+                \`\${log.EndDate}\\t\` +
+                \`\${start}\\t\` +
+                \`\${end}\\t\` +
+                \`\${(log.Days || []).join(', ')}\\t\` +
+                \`\${log.Class}\\t\` +
+                \`\${log.Section}\\t\` +
+                \`\${log.Teacher}\\t\` +
+                \`\${log.Subject}\\n\`;
+
+        });
+
+
+        try{
+
+            await navigator.clipboard.writeText(
+                text.trim()
+            );
+
+            alert(
+                'Failed rows copied successfully.'
+            );
+
+        }
+        catch(e){
+
+            alert(
+                'Clipboard permission denied.'
+            );
 
         }
 
+    };
 
-        if (
-            next < queue.length
+
+    /*
+       CLEAR
+    */
+
+    document.getElementById(
+        'erp-clear-failed'
+    ).onclick = () => {
+
+        if(
+            confirm(
+                'Are you sure you want to permanently clear all failed entries?'
+            )
         ){
-
-            /*
-             * Give ERP time before next page
-             */
-
-            await sleep(700);
-
-            location.reload();
-
-        } else {
 
             localStorage.removeItem(
-                STORAGE.RUNNING
+                STORAGE_LOGS
             );
 
-            remove(
-                STORAGE.INDEX
-            );
-
-            remove(
-                STORAGE.QUEUE
-            );
-
-            remove(
-                STORAGE.CURRENT
-            );
-
-            updatePanel();
-
-            showCompletion();
+            panel.remove();
 
         }
 
-    }
+    };
 
 
-    /* ========================================================
-       COMPLETION
-    ======================================================== */
+    document.getElementById(
+        'erp-close-failed'
+    ).onclick = () => {
 
-    function showCompletion() {
+        panel.remove();
 
-        const failed =
-            readJSON(
-                STORAGE.FAILED,
-                []
-            );
+    };
 
-        const success =
-            readJSON(
-                STORAGE.SUCCESS,
-                []
-            );
+}
 
-        if (failed.length) {
 
-            alert(
-                'Automation completed.\\n\\n' +
+/* =========================================================
+   COMPLETION
+========================================================= */
 
-                'Successful: ' +
-                success.length +
-                '\\n' +
+function showCompletionUI(){
 
-                'Failed / Missing: ' +
-                failed.length +
-                '\\n\\n' +
-
-                'Use "Failed / Missing" and then ' +
-                '"Inject Failed Rows" to retry them.'
-            );
-
-        } else {
-
-            alert(
-                'Automation completed successfully.\\n\\n' +
-                'Successful entries: ' +
-                success.length +
-                '\\n' +
-                'Failed entries: 0'
-            );
-
-        }
-
-    }
-
-
-    /* ========================================================
-       UI
-    ======================================================== */
-
-    function createStyle() {
-
-        if (
-            document.getElementById(
-                'erp-scheduler-style'
-            )
-        ){
-
-            return;
-
-        }
-
-        const style =
-            document.createElement(
-                'style'
-            );
-
-        style.id =
-            'erp-scheduler-style';
-
-        style.textContent = \`
-
-            #erp-scheduler-panel {
-                position:fixed;
-                right:20px;
-                bottom:20px;
-                width:360px;
-                z-index:2147483646;
-                background:#ffffff;
-                color:#0f172a;
-                border:1px solid #dbe3ef;
-                border-radius:18px;
-                box-shadow:
-                    0 20px 50px rgba(15,23,42,.22);
-                font-family:
-                    Arial,
-                    Helvetica,
-                    sans-serif;
-                overflow:hidden;
-            }
-
-            #erp-scheduler-panel * {
-                box-sizing:border-box;
-            }
-
-            .erp-head {
-                padding:16px;
-                background:
-                    linear-gradient(
-                        135deg,
-                        #0f172a,
-                        #1d4ed8
-                    );
-                color:#fff;
-            }
-
-            .erp-title {
-                font-size:16px;
-                font-weight:800;
-                display:flex;
-                align-items:center;
-                gap:9px;
-            }
-
-            .erp-subtitle {
-                font-size:11px;
-                color:#cbd5e1;
-                margin-top:4px;
-            }
-
-            .erp-body {
-                padding:15px;
-            }
-
-            .erp-progress {
-                height:9px;
-                background:#e2e8f0;
-                border-radius:99px;
-                overflow:hidden;
-                margin:9px 0 14px;
-            }
-
-            .erp-progress-bar {
-                height:100%;
-                width:0%;
-                background:
-                    linear-gradient(
-                        90deg,
-                        #2563eb,
-                        #38bdf8
-                    );
-                transition:width .3s ease;
-            }
-
-            .erp-stats {
-                display:grid;
-                grid-template-columns:
-                    repeat(3,1fr);
-                gap:7px;
-                margin-bottom:12px;
-            }
-
-            .erp-stat {
-                border:1px solid #e2e8f0;
-                border-radius:10px;
-                padding:9px;
-                text-align:center;
-                background:#f8fafc;
-            }
-
-            .erp-stat-number {
-                font-size:17px;
-                font-weight:800;
-            }
-
-            .erp-stat-label {
-                font-size:9px;
-                color:#64748b;
-                margin-top:2px;
-            }
-
-            .erp-actions {
-                display:grid;
-                grid-template-columns:
-                    repeat(2,1fr);
-                gap:8px;
-            }
-
-            .erp-btn {
-                border:0;
-                border-radius:9px;
-                padding:10px 8px;
-                cursor:pointer;
-                font-weight:700;
-                font-size:11px;
-                transition:.15s;
-            }
-
-            .erp-btn:hover {
-                transform:translateY(-1px);
-            }
-
-            .erp-primary {
-                background:#2563eb;
-                color:#fff;
-            }
-
-            .erp-danger {
-                background:#fee2e2;
-                color:#b91c1c;
-            }
-
-            .erp-warning {
-                background:#fef3c7;
-                color:#92400e;
-            }
-
-            .erp-success {
-                background:#dcfce7;
-                color:#166534;
-            }
-
-            .erp-neutral {
-                background:#f1f5f9;
-                color:#334155;
-            }
-
-            .erp-full {
-                grid-column:
-                    1 / -1;
-            }
-
-            .erp-current {
-                margin-top:10px;
-                padding:10px;
-                border-radius:10px;
-                background:#f8fafc;
-                border:1px solid #e2e8f0;
-                font-size:10px;
-                color:#475569;
-                word-break:break-word;
-            }
-
-            .erp-status {
-                display:flex;
-                justify-content:space-between;
-                font-size:10px;
-                color:#64748b;
-                margin-top:4px;
-            }
-
-            @media(max-width:500px) {
-
-                #erp-scheduler-panel {
-                    left:10px;
-                    right:10px;
-                    bottom:10px;
-                    width:auto;
-                }
-
-            }
-
-        \`;
-
-        document.head.appendChild(
-            style
-        );
-
-    }
-
-
-    function createUI() {
-
-        if (
-            document.getElementById(
-                'erp-scheduler-panel'
-            )
-        ){
-
-            updatePanel();
-
-            return;
-
-        }
-
-
-        createStyle();
-
-
-        const panel =
-            document.createElement(
-                'div'
-            );
-
-        panel.id =
-            'erp-scheduler-panel';
-
-
-        panel.innerHTML = \`
-
-            <div class="erp-head">
-
-                <div class="erp-title">
-
-                    <span>⚡</span>
-
-                    ERP Scheduler
-
-                </div>
-
-                <div class="erp-subtitle">
-
-                    Professional Automation & Recovery
-
-                </div>
-
-            </div>
-
-
-            <div class="erp-body">
-
-                <div
-                    class="erp-status">
-
-                    <span id="erp-progress-text">
-                        Ready
-                    </span>
-
-                    <span id="erp-percent">
-                        0%
-                    </span>
-
-                </div>
-
-
-                <div class="erp-progress">
-
-                    <div
-                        id="erp-progress-bar"
-                        class="erp-progress-bar">
-                    </div>
-
-                </div>
-
-
-                <div class="erp-stats">
-
-                    <div class="erp-stat">
-
-                        <div
-                            id="erp-total"
-                            class="erp-stat-number">
-                            0
-                        </div>
-
-                        <div class="erp-stat-label">
-                            TOTAL
-                        </div>
-
-                    </div>
-
-
-                    <div class="erp-stat">
-
-                        <div
-                            id="erp-success"
-                            class="erp-stat-number"
-                            style="color:#16a34a;">
-                            0
-                        </div>
-
-                        <div class="erp-stat-label">
-                            SUCCESS
-                        </div>
-
-                    </div>
-
-
-                    <div class="erp-stat">
-
-                        <div
-                            id="erp-failed"
-                            class="erp-stat-number"
-                            style="color:#dc2626;">
-                            0
-                        </div>
-
-                        <div class="erp-stat-label">
-                            FAILED
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div
-                    id="erp-current"
-                    class="erp-current">
-
-                    Waiting to start...
-
-                </div>
-
-
-                <div class="erp-actions">
-
-                    <button
-                        id="erp-run"
-                        class="erp-btn erp-primary">
-
-                        ▶ RUN / RESUME
-
-                    </button>
-
-
-                    <button
-                        id="erp-stop"
-                        class="erp-btn erp-danger">
-
-                        ⏹ STOP / RESET
-
-                    </button>
-
-
-                    <button
-                        id="erp-inject"
-                        class="erp-btn erp-warning">
-
-                        💉 INJECT FAILED
-
-                    </button>
-
-
-                    <button
-                        id="erp-view"
-                        class="erp-btn erp-neutral">
-
-                        ⚠ VIEW FAILED
-
-                    </button>
-
-
-                    <button
-                        id="erp-download"
-                        class="erp-btn erp-success">
-
-                        ⬇ DOWNLOAD FAILED
-
-                    </button>
-
-
-                    <button
-                        id="erp-clear"
-                        class="erp-btn erp-danger">
-
-                        🗑 CLEAR FAILED
-
-                    </button>
-
-
-                    <button
-                        id="erp-refresh"
-                        class="erp-btn erp-neutral erp-full">
-
-                        🔄 REFRESH STATUS
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        \`;
-
-
-        document.body.appendChild(
-            panel
-        );
-
-
-        document
-            .getElementById(
-                'erp-run'
-            )
-            .onclick =
-                startAutomation;
-
-
-        document
-            .getElementById(
-                'erp-stop'
-            )
-            .onclick =
-                resetAutomation;
-
-
-        document
-            .getElementById(
-                'erp-inject'
-            )
-            .onclick =
-                injectFailedRows;
-
-
-        document
-            .getElementById(
-                'erp-view'
-            )
-            .onclick =
-                showFailedRows;
-
-
-        document
-            .getElementById(
-                'erp-download'
-            )
-            .onclick =
-                downloadFailedRows;
-
-
-        document
-            .getElementById(
-                'erp-clear'
-            )
-            .onclick =
-                clearFailed;
-
-
-        document
-            .getElementById(
-                'erp-refresh'
-            )
-            .onclick =
-                updatePanel;
-
-
-        updatePanel();
-
-    }
-
-
-    /* ========================================================
-       UPDATE PANEL
-    ======================================================== */
-
-    function updatePanel() {
-
-        const panel =
-            document.getElementById(
-                'erp-scheduler-panel'
-            );
-
-        if (!panel) return;
-
-
-        const queue =
-            getQueue();
-
-        const index =
-            getCurrentIndex();
-
-        const failed =
-            readJSON(
-                STORAGE.FAILED,
-                []
-            );
-
-        const success =
-            readJSON(
-                STORAGE.SUCCESS,
-                []
-            );
-
-        const running =
-            localStorage.getItem(
-                STORAGE.RUNNING
-            ) === 'true';
-
-
-        const total =
-            queue.length;
-
-
-        const completed =
-            Math.min(
-                index,
-                total
-            );
-
-
-        const percentage =
-            total
-                ? Math.round(
-                    completed /
-                    total *
-                    100
-                )
-                : 0;
-
-
-        const totalEl =
-            document.getElementById(
-                'erp-total'
-            );
-
-        const successEl =
-            document.getElementById(
-                'erp-success'
-            );
-
-        const failedEl =
-            document.getElementById(
-                'erp-failed'
-            );
-
-        const progressBar =
-            document.getElementById(
-                'erp-progress-bar'
-            );
-
-        const progressText =
-            document.getElementById(
-                'erp-progress-text'
-            );
-
-        const percentEl =
-            document.getElementById(
-                'erp-percent'
-            );
-
-        const currentEl =
-            document.getElementById(
-                'erp-current'
-            );
-
-        if (totalEl)
-            totalEl.textContent =
-                total;
-
-        if (successEl)
-            successEl.textContent =
-                success.length;
-
-        if (failedEl)
-            failedEl.textContent =
-                failed.length;
-
-        if (progressBar)
-            progressBar.style.width =
-                percentage + '%';
-
-        if (progressText)
-            progressText.textContent =
-                running
-                    ? 'Processing ' +
-                      completed +
-                      ' / ' +
-                      total
-                    : 'Automation stopped / ready';
-
-        if (percentEl)
-            percentEl.textContent =
-                percentage + '%';
-
-
-        const current =
-            readJSON(
-                STORAGE.CURRENT,
-                null
-            );
-
-
-        if (current && current.entry) {
-
-            currentEl.innerHTML =
-
-                '<b>Current:</b> ' +
-
-                escapeHTML(
-                    current.entry.Class
-                ) +
-
-                ' • ' +
-
-                escapeHTML(
-                    current.entry.Section
-                ) +
-
-                ' • ' +
-
-                escapeHTML(
-                    current.entry.Teacher
-                );
-
-        } else {
-
-            currentEl.textContent =
-                failed.length
-                    ? failed.length +
-                      ' failed row(s) available for injection.'
-                    : 'No active row.';
-
-        }
-
-    }
-
-
-    /* ========================================================
-       AUTO INITIALIZATION
-    ======================================================== */
-
-    function initialize() {
-
-        createUI();
-
-        updatePanel();
-
-
-        /*
-         * If automation was running before the ERP
-         * page refreshed, resume automatically.
-         */
-
-        if (
-            localStorage.getItem(
-                STORAGE.RUNNING
-            ) === 'true'
-        ){
-
-            addActivity(
-                'Page loaded. Automation resume detected.',
-                'RESUME'
-            );
-
-            setTimeout(
-                processQueue,
-                1800
-            );
-
-        }
-
-    }
-
-
-    window.addEventListener(
-        'load',
-        () => {
-
-            setTimeout(
-                initialize,
-                1200
-            );
-
-        }
-    );
-
-
-    /*
-     * Some SPA ERP systems do not trigger a complete
-     * page load. Create the panel immediately too.
-     */
-
-    setTimeout(
-        () => {
-
-            if (
-                document.body &&
-                !document.getElementById(
-                    'erp-scheduler-panel'
-                )
-            ){
-
-                createUI();
-
-            }
-
-        },
-        2500
-    );
-
-
-})();
-`;
-
-
-    document
-        .getElementById(
-            "scriptOutput"
-        )
-        .value =
-        script;
-
-
-    updateStatus(
-        true,
-        "Userscript compiled successfully. Copy it to Tampermonkey.",
-        parsedClassData.length
-    );
-
-
-    /*
-     * Transcript information
-     */
-
-    console.log(
-        "ERP Scheduler compiled:",
-        parsedClassData.length,
-        "rows"
+    alert(
+        'Automation completed successfully.\\n\\n' +
+        'No failed entries were detected.'
     );
 
 }
 
 
-/* ============================================================
-   COPY
-============================================================ */
+/* =========================================================
+   CONTROL PANEL
+========================================================= */
 
-document
-    .getElementById("copyBtn")
-    .addEventListener(
-        "click",
-        async function(){
+function createUI(){
 
-            const output =
-                document.getElementById(
-                    "scriptOutput"
-                );
+    if(
+        document.getElementById(
+            'erp-scheduler-control'
+        )
+    )
+        return;
 
-            if (!output.value.trim()) {
 
-                alert(
-                    "Please compile the userscript first."
-                );
+    const panel =
+        document.createElement('div');
 
-                return;
 
-            }
+    panel.id =
+        'erp-scheduler-control';
 
-            try {
 
-                await navigator.clipboard.writeText(
-                    output.value
-                );
+    panel.style = \`
+        position:fixed;
+        right:20px;
+        bottom:20px;
+        z-index:2147483646;
+        width:350px;
+        background:#ffffff;
+        border:1px solid #cbd5e1;
+        border-radius:16px;
+        padding:18px;
+        box-shadow:0 15px 40px rgba(15,23,42,.2);
+        font-family:Arial,sans-serif;
+    \`;
 
-            } catch(e) {
 
-                output.select();
+    const running =
+        localStorage.getItem(
+            STORAGE_RUNNING
+        ) === 'true';
 
-                document.execCommand(
-                    "copy"
-                );
 
-            }
+    const failedRows =
+        JSON.parse(
+            localStorage.getItem(
+                STORAGE_LOGS
+            ) || '[]'
+        );
 
-            this.innerHTML =
-                '<i class="bi bi-check-circle me-2"></i>Copied!';
 
-            setTimeout(
-                () => {
+    panel.innerHTML = \`
 
-                    this.innerHTML =
-                        '<i class="bi bi-clipboard me-2"></i>' +
-                        'Copy Generated Userscript';
+        <div style="
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            margin-bottom:12px;
+        ">
 
-                },
-                1800
+            <div>
+
+                <div style="
+                    font-size:16px;
+                    font-weight:800;
+                    color:#0f172a;
+                ">
+                    ERP Scheduler
+                </div>
+
+                <div style="
+                    font-size:11px;
+                    color:#64748b;
+                ">
+                    Smart Automation Control
+                </div>
+
+            </div>
+
+
+            <div style="
+                width:10px;
+                height:10px;
+                border-radius:50%;
+                background:\${running ? '#22c55e' : '#94a3b8'};
+            "></div>
+
+        </div>
+
+
+        <select
+            id="erp-start-index"
+            style="
+                width:100%;
+                padding:10px;
+                border:1px solid #cbd5e1;
+                border-radius:9px;
+                margin-bottom:9px;
+            "
+            \${running ? 'disabled' : ''}
+        >
+        </select>
+
+
+        <button
+            id="erp-run-btn"
+            style="
+                width:100%;
+                padding:11px;
+                border:0;
+                border-radius:9px;
+                background:\${running ? '#dc2626' : '#2563eb'};
+                color:white;
+                font-weight:700;
+                cursor:pointer;
+                margin-bottom:8px;
+            "
+        >
+            \${running ? '⏹ STOP / RESET' : '▶ RUN AUTOMATION'}
+        </button>
+
+
+        <button
+            id="erp-failed-btn"
+            style="
+                width:100%;
+                padding:10px;
+                border:1px solid #fecaca;
+                border-radius:9px;
+                background:#fef2f2;
+                color:#991b1b;
+                font-weight:700;
+                cursor:pointer;
+            "
+        >
+            ⚠️ Failed Entries (\${failedRows.length})
+        </button>
+
+    \`;
+
+
+    document.body.appendChild(panel);
+
+
+    const select =
+        panel.querySelector(
+            '#erp-start-index'
+        );
+
+
+    classData.forEach((item,i) => {
+
+        const option =
+            document.createElement('option');
+
+
+        option.value=i;
+
+
+        option.text =
+            '[' +
+            i +
+            '] ' +
+            (item.Class || '') +
+            ' ' +
+            (item.Section || '') +
+            ' - ' +
+            (item.Teacher || '');
+
+
+        select.appendChild(option);
+
+    });
+
+
+    if(running){
+
+        select.value =
+            localStorage.getItem(
+                STORAGE_INDEX
+            ) || '0';
+
+    }
+
+
+    panel.querySelector(
+        '#erp-run-btn'
+    ).onclick = () => {
+
+        if(
+            localStorage.getItem(
+                STORAGE_RUNNING
+            ) === 'true'
+        ){
+
+            localStorage.removeItem(
+                STORAGE_RUNNING
             );
 
+            localStorage.removeItem(
+                STORAGE_INDEX
+            );
+
+            localStorage.removeItem(
+                'ERP_AUTOMATION_RETRY_MODE'
+            );
+
+
+            location.reload();
+
         }
+        else{
+
+            localStorage.setItem(
+                STORAGE_RUNNING,
+                'true'
+            );
+
+
+            localStorage.setItem(
+                STORAGE_INDEX,
+                select.value
+            );
+
+
+            location.reload();
+
+        }
+
+    };
+
+
+    panel.querySelector(
+        '#erp-failed-btn'
+    ).onclick =
+        showFailureUI;
+
+}
+
+
+/* =========================================================
+   RETRY MODE
+========================================================= */
+
+function getAutomationData(){
+
+    const retryMode =
+        localStorage.getItem(
+            'ERP_AUTOMATION_RETRY_MODE'
+        ) === 'true';
+
+
+    if(!retryMode)
+        return classData;
+
+
+    const failed =
+        JSON.parse(
+            localStorage.getItem(
+                STORAGE_LOGS
+            ) || '[]'
+        );
+
+
+    console.log(
+        'RETRY MODE:',
+        failed.length,
+        'failed entries'
     );
 
 
-/* ============================================================
+    return failed;
+
+}
+
+
+/* =========================================================
+   START / RESUME
+========================================================= */
+
+async function checkAndResume(){
+
+    if(
+        localStorage.getItem(
+            STORAGE_RUNNING
+        ) !== 'true'
+    ){
+
+        return;
+
+    }
+
+
+    const automationData =
+        getAutomationData();
+
+
+    if(!automationData.length){
+
+        localStorage.removeItem(
+            STORAGE_RUNNING
+        );
+
+        localStorage.removeItem(
+            STORAGE_INDEX
+        );
+
+        localStorage.removeItem(
+            'ERP_AUTOMATION_RETRY_MODE'
+        );
+
+        showCompletionUI();
+
+        return;
+
+    }
+
+
+    let currentIndex =
+        parseInt(
+            localStorage.getItem(
+                STORAGE_INDEX
+            ) || '0',
+            10
+        );
+
+
+    if(currentIndex >= automationData.length){
+
+        localStorage.removeItem(
+            STORAGE_RUNNING
+        );
+
+        localStorage.removeItem(
+            STORAGE_INDEX
+        );
+
+
+        const remaining =
+            JSON.parse(
+                localStorage.getItem(
+                    STORAGE_LOGS
+                ) || '[]'
+            );
+
+
+        localStorage.removeItem(
+            'ERP_AUTOMATION_RETRY_MODE'
+        );
+
+
+        if(remaining.length){
+
+            showFailureUI();
+
+        }
+        else{
+
+            showCompletionUI();
+
+        }
+
+
+        return;
+
+    }
+
+
+    await sleep(2500);
+
+
+    const entry =
+        automationData[currentIndex];
+
+
+    const success =
+        await runAutomation(
+            entry,
+            currentIndex
+        );
+
+
+    /*
+       ALWAYS advance index.
+       Failed entry is already saved in failure log.
+    */
+
+    const nextIndex =
+        currentIndex + 1;
+
+
+    if(nextIndex < automationData.length){
+
+        localStorage.setItem(
+            STORAGE_INDEX,
+            String(nextIndex)
+        );
+
+
+        location.reload();
+
+    }
+    else{
+
+        localStorage.removeItem(
+            STORAGE_RUNNING
+        );
+
+        localStorage.removeItem(
+            STORAGE_INDEX
+        );
+
+
+        const remaining =
+            JSON.parse(
+                localStorage.getItem(
+                    STORAGE_LOGS
+                ) || '[]'
+            );
+
+
+        /*
+           Retry mode finished.
+        */
+
+        localStorage.removeItem(
+            'ERP_AUTOMATION_RETRY_MODE'
+        );
+
+
+        if(remaining.length){
+
+            showFailureUI();
+
+        }
+        else{
+
+            showCompletionUI();
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+window.addEventListener(
+    'load',
+    () => {
+
+        setTimeout(
+            createUI,
+            2000
+        );
+
+
+        setTimeout(
+            checkAndResume,
+            2500
+        );
+
+    }
+);
+
+})();
+`;
+
+
+    document.getElementById(
+        "scriptOutput"
+    ).value = script;
+
+
+    document.getElementById(
+        "compileStatus"
+    ).className =
+        "badge text-bg-success";
+
+
+    document.getElementById(
+        "compileStatus"
+    ).textContent =
+        parsedClassData.length +
+        " Entries Compiled";
+
+
+    showStatus(
+        `<i class="bi bi-check-circle me-2"></i>
+         Userscript compiled successfully with ${parsedClassData.length} entries.`
+    );
+
+}
+
+
+/* =========================================================
+   COPY
+========================================================= */
+
+async function copyScript(){
+
+    const textarea =
+        document.getElementById(
+            "scriptOutput"
+        );
+
+
+    if(!textarea.value){
+
+        showStatus(
+            "Please compile the userscript first.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        await navigator.clipboard.writeText(
+            textarea.value
+        );
+
+
+        showStatus(
+            `<i class="bi bi-check-circle me-2"></i>
+             Userscript copied to clipboard.`
+        );
+
+    }
+    catch(error){
+
+        textarea.select();
+
+        document.execCommand("copy");
+
+        showStatus(
+            `<i class="bi bi-check-circle me-2"></i>
+             Userscript copied to clipboard.`
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   DOWNLOAD
+========================================================= */
+
+function downloadScript(){
+
+    const script =
+        document.getElementById(
+            "scriptOutput"
+        ).value;
+
+
+    if(!script){
+
+        showStatus(
+            "Please compile the userscript first.",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    const blob =
+        new Blob(
+            [script],
+            {
+                type:"text/javascript"
+            }
+        );
+
+
+    const url =
+        URL.createObjectURL(blob);
+
+
+    const a =
+        document.createElement("a");
+
+
+    a.href=url;
+
+    a.download =
+        "ERP_Auto_Scheduler.user.js";
+
+
+    document.body.appendChild(a);
+
+    a.click();
+
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+
+    showStatus(
+        `<i class="bi bi-download me-2"></i>
+         Userscript downloaded successfully.`
+    );
+
+}
+
+
+/* =========================================================
    CLEAR
-============================================================ */
+========================================================= */
 
-document
-    .getElementById(
-        "clearOutputBtn"
+function clearAllData(){
+
+    if(
+        !confirm(
+            "Clear uploaded data, pasted data and generated script?"
+        )
     )
-    .addEventListener(
-        "click",
-        function(){
+        return;
 
-            document
-                .getElementById(
-                    "scriptOutput"
-                )
-                .value = "";
 
-            document
-                .getElementById(
-                    "statusBox"
-                )
-                .classList.remove(
-                    "show"
-                );
+    parsedClassData=[];
 
-        }
+
+    document.getElementById(
+        "manualData"
+    ).value="";
+
+
+    document.getElementById(
+        "scriptOutput"
+    ).value="";
+
+
+    document.getElementById(
+        "excelFile"
+    ).value="";
+
+
+    document.getElementById(
+        "compileStatus"
+    ).className =
+        "badge text-bg-secondary";
+
+
+    document.getElementById(
+        "compileStatus"
+    ).textContent =
+        "Not Compiled";
+
+
+    showStatus(
+        `<i class="bi bi-check-circle me-2"></i>
+         Builder data cleared.`
     );
 
-
-/* ============================================================
-   COMPILE BUTTON
-============================================================ */
-
-document
-    .getElementById(
-        "compileBtn"
-    )
-    .addEventListener(
-        "click",
-        generateScript
-    );
+}
 
 </script>
 
