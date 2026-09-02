@@ -1,500 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ERP Automation Studio - Ultimate Edition</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
-<style>
-:root{
-    --primary:#2563eb;
-    --primary-dark:#1d4ed8;
-    --bg:#f1f5f9;
-    --card:#ffffff;
-    --text:#0f172a;
-    --muted:#64748b;
-    --border:#e2e8f0;
-    --success:#16a34a;
-    --danger:#dc2626;
-    --warning:#d97706;
-}
-
-*{ box-sizing:border-box; }
-
-body{
-    margin:0;
-    min-height:100vh;
-    background:
-        radial-gradient(circle at top left,rgba(37,99,235,.08),transparent 35%),
-        radial-gradient(circle at bottom right,rgba(14,165,233,.08),transparent 35%),
-        var(--bg);
-    font-family:Inter,Segoe UI,Arial,sans-serif;
-    color:var(--text);
-}
-
-.app-wrapper{ max-width:1200px; margin:0 auto; padding:35px 18px 60px; }
-
-.hero{
-    background:linear-gradient(135deg,#0f172a,#1e3a8a);
-    color:#fff;
-    border-radius:24px;
-    padding:30px;
-    box-shadow:0 20px 50px rgba(15,23,42,.18);
-    margin-bottom:22px;
-    position:relative;
-    overflow:hidden;
-}
-
-.hero:after{
-    content:"";
-    position:absolute;
-    width:300px;
-    height:300px;
-    border-radius:50%;
-    background:rgba(255,255,255,.06);
-    right:-100px;
-    top:-120px;
-}
-
-.hero-content{ position:relative; z-index:2; }
-.hero-title{ display:flex; align-items:center; gap:14px; font-weight:800; font-size:28px; margin-bottom:7px; }
-.hero-icon{ width:52px; height:52px; border-radius:15px; background:rgba(255,255,255,.12); display:flex; align-items:center; justify-content:center; font-size:25px; }
-.hero-subtitle{ margin:0; color:#cbd5e1; font-size:14px; }
-.version-badge{ display:inline-flex; margin-top:15px; padding:6px 12px; border-radius:999px; background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15); font-size:12px; }
-
-.main-card{ background:var(--card); border:1px solid var(--border); border-radius:22px; box-shadow:0 15px 40px rgba(15,23,42,.07); overflow:hidden; }
-.card-section{ padding:28px; }
-.section-title{ font-size:16px; font-weight:800; margin-bottom:5px; }
-.section-subtitle{ color:var(--muted); font-size:13px; margin-bottom:20px; }
-
-.nav-tabs{ border-bottom:1px solid var(--border); gap:5px; }
-.nav-tabs .nav-link{ border:0; border-radius:10px 10px 0 0; color:var(--muted); font-weight:700; padding:12px 18px; }
-.nav-tabs .nav-link:hover{ color:var(--primary); }
-.nav-tabs .nav-link.active{ color:var(--primary); background:#eff6ff; }
-
-.form-control, .form-select{ border:1px solid #cbd5e1; border-radius:10px; padding:11px 13px; font-size:14px; }
-.form-control:focus, .form-select:focus{ border-color:#60a5fa; box-shadow:0 0 0 4px rgba(37,99,235,.08); }
-.form-label{ font-size:13px; color:#334155; }
-
-.drop-zone{ border:2px dashed #cbd5e1; border-radius:16px; padding:35px 20px; text-align:center; background:#f8fafc; transition:.2s; }
-.drop-zone:hover{ border-color:#60a5fa; background:#eff6ff; }
-.drop-icon{ width:55px; height:55px; border-radius:16px; background:#dbeafe; color:#2563eb; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:24px; }
-
-.btn{ border-radius:10px; font-weight:700; padding:11px 17px; }
-.btn-primary{ background:var(--primary); border-color:var(--primary); }
-.btn-primary:hover{ background:var(--primary-dark); border-color:var(--primary-dark); }
-.compile-btn{ min-height:56px; font-size:15px; box-shadow:0 8px 20px rgba(37,99,235,.2); }
-
-.status-bar{ display:none; padding:13px 16px; border-radius:12px; margin-top:15px; font-size:13px; font-weight:600; }
-.status-success{ display:block; background:#f0fdf4; color:#166534; border:1px solid #bbf7d0; }
-.status-error{ display:block; background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
-
-.output-header{ display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px; }
-.terminal{ width:100%; min-height:380px; resize:vertical; background:#020617; color:#38bdf8; border:1px solid #1e293b; border-radius:14px; padding:18px; font-family:"JetBrains Mono","Cascadia Code",Consolas,monospace; font-size:12px; line-height:1.6; outline:none; }
-
-.info-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:20px; }
-.info-card{ border:1px solid var(--border); background:#f8fafc; border-radius:14px; padding:16px; }
-.info-icon{ width:35px; height:35px; border-radius:9px; display:flex; align-items:center; justify-content:center; background:#dbeafe; color:#2563eb; margin-bottom:10px; }
-.info-card strong{ display:block; font-size:13px; }
-.info-card span{ color:var(--muted); font-size:12px; }
-
-.footer-note{ text-align:center; color:#94a3b8; font-size:12px; margin-top:20px; }
-
-@media(max-width:768px){
-    .app-wrapper{ padding:18px 10px 40px; }
-    .hero{ padding:22px; border-radius:18px; }
-    .hero-title{ font-size:22px; }
-    .card-section{ padding:20px; }
-    .info-grid{ grid-template-columns:1fr; }
-    .output-header{ align-items:flex-start; flex-direction:column; }
-}
-</style>
-</head>
-<body>
-
-<div class="app-wrapper">
-
-    <!-- HERO -->
-    <div class="hero">
-        <div class="hero-content">
-            <div class="hero-title">
-                <div class="hero-icon"><i class="bi bi-calendar2-check"></i></div>
-                <div>ERP Live Class Scheduler</div>
-            </div>
-            <p class="hero-subtitle">Professional automation builder for ERP live-class scheduling</p>
-            <span class="version-badge">
-                <i class="bi bi-stars me-1"></i> Ultimate Edition • Smart Mapping • Error Toast Capture
-            </span>
-        </div>
-    </div>
-
-    <!-- MAIN CARD -->
-    <div class="main-card">
-        <div class="card-section">
-            <div class="section-title"><i class="bi bi-database me-2 text-primary"></i>Schedule Data</div>
-            <div class="section-subtitle">Configure mappings, then import your Excel schedule or paste rows.</div>
-
-            <!-- TABS -->
-            <ul class="nav nav-tabs mb-4" role="tablist">
-                <li class="nav-item">
-                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#fileTab" type="button">
-                        <i class="bi bi-file-earmark-excel me-2"></i> Excel Import
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#pasteTab" type="button">
-                        <i class="bi bi-clipboard me-2"></i> Paste Data
-                    </button>
-                </li>
-                <li class="nav-item ms-auto">
-                    <button class="nav-link text-primary bg-light" data-bs-toggle="tab" data-bs-target="#masterTab" type="button" style="border-radius:10px 10px 0 0; font-weight:800;">
-                        <i class="bi bi-magic me-2"></i> Master Mapping
-                    </button>
-                </li>
-            </ul>
-
-            <div class="tab-content">
-                <!-- EXCEL -->
-                <div class="tab-pane fade show active" id="fileTab">
-                    <div class="drop-zone">
-                        <div class="drop-icon"><i class="bi bi-file-earmark-spreadsheet"></i></div>
-                        <div class="fw-bold mb-1">Upload Schedule Excel</div>
-                        <div class="small text-muted mb-3">Supported formats: .xlsx, .xls</div>
-                        <input type="file" id="excelFile" class="form-control" accept=".xlsx,.xls">
-                    </div>
-                    <div class="small text-muted mt-3">
-                        <i class="bi bi-info-circle me-1"></i> Expected columns: Start Date, End Date, Start Time, End Time, Days, Class, Section, Teacher, Subject
-                    </div>
-                </div>
-
-                <!-- PASTE -->
-                <div class="tab-pane fade" id="pasteTab">
-                    <label class="form-label fw-bold">Paste Excel Rows</label>
-                    <textarea id="manualData" class="form-control" rows="7" placeholder="Start Date&#9;End Date&#9;Start Time&#9;End Time&#9;Days&#9;Class&#9;Section&#9;Teacher&#9;Subject"></textarea>
-                    <div class="small text-muted mt-2">
-                        <i class="bi bi-lightbulb me-1"></i> Paste directly from Excel using TAB-separated columns.
-                    </div>
-                </div>
-                
-                <!-- MASTER MAPPING -->
-                <div class="tab-pane fade" id="masterTab">
-                    <div class="alert alert-primary py-2 px-3 small border-0 rounded-3 mb-3">
-                        <i class="bi bi-info-circle-fill me-2"></i>
-                        <strong>Smart Auto-Fix:</strong> Paste the raw HTML code for Subjects and Teachers below. The engine extracts the names to auto-correct mismatches.
-                    </div>
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Subject HTML <code>&lt;select&gt;...&lt;/select&gt;</code></label>
-                            <textarea id="masterSubjectsRaw" class="form-control font-monospace" rows="6" style="font-size:11px;" placeholder="Paste Subject <select> HTML here..."></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Teacher HTML <code>&lt;ul&gt;...&lt;/ul&gt;</code></label>
-                            <textarea id="masterTeachersRaw" class="form-control font-monospace" rows="6" style="font-size:11px;" placeholder="Paste Teacher <ul> HTML here..."></textarea>
-                        </div>
-                    </div>
-                    <button class="btn btn-outline-primary btn-sm mt-3 fw-bold" onclick="parseMasterData()">
-                        <i class="bi bi-arrow-repeat me-1"></i> Load Mappings
-                    </button>
-                    <span id="mappingCount" class="ms-3 small text-muted fw-bold">Mappings Loaded: 0 Subjects | 0 Teachers</span>
-                </div>
-            </div>
-
-            <!-- ACTIONS -->
-            <div class="row g-2 mt-4">
-                <div class="col-md-8">
-                    <button id="compileBtn" class="btn btn-primary compile-btn w-100" onclick="generateScript()">
-                        <i class="bi bi-cpu me-2"></i> Compile Userscript
-                    </button>
-                </div>
-                <div class="col-md-4">
-                    <button class="btn btn-outline-danger compile-btn w-100" onclick="clearAllData()">
-                        <i class="bi bi-trash3 me-2"></i> Clear Data
-                    </button>
-                </div>
-            </div>
-
-            <div id="statusBar" class="status-bar"></div>
-
-            <!-- DATA INFO -->
-            <div class="info-grid">
-                <div class="info-card">
-                    <div class="info-icon"><i class="bi bi-magic"></i></div>
-                    <strong>Smart Normalization</strong>
-                    <span>Automatically fixes slight spelling mismatches using master lists.</span>
-                </div>
-                <div class="info-card">
-                    <div class="info-icon"><i class="bi bi-arrow-repeat"></i></div>
-                    <strong>Auto Resume</strong>
-                    <span>Automation resumes from the last processed entry after reload.</span>
-                </div>
-                <div class="info-card">
-                    <div class="info-icon"><i class="bi bi-exclamation-triangle"></i></div>
-                    <strong>Failure Recovery</strong>
-                    <span>Reads Toast UI errors (no valid license, etc.) and saves failed rows.</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- OUTPUT -->
-        <div class="card-section border-top">
-            <div class="output-header">
-                <div>
-                    <div class="section-title mb-1"><i class="bi bi-terminal me-2 text-primary"></i>Generated Userscript</div>
-                    <div class="small text-muted">Install this script in Tampermonkey and open your ERP scheduler page.</div>
-                </div>
-                <span id="compileStatus" class="badge text-bg-secondary">Not Compiled</span>
-            </div>
-            <textarea id="scriptOutput" class="terminal" readonly spellcheck="false" placeholder="// Generated userscript will appear here..."></textarea>
-            <div class="row g-2 mt-3">
-                <div class="col-md-6">
-                    <button class="btn btn-outline-primary w-100" onclick="copyScript()">
-                        <i class="bi bi-clipboard me-2"></i> Copy Userscript
-                    </button>
-                </div>
-                <div class="col-md-6">
-                    <button class="btn btn-outline-success w-100" onclick="downloadScript()">
-                        <i class="bi bi-download me-2"></i> Download .user.js
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="footer-note">ERP Automation Studio • Smart Mapping & Toast Catch Edition</div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-let parsedClassData = [];
-let masterSubjects = [];
-let masterTeachers = [];
-
-/* =========================================================
-   UTILITY
-========================================================= */
-function showStatus(message, type="success") {
-    const el = document.getElementById("statusBar");
-    el.className = "status-bar " + (type === "error" ? "status-error" : "status-success");
-    el.innerHTML = message;
-}
-
-function normalizeKey(value) {
-    return String(value || "").trim().toLowerCase().replace(/\s+/g,"");
-}
-
-function getValue(row, key) {
-    if (!row) return "";
-    if (row[key] !== undefined && row[key] !== null) return row[key];
-    const target = normalizeKey(key);
-    const found = Object.keys(row).find(k => normalizeKey(k).includes(target));
-    return found ? row[found] : "";
-}
-
-/* =========================================================
-   MASTER MAPPING LOGIC (FUZZY MATCHING)
-========================================================= */
-function parseMasterData() {
-    const subjRaw = document.getElementById("masterSubjectsRaw").value.trim();
-    const teachRaw = document.getElementById("masterTeachersRaw").value.trim();
-    const parser = new DOMParser();
-
-    masterSubjects = [];
-    masterTeachers = [];
-
-    if (subjRaw) {
-        if (subjRaw.toLowerCase().includes("<option")) {
-            const doc = parser.parseFromString(subjRaw, 'text/html');
-            masterSubjects = Array.from(doc.querySelectorAll('option'))
-                .map(o => o.textContent.trim())
-                .filter(val => val && val.toUpperCase() !== "SELECT SUBJECT" && val !== "");
-        } else {
-            masterSubjects = subjRaw.split('\n').map(x => x.trim()).filter(Boolean);
-        }
-    }
-
-    if (teachRaw) {
-        if (teachRaw.toLowerCase().includes("<li") || teachRaw.toLowerCase().includes("<div")) {
-            const doc = parser.parseFromString(teachRaw, 'text/html');
-            let nodes = doc.querySelectorAll('li div');
-            if (nodes.length === 0) nodes = doc.querySelectorAll('li');
-            masterTeachers = Array.from(nodes).map(n => n.textContent.trim()).filter(Boolean);
-        } else {
-            masterTeachers = teachRaw.split('\n').map(x => x.trim()).filter(Boolean);
-        }
-    }
-
-    document.getElementById("mappingCount").textContent = 
-        `Mappings Loaded: ${masterSubjects.length} Subjects | ${masterTeachers.length} Teachers`;
-    showStatus(`<i class="bi bi-check-circle me-2"></i> Master Mappings loaded successfully.`);
-}
-
-function findBestMatch(input, validList) {
-    if (!input || validList.length === 0) return input;
-    const cleanInput = input.trim().toUpperCase();
-    const normalizedInput = cleanInput.replace(/[^A-Z0-9]/g, '');
-
-    let match = validList.find(item => item.toUpperCase() === cleanInput);
-    if (match) return match;
-
-    match = validList.find(item => item.toUpperCase().replace(/[^A-Z0-9]/g, '') === normalizedInput);
-    if (match) return match;
-
-    match = validList.find(item => {
-        const cleanItem = item.toUpperCase();
-        const inputWords = cleanInput.split(/\s+/).filter(Boolean);
-        if(inputWords.length === 0) return false;
-        return inputWords.every(word => cleanItem.includes(word));
-    });
-    if (match) return match;
-
-    match = validList.find(item => cleanInput.includes(item.toUpperCase()));
-    if (match) return match;
-
-    return input;
-}
-
-/* =========================================================
-   EXCEL PARSING
-========================================================= */
-document.getElementById("excelFile").addEventListener("change", function(e){
-    const file = e.target.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = function(event){
-        try{
-            const data = new Uint8Array(event.target.result);
-            const workbook = XLSX.read(data, {type:"array", cellDates:true});
-            const sheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData = XLSX.utils.sheet_to_json(sheet, {defval:""});
-            processData(jsonData);
-        }catch(error){
-            showStatus("Excel reading error: " + error.message, "error");
-        }
-    };
-    reader.readAsArrayBuffer(file);
-});
-
-function formatDate(value){
-    if(value === undefined || value === null || value === "") return "";
-    if(value instanceof Date){
-        return value.getFullYear() + "-" + String(value.getMonth()+1).padStart(2,"0") + "-" + String(value.getDate()).padStart(2,"0");
-    }
-    if(typeof value === "number"){
-        const date = XLSX.SSF.parse_date_code(value);
-        if(date) return date.y + "-" + String(date.m).padStart(2,"0") + "-" + String(date.d).padStart(2,"0");
-    }
-    let str = String(value).trim();
-    if(/^\d{2}-\d{2}-\d{4}$/.test(str)){
-        const p = str.split("-"); return `${p[2]}-${p[1]}-${p[0]}`;
-    }
-    if(/^\d{2}\/\d{2}\/\d{4}$/.test(str)){
-        const p = str.split("/"); return `${p[2]}-${p[1]}-${p[0]}`;
-    }
-    if(/^\d{4}\/\d{2}\/\d{2}$/.test(str)){
-        return str.replace(/\//g,"-");
-    }
-    return str;
-}
-
-function parseTime(value){
-    if(value === undefined || value === null || value === "") return {Hour:"12", Min:"00", AMPM:"AM"};
-    if(value instanceof Date){
-        let h = value.getHours();
-        const m = String(value.getMinutes()).padStart(2,"0");
-        const ampm = h >= 12 ? "PM" : "AM";
-        if(h === 0) h = 12; else if(h > 12) h -= 12;
-        return {Hour:String(h).padStart(2,"0"), Min:m, AMPM:ampm};
-    }
-    let str = String(value).trim().toUpperCase();
-    let match = str.match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/);
-    if(match) return {Hour:String(match[1]).padStart(2,"0"), Min:match[2], AMPM:match[3]};
-    match = str.match(/^(\d{1,2}):(\d{2})$/);
-    if(match){
-        let h = parseInt(match[1],10);
-        const min = match[2];
-        const ampm = h >= 12 ? "PM" : "AM";
-        if(h === 0) h = 12; else if(h > 12) h -= 12;
-        return {Hour:String(h).padStart(2,"0"), Min:min, AMPM:ampm};
-    }
-    return {Hour:"12", Min:"00", AMPM:"AM"};
-}
-
-function processData(data){
-    parseMasterData(); 
-
-    parsedClassData = data.map(row => {
-        const rawClass = String(getValue(row,"Class") || "").trim();
-        const rawSection = String(getValue(row,"Section") || "").trim();
-        let finalSection = rawSection;
-        if(rawSection && rawSection.toUpperCase() !== "ALL SECTION" && rawSection.toUpperCase() !== "SELECT ALL" && !rawSection.includes(",")){
-            if(rawClass && !rawSection.toUpperCase().startsWith(rawClass.toUpperCase())){
-                finalSection = `${rawClass}-${rawSection}`;
-            }
-        }
-        const rawDays = String(getValue(row,"Days") || "").trim();
-        let daysArray = [];
-        if(rawDays){ daysArray = rawDays.split(",").map(d => d.trim()).filter(Boolean); }
-        const startDate = formatDate(getValue(row,"Start Date"));
-        const endDate = formatDate(getValue(row,"End Date"));
-        const start = parseTime(getValue(row,"Start Time"));
-        const end = parseTime(getValue(row,"End Time"));
-
-        const rawTeacher = String(getValue(row,"Teacher") || "").trim();
-        const rawSubject = String(getValue(row,"Subject") || "").trim();
-
-        return {
-            Date: startDate,
-            EndDate: endDate,
-            Days: daysArray,
-            StartTime: start.Hour, StartMin: start.Min, StartAMPM: start.AMPM,
-            EndTime: end.Hour, EndMin: end.Min, EndAMPM: end.AMPM,
-            Class: rawClass, Section: finalSection,
-            Teacher: findBestMatch(rawTeacher, masterTeachers),
-            Subject: findBestMatch(rawSubject, masterSubjects)
-        };
-    }).filter(row => row.Date || row.Class || row.Teacher || row.Subject);
-
-    showStatus(`<i class="bi bi-check-circle me-2"></i>${parsedClassData.length} schedule entries loaded successfully.`);
-}
-
-function processManualData(){
-    const raw = document.getElementById("manualData").value.trim();
-    if(!raw) return false;
-    const lines = raw.split(/\r?\n/).filter(line => line.trim());
-    const rows = lines.map(line => {
-        let c = line.split("\t");
-        if(c.length < 9) c = line.split("|");
-        return {
-            "Start Date":c[0]||"", "End Date":c[1]||"", "Start Time":c[2]||"", "End Time":c[3]||"",
-            "Days":c[4]||"", "Class":c[5]||"", "Section":c[6]||"", "Teacher":c[7]||"", "Subject":c[8]||""
-        };
-    });
-    processData(rows);
-    return true;
-}
-
-/* =========================================================
-   GENERATE USER SCRIPT
-========================================================= */
-function generateScript(){
-    const manualRaw = document.getElementById("manualData").value.trim();
-    if(manualRaw) processManualData();
-
-    if(!parsedClassData.length){
-        showStatus(`<i class="bi bi-exclamation-triangle me-2"></i>No data detected. Please upload Excel or paste data.`, "error");
-        return;
-    }
-
-    const classDataJSON = JSON.stringify(parsedClassData, null, 4);
-
-    const script = `// ==UserScript==
-// @name         ERP Auto Scheduler - Ultimate Edition
+// ==UserScript==
+// @name         ERP Auto Scheduler - Ultimate Edition (Speed Optimized)
 // @namespace    ERP-Automation-Studio
-// @version      7.0
-// @description  ERP Scheduler with Smart Error Toast capture & failure recovery
+// @version      7.1
+// @description  ERP Scheduler with Smart Error Toast capture & configurable speeds
 // @match        *://*/*
 // @grant        none
 // ==/UserScript==
@@ -502,11 +10,45 @@ function generateScript(){
 (function(){
 'use strict';
 
+/* =========================================================
+   SPEED CONFIGURATION (Adjust these values in milliseconds)
+   Lower numbers = Faster execution
+   Higher numbers = More reliable if your internet/ERP is slow
+========================================================= */
+const SPEED_CONFIG = {
+    INITIAL_LOAD: 1500,       // Time to wait after page reloads before starting (was 2500)
+    DROPDOWN_ANIMATION: 300,  // Wait for custom dropdown menus to open (was 500)
+    DATE_FIELD: 200,          // Wait after setting start/end dates (was 300)
+    STANDARD_SELECT: 50,      // Wait after setting standard dropdowns like Time (was 100)
+    POST_TEACHER: 300,        // Wait after heavy Teacher dropdown selection (was 500)
+    POST_SUBJECT: 200,        // Wait after Subject selection (was 300)
+    PRE_CONFIRM: 800,         // Wait after clicking Save before clicking Yes (was 1500)
+    UI_SETTLE: 1000           // Wait after success before moving to next row (was 1500)
+};
+
 const STORAGE_RUNNING = 'ERP_AUTOMATION_RUNNING';
 const STORAGE_INDEX = 'ERP_AUTOMATION_INDEX';
 const STORAGE_LOGS = 'ERP_AUTOMATION_FAILED_ROWS';
 
-const classData = ${classDataJSON};
+// Paste your full classData array here!
+const classData = [
+    {
+        "Date": "2026-09-03",
+        "EndDate": "2026-09-03",
+        "Days": ["Thursday"],
+        "StartTime": "08",
+        "StartMin": "00",
+        "StartAMPM": "AM",
+        "EndTime": "08",
+        "EndMin": "35",
+        "EndAMPM": "AM",
+        "Class": "VI",
+        "Section": "VI-A",
+        "Teacher": "PREETI CHANDOLA",
+        "Subject": "MATHS-1"
+    }
+    // ... ADD THE REST OF YOUR DATA HERE ...
+];
 
 function sleep(ms){ return new Promise(resolve => setTimeout(resolve,ms)); }
 function triggerEvents(element){
@@ -522,15 +64,15 @@ function isSingleDay(entry){
 
 async function selectCustomDropdown(selector, itemText, isIndex=false, index=0, exactMatch=false){
     if(!itemText) return false;
-    const dropdown = isIndex 
-        ? document.querySelectorAll('ng-multiselect-dropdown')[index] 
+    const dropdown = isIndex
+        ? document.querySelectorAll('ng-multiselect-dropdown')[index]
         : document.querySelector('ng-multiselect-dropdown[name="' + selector + '"]');
     if(!dropdown) return false;
     const button = dropdown.querySelector('.dropdown-btn');
     if(!button) return false;
-    
+
     button.click();
-    await sleep(500);
+    await sleep(SPEED_CONFIG.DROPDOWN_ANIMATION);
 
     const upperText = String(itemText).trim().toUpperCase();
     let clickedAnything = false;
@@ -554,7 +96,7 @@ async function selectCustomDropdown(selector, itemText, isIndex=false, index=0, 
                 matched = targets.includes(text);
             } else {
                 matched = targets.some(target => {
-                    const tokens = target.split(/\\s+/);
+                    const tokens = target.split(/\s+/);
                     return tokens.every(token => text.includes(token));
                 });
             }
@@ -575,16 +117,16 @@ async function selectDays(daysToSelect){
     if(!dropdown) return false;
     const button = dropdown.querySelector('.dropdown-btn');
     if(!button) return false;
-    
+
     button.click();
-    await sleep(500);
+    await sleep(SPEED_CONFIG.DROPDOWN_ANIMATION);
     const listItems = dropdown.querySelectorAll('.item2 li');
-    
+
     for(const li of listItems){
         const checkbox = li.querySelector('input');
         if(checkbox && checkbox.checked) checkbox.click();
     }
-    
+
     for(const li of listItems){
         const dayText = li.textContent.trim().toUpperCase();
         const matched = daysToSelect.some(day => String(day).trim().toUpperCase() === dayText);
@@ -637,7 +179,7 @@ async function runAutomation(entry, index){
 
         startDate.value = entry.Date; triggerEvents(startDate);
         endDate.value = entry.EndDate; triggerEvents(endDate);
-        await sleep(300);
+        await sleep(SPEED_CONFIG.DATE_FIELD);
 
         if(!isSingleDay(entry)){
             if(!entry.Days || entry.Days.length === 0){
@@ -654,7 +196,7 @@ async function runAutomation(entry, index){
 
         for(const [name,value] of Object.entries(timeFields)){
             const select = document.querySelector('select[name="' + name + '"]');
-            if(select){ select.value = value; triggerEvents(select); await sleep(100); }
+            if(select){ select.value = value; triggerEvents(select); await sleep(SPEED_CONFIG.STANDARD_SELECT); }
         }
 
         const classResult = await selectCustomDropdown('std1', entry.Class, false, 0, true);
@@ -665,18 +207,18 @@ async function runAutomation(entry, index){
 
         const teacherResult = await selectCustomDropdown(null, entry.Teacher, true, 2, false);
         if(!teacherResult) throw new Error('Teacher not found: ' + entry.Teacher);
-        await sleep(500);
+        await sleep(SPEED_CONFIG.POST_TEACHER);
 
         const subject = document.querySelector('select[name="subject"]');
         if(!subject) throw new Error('Subject dropdown not found');
         subject.value = entry.Subject;
         triggerEvents(subject);
-        await sleep(300);
+        await sleep(SPEED_CONFIG.POST_SUBJECT);
 
         const saveBtn = document.querySelector('button.save-btn');
         if(!saveBtn) throw new Error('Save button not found');
         saveBtn.click();
-        await sleep(1500);
+        await sleep(SPEED_CONFIG.PRE_CONFIRM);
 
         /* CONFIRM */
         const yesBtn = Array.from(document.querySelectorAll('button')).find(
@@ -697,27 +239,26 @@ async function runAutomation(entry, index){
         let isFailure = false;
 
         for (let i = 0; i < 50; i++) {
-            await sleep(100); 
+            await sleep(100);
             const toast = document.querySelector('.toast-message, .toast, .alert, .ngx-toastr, [role="alert"]');
-            
+
             if (toast && toast.innerText.trim()) {
                 erpMessage = toast.innerText.trim();
                 const msgLower = erpMessage.toLowerCase();
-                
-                // Mark as failure if it DOES NOT contain "success", or explicitly contains error keywords
-                if (!msgLower.includes('success') || msgLower.includes('not found') || 
+
+                if (!msgLower.includes('success') || msgLower.includes('not found') ||
                     msgLower.includes('valid licence') || msgLower.includes('error') || msgLower.includes('already')) {
                     isFailure = true;
                 }
-                
+
                 const closeBtn = document.querySelector('.toast-close-button, .close, [aria-label="Close"]');
                 if (closeBtn) closeBtn.click();
-                
+
                 break;
             }
         }
 
-        await sleep(1500); // Let UI settle
+        await sleep(SPEED_CONFIG.UI_SETTLE); // Let UI settle before reloading
 
         if (isFailure) {
             throw new Error(erpMessage || 'Unknown ERP Error Notification');
@@ -743,22 +284,22 @@ function showFailureUI(){
 
     const panel = document.createElement('div');
     panel.id = 'erp-failure-panel';
-    panel.style = \`position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:2147483647; width:min(900px,94vw); background:#ffffff; border-radius:18px; box-shadow:0 30px 80px rgba(0,0,0,.35); border:2px solid #ef4444; padding:24px; font-family:Arial,sans-serif;\`;
+    panel.style = `position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); z-index:2147483647; width:min(900px,94vw); background:#ffffff; border-radius:18px; box-shadow:0 30px 80px rgba(0,0,0,.35); border:2px solid #ef4444; padding:24px; font-family:Arial,sans-serif;`;
 
     let htmlRows = '';
     logs.forEach((log,i) => {
-        htmlRows += \`<tr>
-            <td>\${i+1}</td><td>\${log.Date || ''}</td><td>\${log.Class || ''}</td>
-            <td>\${log.Section || ''}</td><td>\${log.Teacher || ''}</td>
-            <td style="color:#dc2626;">\${log._errorReason || ''}</td>
-        </tr>\`;
+        htmlRows += `<tr>
+            <td>${i+1}</td><td>${log.Date || ''}</td><td>${log.Class || ''}</td>
+            <td>${log.Section || ''}</td><td>${log.Teacher || ''}</td>
+            <td style="color:#dc2626;">${log._errorReason || ''}</td>
+        </tr>`;
     });
 
-    panel.innerHTML = \`
+    panel.innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
             <div>
                 <div style="font-size:20px; font-weight:800; color:#991b1b;">⚠️ Failed Entries</div>
-                <div style="font-size:13px; color:#64748b; margin-top:4px;">\${logs.length} entry/entries require attention.</div>
+                <div style="font-size:13px; color:#64748b; margin-top:4px;">${logs.length} entry/entries require attention.</div>
             </div>
         </div>
         <div style="max-height:300px; overflow:auto; border:1px solid #e2e8f0; border-radius:10px;">
@@ -766,7 +307,7 @@ function showFailureUI(){
                 <thead style="background:#f8fafc; position:sticky; top:0;">
                     <tr><th style="padding:9px;">#</th><th style="padding:9px;">Date</th><th style="padding:9px;">Class</th><th style="padding:9px;">Section</th><th style="padding:9px;">Teacher</th><th style="padding:9px;">Error</th></tr>
                 </thead>
-                <tbody>\${htmlRows}</tbody>
+                <tbody>${htmlRows}</tbody>
             </table>
         </div>
         <div style="display:flex; gap:10px; margin-top:18px; flex-wrap:wrap;">
@@ -775,7 +316,7 @@ function showFailureUI(){
             <button id="erp-clear-failed" style="padding:11px 18px; border:0; border-radius:9px; background:#dc2626; color:white; font-weight:700; cursor:pointer;">🗑 Clear Failure Log</button>
             <button id="erp-close-failed" style="padding:11px 18px; border:1px solid #cbd5e1; border-radius:9px; background:white; color:#334155; font-weight:700; cursor:pointer;">Close</button>
         </div>
-    \`;
+    `;
 
     document.body.appendChild(panel);
 
@@ -789,9 +330,9 @@ function showFailureUI(){
     document.getElementById('erp-copy-failed').onclick = async () => {
         let text='';
         logs.forEach(log => {
-            const start = \`\${log.StartTime}:\${log.StartMin} \${log.StartAMPM}\`;
-            const end = \`\${log.EndTime}:\${log.EndMin} \${log.EndAMPM}\`;
-            text += \`\${log.Date}\\t\${log.EndDate}\\t\${start}\\t\${end}\\t\${(log.Days || []).join(', ')}\\t\${log.Class}\\t\${log.Section}\\t\${log.Teacher}\\t\${log.Subject}\\n\`;
+            const start = `${log.StartTime}:${log.StartMin} ${log.StartAMPM}`;
+            const end = `${log.EndTime}:${log.EndMin} ${log.EndAMPM}`;
+            text += `${log.Date}\t${log.EndDate}\t${start}\t${end}\t${(log.Days || []).join(', ')}\t${log.Class}\t${log.Section}\t${log.Teacher}\t${log.Subject}\n`;
         });
         try{ await navigator.clipboard.writeText(text.trim()); alert('Failed rows copied successfully.');
         } catch(e){ alert('Clipboard permission denied.'); }
@@ -805,33 +346,33 @@ function showFailureUI(){
     document.getElementById('erp-close-failed').onclick = () => panel.remove();
 }
 
-function showCompletionUI(){ alert('Automation completed successfully.\\n\\nNo failed entries were detected.'); }
+function showCompletionUI(){ alert('Automation completed successfully.\n\nNo failed entries were detected.'); }
 
 function createUI(){
     if(document.getElementById('erp-scheduler-control')) return;
     const panel = document.createElement('div');
     panel.id = 'erp-scheduler-control';
-    panel.style = \`position:fixed; right:20px; bottom:20px; z-index:2147483646; width:350px; background:#ffffff; border:1px solid #cbd5e1; border-radius:16px; padding:18px; box-shadow:0 15px 40px rgba(15,23,42,.2); font-family:Arial,sans-serif;\`;
+    panel.style = `position:fixed; right:20px; bottom:20px; z-index:2147483646; width:350px; background:#ffffff; border:1px solid #cbd5e1; border-radius:16px; padding:18px; box-shadow:0 15px 40px rgba(15,23,42,.2); font-family:Arial,sans-serif;`;
 
     const running = localStorage.getItem(STORAGE_RUNNING) === 'true';
     const failedRows = JSON.parse(localStorage.getItem(STORAGE_LOGS) || '[]');
 
-    panel.innerHTML = \`
+    panel.innerHTML = `
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
             <div>
                 <div style="font-size:16px; font-weight:800; color:#0f172a;">ERP Scheduler</div>
                 <div style="font-size:11px; color:#64748b;">Smart Automation Control</div>
             </div>
-            <div style="width:10px; height:10px; border-radius:50%; background:\${running ? '#22c55e' : '#94a3b8'};"></div>
+            <div style="width:10px; height:10px; border-radius:50%; background:${running ? '#22c55e' : '#94a3b8'};"></div>
         </div>
-        <select id="erp-start-index" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:9px; margin-bottom:9px;" \${running ? 'disabled' : ''}></select>
-        <button id="erp-run-btn" style="width:100%; padding:11px; border:0; border-radius:9px; background:\${running ? '#dc2626' : '#2563eb'}; color:white; font-weight:700; cursor:pointer; margin-bottom:8px;">
-            \${running ? '⏹ STOP / RESET' : '▶ RUN AUTOMATION'}
+        <select id="erp-start-index" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:9px; margin-bottom:9px;" ${running ? 'disabled' : ''}></select>
+        <button id="erp-run-btn" style="width:100%; padding:11px; border:0; border-radius:9px; background:${running ? '#dc2626' : '#2563eb'}; color:white; font-weight:700; cursor:pointer; margin-bottom:8px;">
+            ${running ? '⏹ STOP / RESET' : '▶ RUN AUTOMATION'}
         </button>
         <button id="erp-failed-btn" style="width:100%; padding:10px; border:1px solid #fecaca; border-radius:9px; background:#fef2f2; color:#991b1b; font-weight:700; cursor:pointer;">
-            ⚠️ Failed Entries (\${failedRows.length})
+            ⚠️ Failed Entries (${failedRows.length})
         </button>
-    \`;
+    `;
 
     document.body.appendChild(panel);
 
@@ -881,7 +422,7 @@ async function checkAndResume(){
         return;
     }
 
-    await sleep(2500);
+    await sleep(SPEED_CONFIG.INITIAL_LOAD);
     const entry = automationData[currentIndex];
     await runAutomation(entry, currentIndex);
 
@@ -897,52 +438,8 @@ async function checkAndResume(){
 }
 
 window.addEventListener('load', () => {
-    setTimeout(createUI, 2000);
-    setTimeout(checkAndResume, 2500);
+    setTimeout(createUI, 1000);
+    setTimeout(checkAndResume, 1000);
 });
 
 })();
-`;
-
-    document.getElementById("scriptOutput").value = script;
-    document.getElementById("compileStatus").className = "badge text-bg-success";
-    document.getElementById("compileStatus").textContent = parsedClassData.length + " Entries Compiled";
-    showStatus(`<i class="bi bi-check-circle me-2"></i>Userscript compiled successfully with ${parsedClassData.length} entries.`);
-}
-
-function copyScript(){
-    const textarea = document.getElementById("scriptOutput");
-    if(!textarea.value){ showStatus("Please compile the userscript first.", "error"); return; }
-    try{
-        navigator.clipboard.writeText(textarea.value);
-        showStatus(`<i class="bi bi-check-circle me-2"></i>Userscript copied to clipboard.`);
-    } catch(error){
-        textarea.select(); document.execCommand("copy");
-        showStatus(`<i class="bi bi-check-circle me-2"></i>Userscript copied to clipboard.`);
-    }
-}
-
-function downloadScript(){
-    const script = document.getElementById("scriptOutput").value;
-    if(!script){ showStatus("Please compile the userscript first.", "error"); return; }
-    const blob = new Blob([script], {type:"text/javascript"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href=url; a.download = "ERP_Auto_Scheduler.user.js";
-    document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
-    showStatus(`<i class="bi bi-download me-2"></i>Userscript downloaded successfully.`);
-}
-
-function clearAllData(){
-    if(!confirm("Clear uploaded data, pasted data and generated script?")) return;
-    parsedClassData=[];
-    document.getElementById("manualData").value="";
-    document.getElementById("scriptOutput").value="";
-    document.getElementById("excelFile").value="";
-    document.getElementById("compileStatus").className = "badge text-bg-secondary";
-    document.getElementById("compileStatus").textContent = "Not Compiled";
-    showStatus(`<i class="bi bi-check-circle me-2"></i>Builder data cleared.`);
-}
-</script>
-</body>
-</html>
